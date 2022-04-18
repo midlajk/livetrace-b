@@ -74,7 +74,7 @@ const RegisterScreen = ({navigation}) => {
           }}
         />
         <Text style={styles.successTextStyle}>
-          Registration Successful
+          Login Successful
         </Text>
        
       </View>
