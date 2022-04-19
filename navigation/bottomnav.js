@@ -46,7 +46,7 @@ const Tabs = () => {
           tabBarIcon: ({ focused }) => (
             <View style={{alignItems:'center',justifyContent:"center"}}>
                 
-                    <Text style={{color:focused?'#f47521':"#000", fontSize:14}}>
+                    <Text style={{color:focused?'#005eaa':"#000", fontSize:14}}>
                     All Vehicles
                     </Text>
             </View>
@@ -59,7 +59,7 @@ const Tabs = () => {
          tabBarIcon: ({ focused }) => (
             <View style={{alignItems:'center',justifyContent:"center"}}>
                 
-                    <Text style={{color:focused?'#f47521':"#000", fontSize:14}}>
+                    <Text style={{color:focused?'#005eaa':"#000", fontSize:14}}>
                     Tracking
                     </Text>
             </View>
@@ -73,7 +73,7 @@ const Tabs = () => {
         tabBarIcon: ({ focused }) => (
             <View style={{alignItems:'center',justifyContent:"center"}}>
                 
-                    <Text style={{color:focused?'#f47521':"#000", fontSize:14}}>
+                    <Text style={{color:focused?'#005eaa':"#000", fontSize:14}}>
                     Non Tracking
                     </Text>
             </View>

@@ -17,12 +17,13 @@ import {
 } from '@react-navigation/drawer';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 export function DrawerContent(props) {
 
 
     return(
         <View style={{flex:1}}>
+            
             <DrawerContentScrollView {...props}>
                 <View style={styles.drawerContent}>
                     <View style={styles.userInfoSection}>
@@ -56,14 +57,14 @@ export function DrawerContent(props) {
                         />
                         <DrawerItem 
                             icon={({color, size}) => (
-                                <Icon 
-                                name="format-list-numbered" 
+                                <MaterialIcon 
+                                name="my-location" 
                                 color={color}
                                 size={size}
                                 />
                             )}
-                            label="Vehicle List"
-                            onPress={() => {props.navigation.navigate('Profile')}}
+                            label="Tracking List"
+                            onPress={() => {props.navigation.navigate('Tracking List')}}
                         />
                         <DrawerItem 
                             icon={({color, size}) => (
@@ -74,18 +75,18 @@ export function DrawerContent(props) {
                                 />
                             )}
                             label="Report"
-                            onPress={() => {props.navigation.navigate('BookmarkScreen')}}
+                            onPress={() => {props.navigation.navigate('Report')}}
                         />
                         <DrawerItem 
                             icon={({color, size}) => (
                                 <Icon 
-                                name="registered-trademark" 
+                                name="car" 
                                 color={color}
                                 size={size}
                                 />
                             )}
                             label="Registered Vehicle"
-                            onPress={() => {props.navigation.navigate('BookmarkScreen')}}
+                            onPress={() => {props.navigation.navigate('Register Vehicle')}}
                         />
                         </Drawer.Section>
                       

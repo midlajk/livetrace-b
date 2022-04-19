@@ -5,7 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import 'react-native-gesture-handler'
 import Splash from './screens/Splash';
 import Login from './screens/Login';
-
+import TrackScreen from './screens/TrackingList';
 
 import Tabs from './navigation/slidenav.js';
 
@@ -25,15 +25,12 @@ function App() {
         <RootStack.Navigator
           initialRouteName="Splash"
           screenOptions={{
-            headerTitleAlign: 'center',
-            headerStyle: {
-              backgroundColor: '#4263EB'
-            },
+           
             cardStyle: { backgroundColor: '#fff' },
-            headerTintColor: '#ffffff',
+            headerTintColor: '#000',
             headerTitleStyle: {
-              fontSize: 25,
-              fontWeight: 'bold'
+              fontSize: 16,
+     
             }
           }}
         >
@@ -57,6 +54,11 @@ function App() {
             name="App Screens"
             component={HomeTabs}
             
+          />
+          <RootStack.Screen
+            name="Tracking Screen"
+            component={TrackScreen}
+            options={({ route }) => ({ title: route.params.name })}
           />
         </RootStack.Navigator>
       </NavigationContainer>

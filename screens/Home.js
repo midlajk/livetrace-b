@@ -3,8 +3,9 @@ import { Text, View ,TouchableOpacity,StyleSheet} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import FontAwesome5 from 'react-native-vector-icons/Feather';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+export default function HomeScreen({navigation}) {
 
-export default function HomeScreen() {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text>All Vehicles Map View!</Text>
@@ -49,11 +50,14 @@ export default function HomeScreen() {
                  </TouchableOpacity>
       <TouchableOpacity
                   style={styles.button}
-
+                  onPress={() => {
+                    
+                    navigation.navigate('Tracking Screen',{ name: 'All Vehicle' });
+                }}
                 > 
                 
-                    <FontAwesome5
-                                name={'list'}
+                    <Icon
+                                name={'bus-multiple'}
                                 size={30}
                                 color={'#fff'}
                            
