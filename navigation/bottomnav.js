@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import { StyleSheet,Text,View,Image,TouchableOpacity } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Report from '../screens/Report';
@@ -8,13 +8,29 @@ import NontrackMap from '../screens/NontrackMap';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Tab = createBottomTabNavigator();
 
-  
+ 
 
-const Tabs = () => {
-    return(
+const Tabs =  () => {
+     
+    async function checkuser() {
+        return await AsyncStorage.getItem('Username').then((response) => {
+            console.log(response)
+            return response
+        });
+     }
+      
+
+    useEffect(() => {
+        checkuser()
+        }, [])
+
+   
+
+        return(
 
         <Tab.Navigator
         sceneContainerStyle={{
@@ -32,7 +48,7 @@ const Tabs = () => {
           left:13,
           right:13,
           borderRadius:16,
-          backgroundColor:"#d1d2d4",
+          backgroundColor:"#000",
           height:60,
           elevation: 0, 
 
@@ -46,7 +62,7 @@ const Tabs = () => {
           tabBarIcon: ({ focused }) => (
             <View style={{alignItems:'center',justifyContent:"center"}}>
                 
-                    <Text style={{color:focused?'#005eaa':"#000", fontSize:14}}>
+                    <Text style={{color:focused?'#fff':"#d1d2d4", fontSize:14}}>
                     All Vehicles
                     </Text>
             </View>
@@ -59,7 +75,7 @@ const Tabs = () => {
          tabBarIcon: ({ focused }) => (
             <View style={{alignItems:'center',justifyContent:"center"}}>
                 
-                    <Text style={{color:focused?'#005eaa':"#000", fontSize:14}}>
+                    <Text style={{color:focused?'#fff':"#d1d2d4", fontSize:14}}>
                     Tracking
                     </Text>
             </View>
@@ -73,7 +89,7 @@ const Tabs = () => {
         tabBarIcon: ({ focused }) => (
             <View style={{alignItems:'center',justifyContent:"center"}}>
                 
-                    <Text style={{color:focused?'#005eaa':"#000", fontSize:14}}>
+                    <Text style={{color:focused?'#fff':"#d1d2d4", fontSize:14}}>
                     Non Tracking
                     </Text>
             </View>

@@ -8,7 +8,7 @@ import ReportScreen from '../screens/Report';
 import RegisteredVehicle from '../screens/RegisteredVeicle';
 import TrackingList from '../screens/TrackingList';
 
-import { DrawerContent } from '../screens/view/DrawerContent';
+import { DrawerContent } from '../Components/DrawerContent';
 
 function HomeTabs() {
   return (

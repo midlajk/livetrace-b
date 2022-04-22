@@ -2,7 +2,9 @@
 // https://aboutreact.com/react-native-login-and-signup/
 
 // Import React and Component
-import React, {useState, createRef,useEffect} from 'react';
+import * as api from "../services/auth";
+import  {useAuth}  from "../Providers/Provider";
+import React, {useState, createRef,} from 'react';
 import {
   StyleSheet,
   TextInput,
@@ -13,28 +15,30 @@ import {
   Keyboard,
   TouchableOpacity,
   ScrollView,
+  Alert
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Loader from '../Components/Loader';
 
-import Loader from './view/Loader';
+const RegisterScreen = (props) => {
 
-const RegisterScreen = ({navigation}) => {
+
+  const {navigation} = props;
+  const {navigate} = navigation;
+  const [error, setError] = useState(null);
+
+
   const [userEmail, setUserEmail] = useState('');
-
   const [userPassword, setUserPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [errortext, setErrortext] = useState('');
-  const [
-    isRegistraionSuccess,
-    setIsRegistraionSuccess
-  ] = useState(false);
+  
 
   const emailInputRef = createRef();
-  const ageInputRef = createRef();
-
   const passwordInputRef = createRef();
 
-  const handleSubmitButton = () => {
-
+async function handleSubmitButton (state) {
+    
     if (!userEmail) {
       alert('Please fill Email');
       return;
@@ -47,39 +51,39 @@ const RegisterScreen = ({navigation}) => {
     //Show Loader
     setLoading(true);
    
-    setIsRegistraionSuccess(true);
+    try {
+      let response = await api.login(userEmail,userPassword);
+      dataparse = JSON.parse(response.config.data)
+      logindata = dataparse.request
+      await AsyncStorage.setItem('Username', logindata.userMailid);
+      await AsyncStorage.setItem('Password', logindata.password);
+
+    
+     
+      //check if username is null
+
+      if (logindata){
+        setLoading(false)
+                  setTimeout(() => {
+                    navigation.replace('App Screens');
+                }, 1000);
+
+                
+           
+      }
+      else console.log('error monu')
+  } catch (error) {
+      setError(error.message);
+  
+                      setTimeout(() => {
+                        Alert.alert('Error','Wrong Username / Password!');
+                      }, 100);       
+            setLoading(false)
+  }
+  
    
   };
-  if (isRegistraionSuccess) {
 
-        setTimeout(() => {
-            navigation.replace('App Screens');
-        }, 2000);
-
-         
-    return (
-            
-      <View
-        style={{
-          flex: 1,
-          backgroundColor: '#fff',
-          justifyContent: 'center',
-        }}>
-        <Image
-          source={require('.././Assets/check.png')}
-          style={{
-            height: 150,
-            resizeMode: 'contain',
-            alignSelf: 'center'
-          }}
-        />
-        <Text style={styles.successTextStyle}>
-          Login Successful
-        </Text>
-       
-      </View>
-    );
-  }
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
       <Loader loading={loading} />
