@@ -15,6 +15,7 @@ import {
     DrawerContentScrollView,
     DrawerItem
 } from '@react-navigation/drawer';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
@@ -94,7 +95,10 @@ export function DrawerContent(props) {
             </DrawerContentScrollView>
             <Drawer.Section style={styles.bottomDrawerSection}>
                 <DrawerItem 
-                onPress={() => {props.navigation.navigate('Login Screen')}}
+                onPress={() => {
+                    AsyncStorage.clear()
+                    props.navigation.navigate('Login Screen')
+                }}
                     icon={({color, size}) => (
                         <Icon 
                         name="exit-to-app" 

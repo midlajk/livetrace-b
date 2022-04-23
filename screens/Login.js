@@ -4,7 +4,7 @@
 // Import React and Component
 import * as api from "../services/auth";
 import  {useAuth}  from "../Providers/Provider";
-import React, {useState, createRef,} from 'react';
+import React, {useState, createRef,useEffect}  from 'react';
 import {
   StyleSheet,
   TextInput,
@@ -21,7 +21,19 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from '../Components/Loader';
 
 const RegisterScreen = (props) => {
+  async function checkuser() {
+    return await AsyncStorage.getItem('Username').then((response) => {
+        console.log(response,"hpy")
+        return response
+    });
+ }
+ useEffect(() => {
+  checkuser()
+  }, [])
 
+
+
+  
 
   const {navigation} = props;
   const {navigate} = navigation;
@@ -38,7 +50,8 @@ const RegisterScreen = (props) => {
   const passwordInputRef = createRef();
 
 async function handleSubmitButton (state) {
-    
+    await AsyncStorage.setItem('email', userEmail);
+    await AsyncStorage.setItem('password', userPassword);
     if (!userEmail) {
       alert('Please fill Email');
       return;
@@ -52,21 +65,17 @@ async function handleSubmitButton (state) {
     setLoading(true);
    
     try {
-      let response = await api.login(userEmail,userPassword);
+      let response = await api.login();
       dataparse = JSON.parse(response.config.data)
       logindata = dataparse.request
-      await AsyncStorage.setItem('Username', logindata.userMailid);
-      await AsyncStorage.setItem('Password', logindata.password);
-
-    
      
       //check if username is null
 
-      if (logindata){
+      if (logindata.userMailid !== undefined){
         setLoading(false)
                   setTimeout(() => {
                     navigation.replace('App Screens');
-                }, 1000);
+                }, 100);
 
                 
            

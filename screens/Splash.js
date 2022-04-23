@@ -6,14 +6,31 @@ import {
     Image,
 
 } from 'react-native';
-
+import * as api from "../services/auth";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Splash({ navigation }) {
 
     useEffect(() => {
 
-        setTimeout(() => {
-            navigation.replace('Login Screen');
+        setTimeout(async () => {
+            await AsyncStorage.getItem('email').then(async (res) => {
+                console.log(res)
+                if(res){
+                    let response = await api.login();
+                    dataparse = JSON.parse(response.config.data)
+                    logindata = dataparse.request
+                    if (logindata.userMailid !== undefined){
+                    return navigation.replace('App Screens');
+                    }
+                    else return navigation.replace('Login Screen');
+                }
+                else navigation.replace('Login Screen');
+               
+            });
+            
+            
+            
         }, 2000);
     }, []);
 

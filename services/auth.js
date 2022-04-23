@@ -1,13 +1,17 @@
 import axios from 'axios';
 
 import * as c from '../configuration/constant';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-export async function login(mail,password){
+export async function login(){
+    let email = await AsyncStorage.getItem('email')
+    let password = await AsyncStorage.getItem('password')
     try{
- 
+
+  
         let res = await axios.post(c.LOGIN, {"request": {
-            "userMailid": mail,
+            "userMailid": email,
             "password": password
             }} );
        
@@ -18,7 +22,23 @@ export async function login(mail,password){
     }
 }
 
+export async function fetchdata(){
+    let email = await AsyncStorage.getItem('email')
+    let password = await AsyncStorage.getItem('password')
+    try{
 
+  
+        let res = await axios.post(c.DATA, {"request": {
+            "userMailid": email,
+            "password": password
+            }} );
+       console.log(res.data)
+        
+    }catch (e) {
+
+        throw handler(e);
+    }
+}
 
 
 

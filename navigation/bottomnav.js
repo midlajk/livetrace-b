@@ -17,7 +17,7 @@ const Tab = createBottomTabNavigator();
 const Tabs =  () => {
      
     async function checkuser() {
-        return await AsyncStorage.getItem('Username').then((response) => {
+        return await AsyncStorage.getItem('email').then((response) => {
             console.log(response)
             return response
         });

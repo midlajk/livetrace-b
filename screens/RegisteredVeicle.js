@@ -1,11 +1,21 @@
-import * as React from 'react';
+import React,{useEffect} from 'react';
 import { Text, View,TextInput,StyleSheet,TouchableOpacity,ScrollView,Image } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { Searchbar } from 'react-native-paper';
+import * as api from "../services/auth";
+
 
 
 export default function Collection({navigation}) {
+  useEffect(() => {
+    async function getdata() {
+        let response = await api.fetchdata();
+    }
+    getdata()
+    
+
+  })
   const [searchQuery, setSearchQuery] = React.useState('');
 
   const onChangeSearch = query => setSearchQuery(query);
