@@ -23,8 +23,10 @@ export async function login(){
 }
 
 export async function fetchdata(){
+  
     let email = await AsyncStorage.getItem('email')
     let password = await AsyncStorage.getItem('password')
+   
     try{
 
   
@@ -32,10 +34,11 @@ export async function fetchdata(){
             "userMailid": email,
             "password": password
             }} );
-       console.log(res.data)
+            
+         return res
         
     }catch (e) {
-
+console.log(e)
         throw handler(e);
     }
 }
