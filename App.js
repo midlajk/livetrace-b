@@ -6,7 +6,7 @@ import 'react-native-gesture-handler'
 import Splash from './screens/Splash';
 import Login from './screens/Login';
 import TrackScreen from './screens/TrackingList';
-
+import Notification from './screens/Notification';
 import Tabs from './navigation/slidenav.js';
 
 function HomeTabs() {
@@ -53,6 +53,13 @@ function App() {
             options={{headerShown: false}}
             name="App Screens"
             component={HomeTabs}
+            
+            
+          />
+           <RootStack.Screen
+            name="Notification Screen"
+            component={Notification}
+            
             
           />
           <RootStack.Screen

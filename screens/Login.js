@@ -22,8 +22,8 @@ import Loader from '../Components/Loader';
 
 const RegisterScreen = (props) => {
   async function checkuser() {
-    return await AsyncStorage.getItem('Username').then((response) => {
-        console.log(response,"hpy")
+    return await AsyncStorage.getItem('email').then((response) => {
+
         return response
     });
  }

@@ -4,11 +4,24 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import FontAwesome5 from 'react-native-vector-icons/Feather';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 export default function HomeScreen({navigation}) {
 
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>All Vehicles Map View!</Text>
+              <View style={styles.container}>
+     <MapView
+       provider={PROVIDER_GOOGLE} // remove if not using Google Maps
+       style={styles.map}
+       region={{
+         latitude: 37.78825,
+         longitude: -122.4324,
+         latitudeDelta: 0.015,
+         longitudeDelta: 0.0121,
+       }}
+     >
+     </MapView>
+   </View> 
       <TouchableOpacity
                   style={styles.full}
 
@@ -117,6 +130,16 @@ info: {
   top: 150,
   right: 10,
 
+},
+container: {
+  ...StyleSheet.absoluteFillObject,
+  height: '100%',
+  width: 400,
+  justifyContent: 'flex-end',
+  alignItems: 'center',
+},
+map: {
+  ...StyleSheet.absoluteFillObject,
 },
   
 })

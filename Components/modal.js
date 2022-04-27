@@ -13,23 +13,11 @@ const Loader = (props) => {
           transparent={true}
           visible={props.loading}
           onRequestClose={() => {
-            Alert.alert("Modal has been closed.");
-            this.setModalVisible(!modalVisible);
+            console.log("back");
           }}
+          onBackButtonPress={() => this.visible(false)}
         >
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <Text style={styles.modalText}>
-                  Hello World!</Text>
-              <Pressable
-                style={[styles.button, styles.buttonClose]}
-                onPress={() => this.setModalVisible(!modalVisible)}
-              >
-                <Text style={styles.textStyle}>
-                    Hide Modal</Text>
-              </Pressable>
-            </View>
-          </View>
+         
         </Modal>
   );
 };

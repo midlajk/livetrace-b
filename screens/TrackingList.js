@@ -2,16 +2,24 @@ import React,{useState,useEffect} from 'react';
 import { Text, View,TextInput,StyleSheet,TouchableOpacity,ScrollView,FlatList } from 'react-native';
 import { Searchbar } from 'react-native-paper';
 import * as api from "../services/auth";
+import Loader from '../Components/Loader';
 
 
 export default function TrackScreen({navigation}) {
   const [list, setList] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [searchText, setSearchText] = useState('');
-    async function getdata() {
-        let response = await api.fetchdata();
-        setList(response.data.response.LiveData)
-    }
+  useEffect(() => {
     getdata()
+  }, []);
+   
+    async function getdata() {
+      
+        let response = await api.fetchdata(); 
+        setList(response.data.response.LiveData)
+        setLoading(false) 
+
+    }
     
   
   //Data can be coming from props or any other source as well
@@ -24,6 +32,7 @@ export default function TrackScreen({navigation}) {
 
   return (
     <View style={{flex:1,backgroundColor:'#dedfe0'}}>
+            <Loader loading={loading} />
          <Searchbar
           placeholder="Search"
           onChangeText={(text) => setSearchText(text)}

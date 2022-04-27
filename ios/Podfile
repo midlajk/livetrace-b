@@ -21,6 +21,8 @@ target 'LiveTrace' do
 
   pod 'react-native-encrypted-storage', :path => '../node_modules/react-native-encrypted-storage'
 
+  pod 'react-native-maps', :path => '../node_modules/react-native-maps'
+
   target 'LiveTraceTests' do
     inherit! :complete
     # Pods for testing
