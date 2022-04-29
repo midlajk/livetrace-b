@@ -25,13 +25,12 @@ export default function TrackScreen({navigation}) {
   //Data can be coming from props or any other source as well
   const data = list
   const filteredData = searchText ? data.filter(x =>
-        x.Reg_No.toLowerCase().includes(searchText.toLowerCase())
-      )
-    : data
+    x.Reg_No.toLowerCase().includes(searchText.toLowerCase())
+    ): data
     
 
   return (
-    <View style={{flex:1,backgroundColor:'#dedfe0'}}>
+    <View style={{flex:1,}}>
             <Loader loading={loading} />
          <Searchbar
           placeholder="Search"
@@ -47,7 +46,8 @@ export default function TrackScreen({navigation}) {
                 renderItem={({ item }) => (
 
                 <View style={styles.shadow}>
-               <TouchableOpacity style={styles.button}>
+               <TouchableOpacity style={styles.button}
+               >
         
             
                     <View style={{flex:1,alignItems:'center'}}>
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
             },
             shadowOpacity:0.25,
             shadowRadius:3.5,
-            elevation:3,
+            elevation:6,
         },
         shadow:{
             

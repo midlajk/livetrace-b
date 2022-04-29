@@ -18,7 +18,6 @@ const Tabs =  () => {
      
     async function checkuser() {
         return await AsyncStorage.getItem('email').then((response) => {
-            console.log(response)
             return response
         });
      }
@@ -62,7 +61,7 @@ const Tabs =  () => {
           tabBarIcon: ({ focused }) => (
             <View style={{alignItems:'center',justifyContent:"center"}}>
                 
-                    <Text style={{color:focused?'#fff':"#d1d2d4", fontSize:14}}>
+                    <Text style={{color:focused?'#005eaa':"#fff", fontSize:16}}>
                     All Vehicles
                     </Text>
             </View>
@@ -75,7 +74,7 @@ const Tabs =  () => {
          tabBarIcon: ({ focused }) => (
             <View style={{alignItems:'center',justifyContent:"center"}}>
                 
-                    <Text style={{color:focused?'#fff':"#d1d2d4", fontSize:14}}>
+                    <Text style={{color:focused?'#005eaa':"#fff", fontSize:16}}>
                     Tracking
                     </Text>
             </View>
@@ -89,7 +88,7 @@ const Tabs =  () => {
         tabBarIcon: ({ focused }) => (
             <View style={{alignItems:'center',justifyContent:"center"}}>
                 
-                    <Text style={{color:focused?'#fff':"#d1d2d4", fontSize:14}}>
+                    <Text style={{color:focused?'#005eaa':"#fff", fontSize:16}}>
                     Non Tracking
                     </Text>
             </View>

@@ -13,7 +13,6 @@ const Loader = (props) => {
           transparent={true}
           visible={props.loading}
           onRequestClose={() => {
-            console.log("back");
           }}
           onBackButtonPress={() => this.visible(false)}
         >

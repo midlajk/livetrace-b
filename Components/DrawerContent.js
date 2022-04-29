@@ -87,7 +87,28 @@ export function DrawerContent(props) {
                                 />
                             )}
                             label="Registered Vehicle"
-                            onPress={() => {props.navigation.navigate('Register Vehicle')}}
+                            onPress={() => {props.navigation.navigate('Register Vehicle',{name:'Register Vehicle'})}}
+                        />
+                               <DrawerItem 
+                            icon={({color, size}) => (
+                                <MaterialIcon 
+                                name="report-problem" 
+                                color={color}
+                                size={size}
+                                />
+                            )}
+                            label="Report a problem"
+                            onPress={() => {props.navigation.navigate('Report Problem')}}
+                        />
+                           <DrawerItem 
+                            icon={({color, size}) => (
+                                <MaterialIcon 
+                                name="payment" 
+                                color={color}
+                                size={size}
+                                />
+                            )}
+                            label="Recharge"
                         />
                         </Drawer.Section>
                       

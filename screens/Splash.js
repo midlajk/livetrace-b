@@ -14,9 +14,7 @@ export default function Splash({ navigation }) {
     useEffect(() => {
 
         setTimeout(async () => {
-            await AsyncStorage.getItem('email').then(async (res) => {
-                console.log(res)
-                if(res){
+            await AsyncStorage.getItem('email').then(async (res) => {if(res){
                     let response = await api.login();
                     dataparse = JSON.parse(response.config.data)
                     logindata = dataparse.request

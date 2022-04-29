@@ -6,9 +6,11 @@ import 'react-native-gesture-handler'
 import Splash from './screens/Splash';
 import Login from './screens/Login';
 import TrackScreen from './screens/TrackingList';
+import VehicleList from './screens/RegisteredVeicle';
 import Notification from './screens/Notification';
 import Tabs from './navigation/slidenav.js';
-
+import ReportGeneration from './screens/ReportFilter';
+import IndividualMap from './screens/IndividualTracking';
 function HomeTabs() {
   return (
    
@@ -26,7 +28,6 @@ function App() {
           initialRouteName="Splash"
           screenOptions={{
            
-            cardStyle: { backgroundColor: '#fff' },
             headerTintColor: '#000',
             headerTitleStyle: {
               fontSize: 16,
@@ -38,6 +39,7 @@ function App() {
             name="Splash"
             component={Splash}
             options={{
+              cardStyle: { backgroundColor: '#fff' },
               headerShown: false,
             }}
           />
@@ -61,6 +63,23 @@ function App() {
             component={Notification}
             
             
+          />
+            <RootStack.Screen
+            name="Report Generation"
+            component={ReportGeneration}
+            
+            
+          />
+            <RootStack.Screen
+            name="Individual Map"
+            component={IndividualMap}
+            
+            
+          />
+           <RootStack.Screen
+            name="Vehicle List"
+            component={VehicleList}
+            options={({ route }) => ({ title: route.params.name })}
           />
           <RootStack.Screen
             name="Tracking Screen"

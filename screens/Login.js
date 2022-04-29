@@ -80,7 +80,7 @@ async function handleSubmitButton (state) {
                 
            
       }
-      else console.log('error monu')
+      else console.log('error')
   } catch (error) {
       setError(error.message);
   
@@ -95,7 +95,7 @@ async function handleSubmitButton (state) {
 
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
-      <Loader loading={loading} />
+ 
       <ScrollView
 
         keyboardShouldPersistTaps="handled"
