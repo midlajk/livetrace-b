@@ -31,7 +31,7 @@ export default function TrackScreen({navigation}) {
 
   return (
     <View style={{flex:1,}}>
-            <Loader loading={loading} />
+            <Loader loading={loading} navigation={navigation} />
          <Searchbar
           placeholder="Search"
           onChangeText={(text) => setSearchText(text)}
@@ -47,7 +47,10 @@ export default function TrackScreen({navigation}) {
 
                 <View style={styles.shadow}>
                <TouchableOpacity style={styles.button}
-               >
+                onPress={() => {  
+                  navigation.navigate('Individual Map',{ vehicle:item.Reg_No});
+              }}
+              >
         
             
                     <View style={{flex:1,alignItems:'center'}}>

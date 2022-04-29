@@ -96,7 +96,7 @@ async function handleSubmitButton (state) {
 
   return (
     <View style={{flex: 1,}}>
-      <Loader loading={loading} />
+      <Loader loading={loading} navigation={navigation} />
       <ScrollView
 
         keyboardShouldPersistTaps="handled"

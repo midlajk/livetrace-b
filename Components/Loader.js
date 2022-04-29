@@ -6,7 +6,7 @@ import React from 'react';
 import {StyleSheet, View, Modal, ActivityIndicator} from 'react-native';
 
 const Loader = (props) => {
-  const {loading, ...attributes} = props;
+  const {loading,navigation, ...attributes} = props;
 
   return (
     <Modal
@@ -14,7 +14,8 @@ const Loader = (props) => {
       animationType={'none'}
       visible={loading}
       onRequestClose={() => {
-      }}>
+      navigation.goBack()
+    }}>
       <View style={styles.modalBackground}>
         <View style={styles.activityIndicatorWrapper}>
           <ActivityIndicator

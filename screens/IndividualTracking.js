@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MapView, { PROVIDER_GOOGLE, Marker,Callout } from 'react-native-maps';
 import * as api from "../services/auth";
 import Loader from '../Components/Loader';
-export default function Tracking({navigation}) {
+export default function Tracking({navigation,route}) {
   const [list, setList] = useState([]);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
@@ -18,7 +18,7 @@ export default function Tracking({navigation}) {
       setLoading(true) 
         let response = await api.fetchdata(); 
         const filteredData = response.data.response.LiveData.filter(x =>
-          x.Igni==1)
+          x.Reg_No==route.params.vehicle)
          setList(filteredData)
         setLoading(false) 
 
@@ -26,7 +26,7 @@ export default function Tracking({navigation}) {
   
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                     <Loader loading={loading} />
+                     <Loader loading={loading} navigation={navigation} />
           <View style={styles.container}>
           <MapView
        provider={PROVIDER_GOOGLE} // remove if not using Google Maps
@@ -66,59 +66,29 @@ export default function Tracking({navigation}) {
      })}
      </MapView>
    </View> 
-      <TouchableOpacity
-                  style={styles.full}
+   <TouchableOpacity style={{width:'90%',backgroundColor:'#000',height:50,borderRadius:16,justifyContent: 'center',
+      alignItems: 'center',
+      position: 'absolute',
+      bottom: 90,
+      elevation: 5,
+      alignSelf:'center'}}
+      >
+      <Text style={{color:'#fff'}}> Travel Reply</Text>
+     </TouchableOpacity>
+      <TouchableOpacity style={{width:'90%',backgroundColor:'#000',height:50,borderRadius:16,justifyContent: 'center',
+      alignItems: 'center',
+      position: 'absolute',
+      bottom: 30,
+      elevation: 5,
+      alignSelf:'center'}}
+      onPress={() => {  
+        navigation.navigate('Report Screen',{ vehicle:list[0].Reg_No});
+    }}>
+<Text style={{color:'#fff'}}> Report</Text>
+     </TouchableOpacity>
 
-                > 
-                
-                    <FontAwesome5
-                                name={'square'}
-                                size={25}
-                                color={'#fff'}
-                           
-                            />
-
-                 </TouchableOpacity>
-                 <TouchableOpacity
-                  style={styles.refresh}
-
-                > 
-                
-                    <FontAwesome5
-                                name={'refresh-ccw'}
-                                size={20}
-                                color={'#fff'}
-                           
-                            />
-
-                 </TouchableOpacity>
-                 <TouchableOpacity
-                  style={styles.info}
-
-                > 
-                
-                    <FontAwesome5
-                                name={'info'}
-                                size={20}
-                                color={'#fff'}
-                           
-                            />
-
-                 </TouchableOpacity>
-      <TouchableOpacity
-                  style={styles.button}
-                  onPress={() => {
-                    
-                    navigation.navigate('Tracking Screen',{ name: 'Tracking Vehicle' });
-                }}
-                > 
-                 <Icon
-                                name={'bus-multiple'}
-                                size={30}
-                                color={'#fff'}
-                           
-                            />
-                 </TouchableOpacity>
+    
+     
     </View>
   );
 }
@@ -181,6 +151,39 @@ container: {
 },
 map: {
   ...StyleSheet.absoluteFillObject,
+},
+bubble: {
+  flexDirection: 'column',
+  alignSelf: 'flex-start',
+  backgroundColor: '#fff',
+  borderRadius: 6,
+  borderColor: '#000',
+  borderWidth: 0.5,
+  padding: 15,
+  width: 150,
+  height:'auto',
+  elevation:7
+},
+name: {
+  fontSize: 16,
+  marginBottom: 5,
+},
+arrow: {
+  backgroundColor: 'transparent',
+  borderColor: 'transparent',
+  borderTopColor: '#fff',
+  borderWidth: 16,
+  alignSelf: 'center',
+  marginTop: -32,
+},
+arrowBorder: {
+  backgroundColor: 'transparent',
+  borderColor: 'transparent',
+  borderTopColor: '#007a87',
+  borderWidth: 16,
+  alignSelf: 'center',
+  marginTop: -0.5,
+  // marginBottom: -15
 },
   
 })

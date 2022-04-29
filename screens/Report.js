@@ -3,8 +3,19 @@ import { Text, View,TouchableOpacity,StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Iconb from 'react-native-vector-icons/MaterialCommunityIcons';
 
-export default function ReportScreen({navigation}) {
+export default function ReportScreen({navigation,route}) {
   const [initial, setInitial] = useState('Click here to select vehicle');
+  useEffect(() => {
+    getdata()
+  }, []);
+   
+    async function getdata() {
+     
+     if(route.name != 'Report'){
+        await setInitial(route.params.vehicle)
+      }
+
+    }
   return (
     <View style={{ flex: 1, justifyContent: 'space-around',flexDirection:'row',padding:20,flexWrap: 'wrap',}}>
       <TouchableOpacity style={{width:'30%',height:100,backgroundColor:'#fff',borderRadius:16,marginBottom:10,justifyContent:'center',alignItems:'center',elevation:3}}

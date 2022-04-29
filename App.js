@@ -11,6 +11,7 @@ import Notification from './screens/Notification';
 import Tabs from './navigation/slidenav.js';
 import ReportGeneration from './screens/ReportFilter';
 import IndividualMap from './screens/IndividualTracking';
+import Report from './screens/Report';
 function HomeTabs() {
   return (
    
@@ -70,10 +71,16 @@ function App() {
             
             
           />
+           <RootStack.Screen
+            name="Report Screen"
+            component={Report}
+            
+            
+          />
             <RootStack.Screen
             name="Individual Map"
             component={IndividualMap}
-            
+            options={({ route }) => ({ title: "Tracking "+route.params.vehicle })}
             
           />
            <RootStack.Screen

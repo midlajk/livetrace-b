@@ -4,35 +4,34 @@ import { NavigationContainer } from '@react-navigation/native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { Searchbar } from 'react-native-paper';
 import * as api from "../services/auth";
-
+import Loader from '../Components/Loader';
 
 
 export default function Collection({navigation,route}) {
-  data = [
-    {
-      vehiclenumber: 'KL 12 AB 123',
-      SerialNumber:'9744022332',
-      SIMNumber : '9744022332232'
-    },
-    {
-      vehiclenumber: 'Kb 12 bB 123',
-      SerialNumber:'97440223322',
-      SIMNumber : '974402233222'
-    },
-    {
-      vehiclenumber: 'LB-12-CB32',
-      SerialNumber:'97440223322',
-      SIMNumber : '974402233222'
-    }
-  ]
-  const filteredData = searchQuery ? data.filter(x =>
-    x.vehiclenumber.toLowerCase().includes(searchQuery.toLowerCase())
-  ) : data
+  const [list, setList] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+    useEffect(() => {
+    getdata()
+  }, []);
+   
+    async function getdata() {
+      setLoading(true) 
+        let response = await api.fetchdata(); 
+         setList(response.data.response.LiveData)
+        setLoading(false) 
+
+    }
+    data = list
+  const filteredData = searchQuery ? data.filter(x =>
+    x.Reg_No.toLowerCase().includes(searchQuery.toLowerCase())
+  ) : data
+  
  
 
   return (
     <View style={{flex:1}}>
+               <Loader loading={loading} navigation={navigation} />
         <Searchbar
       placeholder="Search"
       onChangeText={(text) => setSearchQuery(text)}
@@ -54,12 +53,12 @@ export default function Collection({navigation,route}) {
        <TouchableOpacity style={[styles.button,{height:60}]}
         onPress={() => {
                     
-        navigation.navigate('Report Generation',{number:item.vehiclenumber,name:route.params.heading,icon:route.params.icon,icontype:route.params.icontype});
+        navigation.navigate('Report Generation',{number:item.Reg_No,name:route.params.heading,icon:route.params.icon,icontype:route.params.icontype});
          }} 
         >
          
              <View>
-                 <Text style={{fontSize:18}}>{item.vehiclenumber}</Text>
+                 <Text style={{fontSize:18}}>{item.Reg_No}</Text>
              
                  </View>
              <View>
@@ -74,9 +73,9 @@ export default function Collection({navigation,route}) {
        >
         
             <View>
-                <Text style={styles.text}>Vehicle Number : {item.vehiclenumber}</Text>
-                <Text style={styles.text}>Serial Number : {item.SerialNumber}</Text>
-                <Text style={styles.text}>SIM Number : {item.SIMNumber}</Text>
+                <Text style={styles.text}>Vehicle Number : {item.Reg_No}</Text>
+                <Text style={styles.text}>Serial Number : 12121212234</Text>
+                <Text style={styles.text}>SIM Number : 45322212121</Text>
                 </View>
             <View>
                 

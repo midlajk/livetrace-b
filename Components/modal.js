@@ -12,9 +12,11 @@ const Loader = (props) => {
           animationType="slide"
           transparent={true}
           visible={props.loading}
-          onRequestClose={() => {
-          }}
           onBackButtonPress={() => this.visible(false)}
+          onRequestClose={() => {
+            Alert.alert("Modal has been closed.");
+            this.setModalVisible(!modalVisible);
+          }}
         >
          
         </Modal>

@@ -26,7 +26,7 @@ export default function NonTracking({navigation}) {
   
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                     <Loader loading={loading} />
+                     <Loader loading={loading} navigation={navigation} />
           <View style={styles.container}>
           <MapView
        provider={PROVIDER_GOOGLE} // remove if not using Google Maps
@@ -81,7 +81,7 @@ export default function NonTracking({navigation}) {
                  </TouchableOpacity>
                  <TouchableOpacity
                   style={styles.refresh}
-
+                  onPress={()=>{getdata()}}
                 > 
                 
                     <FontAwesome5
@@ -182,5 +182,37 @@ container: {
 map: {
   ...StyleSheet.absoluteFillObject,
 },
-  
+bubble: {
+  flexDirection: 'column',
+  alignSelf: 'flex-start',
+  backgroundColor: '#fff',
+  borderRadius: 6,
+  borderColor: '#000',
+  borderWidth: 0.5,
+  padding: 15,
+  width: 150,
+  height:'auto',
+  elevation:7
+},
+name: {
+  fontSize: 16,
+  marginBottom: 5,
+},
+arrow: {
+  backgroundColor: 'transparent',
+  borderColor: 'transparent',
+  borderTopColor: '#fff',
+  borderWidth: 16,
+  alignSelf: 'center',
+  marginTop: -32,
+},
+arrowBorder: {
+  backgroundColor: 'transparent',
+  borderColor: 'transparent',
+  borderTopColor: '#007a87',
+  borderWidth: 16,
+  alignSelf: 'center',
+  marginTop: -0.5,
+  // marginBottom: -15
+},
 })

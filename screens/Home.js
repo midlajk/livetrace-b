@@ -26,7 +26,7 @@ export default function HomeScreen({navigation}) {
   
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-               <Loader loading={loading} />
+               <Loader loading={loading} navigation={navigation} />
 
               <View style={styles.container}>
      <MapView
@@ -180,7 +180,7 @@ bubble: {
   alignSelf: 'flex-start',
   backgroundColor: '#fff',
   borderRadius: 6,
-  borderColor: '#ccc',
+  borderColor: '#000',
   borderWidth: 0.5,
   padding: 15,
   width: 150,
