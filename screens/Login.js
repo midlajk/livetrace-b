@@ -80,7 +80,7 @@ async function handleSubmitButton (state) {
                 
            
       }
-      else console.log('error')
+      else Alert.alert('Error','error');
   } catch (error) {
       setError(error.message);
   

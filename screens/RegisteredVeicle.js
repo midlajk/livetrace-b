@@ -49,7 +49,7 @@ export default function Collection({navigation,route}) {
                 data={filteredData}
                 renderItem={({ item }) => (
     <View style={styles.shadow}>
-       { route.params.name == 'Select a vehicle' ?    
+    
        <TouchableOpacity style={[styles.button,{height:60}]}
         onPress={() => {
                     
@@ -67,24 +67,7 @@ export default function Collection({navigation,route}) {
              
         
        </TouchableOpacity>
-       : 
-      <TouchableOpacity style={styles.button}
-        
-       >
-        
-            <View>
-                <Text style={styles.text}>Vehicle Number : {item.Reg_No}</Text>
-                <Text style={styles.text}>Serial Number : 12121212234</Text>
-                <Text style={styles.text}>SIM Number : 45322212121</Text>
-                </View>
-            <View>
-                
-            </View>
-            
-       
-      </TouchableOpacity>
-
-    }
+   
       </View>
    
        )}/>

@@ -54,7 +54,7 @@ export function DrawerContent(props) {
                                 />
                             )}
                             label="Home"
-                            onPress={() => {props.navigation.navigate('Home')}}
+                            onPress={() => {props.navigation.navigate('All Vehicle')}}
                         />
                         <DrawerItem 
                             icon={({color, size}) => (
@@ -78,17 +78,7 @@ export function DrawerContent(props) {
                             label="Report"
                             onPress={() => {props.navigation.navigate('Report')}}
                         />
-                        <DrawerItem 
-                            icon={({color, size}) => (
-                                <Icon 
-                                name="car" 
-                                color={color}
-                                size={size}
-                                />
-                            )}
-                            label="Registered Vehicle"
-                            onPress={() => {props.navigation.navigate('Register Vehicle',{name:'Register Vehicle'})}}
-                        />
+                    
                                <DrawerItem 
                             icon={({color, size}) => (
                                 <MaterialIcon 

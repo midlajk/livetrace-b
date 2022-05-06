@@ -7,6 +7,8 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MapView, { PROVIDER_GOOGLE, Marker,Callout } from 'react-native-maps';
 import * as api from "../services/auth";
 import Loader from '../Components/Loader';
+import MapButton from '../Components/mapscreen_button';
+import MapTopButton from '../Components/maptopscreen';
 export default function NonTracking({navigation}) {
   const [list, setList] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -40,85 +42,21 @@ export default function NonTracking({navigation}) {
      >
        {list.map((marker,index)=>{
        return(
-       <MapView.Marker key={index}  coordinate ={{
+       <Marker key={index}  coordinate ={{
         latitude: marker.Lat,
         longitude: marker.Lon,
        }}
        image={require('../Assets/sport-car.png')}
-       title='marker.Lon'
-       description="Something here">
-              <Callout tooltip>
-              <View>
-                <View style={styles.bubble}>
-                  <Text style={styles.name}>{marker.Reg_No}</Text>
-   
-      <Text>Driver:{marker.Nick}</Text>
-      <Text>Vehicle:{marker.V_Type}</Text>
-      <Text>Speed:{marker.Speed}</Text>
-      <Text>Distance:{marker.Dist}</Text>
-                </View>
-                <View style={styles.arrowBorder} />
-                <View style={styles.arrow} />
-              </View>
-            </Callout>
-       </MapView.Marker>
+       title={marker.Reg_No}
+       description="Tap here to track live"/>
+           
        )
      })}
      </MapView>
    </View> 
-      <TouchableOpacity
-                  style={styles.full}
+   <MapTopButton getdata={getdata} navigation={navigation}/>
 
-                > 
-                
-                    <FontAwesome5
-                                name={'square'}
-                                size={25}
-                                color={'#fff'}
-                           
-                            />
-
-                 </TouchableOpacity>
-                 <TouchableOpacity
-                  style={styles.refresh}
-                  onPress={()=>{getdata()}}
-                > 
-                
-                    <FontAwesome5
-                                name={'refresh-ccw'}
-                                size={20}
-                                color={'#fff'}
-                           
-                            />
-
-                 </TouchableOpacity>
-                 <TouchableOpacity
-                  style={styles.info}
-
-                > 
-                
-                    <FontAwesome5
-                                name={'info'}
-                                size={20}
-                                color={'#fff'}
-                           
-                            />
-
-                 </TouchableOpacity>
-      <TouchableOpacity
-                  style={styles.button}
-                  onPress={() => {
-                    
-                    navigation.navigate('Tracking Screen',{ name: 'Tracking Vehicle' });
-                }}
-                > 
-                 <Icon
-                                name={'bus-multiple'}
-                                size={30}
-                                color={'#fff'}
-                           
-                            />
-                 </TouchableOpacity>
+    <MapButton screen='Non-Tracking Vehicle' navigation={navigation}/>
     </View>
   );
 }
