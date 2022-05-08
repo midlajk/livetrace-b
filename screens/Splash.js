@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect,useState } from 'react';
 import {
     View,
     StyleSheet,
@@ -8,18 +8,20 @@ ActivityIndicator
 } from 'react-native';
 import * as api from "../services/auth";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Loader from '../Components/Loader';
 
 export default function Splash({ navigation }) {
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
 
         setTimeout(async () => {
-   
+     
             getdata()
-
         }, 2000);
     }, []);
     async function getdata() {
+        setLoading(true)
         await AsyncStorage.getItem('email').then(async (res) => {
             if(res){
             let response = await api.login();
@@ -34,27 +36,26 @@ export default function Splash({ navigation }) {
     })
     }
     return (
-        <View style={styles.body} >
+        <View >
+                 <Loader loading={loading} navigation={navigation} />
             <Image
-       
-                style={styles.logo}
-                source={require('.././Assets/logowithname.png')}
-            />
-            <ActivityIndicator  size="large" style={{marginTop:100}}/>
+            
+             style={styles.logo}
+             
+                source={require('.././Assets/bg-white.png')}
+            /> 
         </View>
+       
     )
 }
 
 const styles = StyleSheet.create({
-    body: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#fff',
-    },
+  
     logo: {
-    
-       
+        width:'100%',
+        height:'100%',
+        resizeMode:'contain',
+   
     },
     text: {
         fontSize: 20,

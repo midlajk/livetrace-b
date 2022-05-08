@@ -1,17 +1,23 @@
 
 import React, { useState } from "react";
-import {  StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {  StyleSheet, Text, TouchableOpacity, View,Image } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome5 from 'react-native-vector-icons/Feather';
+import Trackingicons from './trackingicons';
+import Nontrackingicon from './nontrackingicon';
 
 const App = (props) => {
-  const [tracking, setTracking] = useState(false);
-  const [nonTracking, setNonTracking] = useState(false);
+  const [tracking, setTracking] = useState(true);
+  const [nonTracking, setNonTracking] = useState(true);
   return (
     <View style={styles.bottomviewcontainer}>
       
       
 {props.screen=='mainscreen' ?
+
+////Main screen button configuration
+      <View style={{width:'100%',alignItems:'center'}}>
+
       
                 <TouchableOpacity
                     style={[styles.button,{justifyContent:'center',width:'90%'}]}
@@ -28,7 +34,50 @@ const App = (props) => {
                               />
                   <Text style={{color:'#fff'}}> List all Vehicle</Text>
                   </TouchableOpacity>
+                  
+                  
+                  <TouchableOpacity
+                    style={[styles.button]}
+                    onPress={() => {
+                    
+                      props.navigation.navigate('Tracking Vehicle');
+                  }}
+                  > 
+                    <Icon
+                                  name={'google-maps'}
+                                  size={20}
+                                  color={'#fff'}
+                            
+                              />
+                  <Text style={{color:'#fff'}}> Tracking Vehicle</Text>
+                  <Text style={{color:'#fff'}}> 8</Text>
+                  </TouchableOpacity>
+            
+                  <TouchableOpacity
+                  
+                    style={[styles.button]}
+                    onPress={() => {
+                    
+                      props.navigation.navigate('Non-Tracking Vehicle');
+                  }}
+                  > 
+                    <Icon
+                  name={'map-marker-off'}
+                  size={20}
+                  color={'#fff'}
+            
+              />
+                  <Text style={{color:'#fff'}}> Non-Tracking Vehicle</Text>
+                  <Text style={{color:'#fff'}}> 6</Text>
+                  </TouchableOpacity>
+                  </View>
+
+                  // First condition  check
+
+
+
                   :
+
                   <View style={{flexDirection:'row',justifyContent:'space-around'}}>
                     <View style={{width:'70%'}}>
                        <TouchableOpacity
@@ -66,16 +115,23 @@ const App = (props) => {
                       </View>      
                  
                   </View>
-             
+                  
+             ////second condition check
 
 }
-            
-                  <TouchableOpacity
-                    style={[styles.button]}
-                    onPress={() => {
-                    
-                      props.navigation.navigate('Tracking Vehicle');
-                  }}
+{/* second condition check */}
+
+
+
+
+{props.screen=='Tracking Vehicle' ?
+tracking ?
+ <View style={{width:'100%',alignItems:'center'}}>
+
+
+             <TouchableOpacity
+                    style={[styles.button,{borderBottomLeftRadius:0,borderBottomRightRadius:0}]}
+                    onPress={()=>setTracking(false)}
                   > 
                     <Icon
                                   name={'google-maps'}
@@ -85,25 +141,148 @@ const App = (props) => {
                               />
                   <Text style={{color:'#fff'}}> Tracking Vehicle</Text>
                   <Text style={{color:'#fff'}}> 8</Text>
+                  <Icon
+                                  name={'chevron-down'}
+                                  size={20}
+                                  color={'#fff'}
+                            
+                              />
                   </TouchableOpacity>
-            
-                  <TouchableOpacity
+
+                {/* Vehicle icons and Names of icon */}
                   
-                    style={[styles.button]}
-                    onPress={() => {
+                   <Trackingicons/>
+                {/* Vehicle icons and Names of icon */}
+                  </View>
+
+                  ////Second sub condition fail
+
+
+            :
+            <View style={{width:'100%',alignItems:'center'}}>
+              <TouchableOpacity
+            style={[styles.button]}
+            onPress={()=>setTracking(true)}
+          > 
+            <Icon
+                          name={'google-maps'}
+                          size={20}
+                          color={'#fff'}
                     
-                      props.navigation.navigate('Non-Tracking Vehicle');
-                  }}
-                  > 
-                    <Icon
-                  name={'map-marker-off'}
-                  size={20}
-                  color={'#fff'}
+                      />
+          <Text style={{color:'#fff'}}> Tracking Vehicle</Text>
+          <Text style={{color:'#fff'}}> 8</Text>
+          <Icon
+                          name={'chevron-down'}
+                          size={20}
+                          color={'#fff'}
+                    
+                      />
+          </TouchableOpacity>
+         
+          <TouchableOpacity
+                  
+                  style={[styles.button]}
+                  onPress={() => {
+                  
+                    props.navigation.navigate('Non-Tracking Vehicle');
+                }}
+                > 
+                  <Icon
+                name={'map-marker-off'}
+                size={20}
+                color={'#fff'}
+          
+            />
+                <Text style={{color:'#fff'}}> Non-Tracking Vehicle</Text>
+                <Text style={{color:'#fff'}}> 6</Text>
+                </TouchableOpacity>
+   
+         </View>
+          ////Third condition check on second condition fail 
+          :props.screen=='Non-Tracking Vehicle' ?
+          nonTracking ?
+          <View style={{width:'100%',alignItems:'center'}}>
+
+
+              <TouchableOpacity
+                 style={[styles.button,{borderBottomLeftRadius:0,borderBottomRightRadius:0}]}
+                 onPress={()=>setNonTracking(false)}
+               > 
+                 <Icon
+                               name={'map-marker-off'}
+                               size={20}
+                               color={'#fff'}
+                         
+                           />
+               <Text style={{color:'#fff'}}> Non-Tracking Vehicle</Text>
+               <Text style={{color:'#fff'}}> 3</Text>
+               <Icon
+                               name={'chevron-down'}
+                               size={20}
+                               color={'#fff'}
+                         
+                           />
+               </TouchableOpacity>
+
+
+                {/* Vehicle icons and Names of icon */}
+                                
+                <Nontrackingicon/>
+                {/* Vehicle icons and Names of icon */}
+
+
+               </View>
+               ///third condition sub fail
+               :
+               <View style={{width:'100%',alignItems:'center'}}>
+                  <TouchableOpacity
+               style={[styles.button]}
+               onPress={() => {
+               
+                 props.navigation.navigate('Tracking Vehicle');
+             }}
+             > 
+               <Icon
+                             name={'google-maps'}
+                             size={20}
+                             color={'#fff'}
+                       
+                         />
+             <Text style={{color:'#fff'}}> Tracking Vehicle</Text>
+             <Text style={{color:'#fff'}}> 8</Text>
+             </TouchableOpacity>
+               <TouchableOpacity
+               style={[styles.button]}
+               
+               onPress={()=>setNonTracking(true)}
+             > 
+               <Icon
+                             name={'map-marker-off'}
+                             size={20}
+                             color={'#fff'}
+                       
+                         />
+             <Text style={{color:'#fff'}}> Non-Tracking Vehicle</Text>
+             <Text style={{color:'#fff'}}> 8</Text>
+             <Icon
+                             name={'chevron-down'}
+                             size={20}
+                             color={'#fff'}
+                       
+                         />
+             </TouchableOpacity>
+         
+               </View>
+               /// third condition fail
+                  :
+             <View>
+
+             </View>
             
-              />
-                  <Text style={{color:'#fff'}}> Non-Tracking Vehicle</Text>
-                  <Text style={{color:'#fff'}}> 6</Text>
-                  </TouchableOpacity>
+            
+            }
+                 
                   </View>
 
   );
@@ -127,7 +306,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent:'space-around'
 },
-
+iconstyle: {width: 26, height: 28},
 });
 
 export default App;

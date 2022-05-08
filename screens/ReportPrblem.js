@@ -10,40 +10,28 @@ import {
   TextInput,
   View,
   Text,
-  Image,
+  FlatList,
   KeyboardAvoidingView,
   Keyboard,
   TouchableOpacity,
   ScrollView,
-  Alert
+  Alert,
+  VariantsBox
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from '../Components/Loader';
+import DropDown from '../Components/dropdown';
+
 
 const RegisterScreen = (props) => {
-  async function checkuser() {
-    return await AsyncStorage.getItem('email').then((response) => {
-
-        return response
-    });
- }
- useEffect(() => {
-  checkuser()
-  }, [])
-
-
-
-  
 
   const {navigation} = props;
   const {navigate} = navigation;
   const [error, setError] = useState(null);
 
-
-  const [userName, setUserName] = useState('');
   const [userContact, setUserContact] = useState('');
   const [vehicleNumber, setVehicleNumber] = useState('');
-  const [serialNumber, setSerialNumber] = useState('');
+
   const [deviceFault, setDeviceFault] = useState('');
   const [comment, setComment] = useState('');
 
@@ -51,19 +39,10 @@ const RegisterScreen = (props) => {
   const [errortext, setErrortext] = useState('');
   
 
-  const nameInputRef = createRef();
   const userContactRef = createRef();
-  const vehicleNumberRef = createRef();
-  const serialNumberRef = createRef();
-  const deviceFaultRef = createRef();
-
+ 
 
 async function handleSubmitButton (state) {
-
-    if (!userName) {
-      alert('Please fill User Name');
-      return;
-    }
 
     if (!userContact) {
       alert('Please fill User Contact');
@@ -75,10 +54,6 @@ async function handleSubmitButton (state) {
       return;
     }
 
-    if (!serialNumber) {
-      alert('Please fill Serial Number');
-      return;
-    }
     if (!deviceFault) {
       alert('Please fill Device Fault');
       return;
@@ -114,18 +89,6 @@ async function handleSubmitButton (state) {
           <View style={styles.SectionStyle}>
             <TextInput
               style={styles.inputStyle}
-              onChangeText={(UserName) => setUserName(UserName)}
-              placeholder="Customer Name *"
-              keyboardType="default"
-              ref={nameInputRef}
-              returnKeyType="next"
-           
-            />
-          </View>
-
-          <View style={styles.SectionStyle}>
-            <TextInput
-              style={styles.inputStyle}
               onChangeText={(UserContact) => setUserContact(UserContact)}
               placeholder="Contact Number *"
               keyboardType="phone-pad"
@@ -134,40 +97,9 @@ async function handleSubmitButton (state) {
            
             />
           </View>
-
-          <View style={styles.SectionStyle}>
-            <TextInput
-              style={styles.inputStyle}
-              onChangeText={(VehicleNumber) => setVehicleNumber(VehicleNumber)}
-              placeholder="Vehicle Number *"
-              keyboardType="name-phone-pad"
-              ref={vehicleNumberRef}
-              returnKeyType="next"
-           
-            />
-          </View>
-          <View style={styles.SectionStyle}>
-            <TextInput
-              style={styles.inputStyle}
-              onChangeText={(SerialNumber) => setSerialNumber(SerialNumber)}
-              placeholder="Device Serial Number *"
-              keyboardType="name-phone-pad"
-              ref={serialNumberRef}
-              returnKeyType="next"
-           
-            />
-          </View>
-          <View style={styles.SectionStyle}>
-            <TextInput
-              style={styles.inputStyle}
-              onChangeText={(DeviceFault) => setDeviceFault(DeviceFault)}
-              placeholder="Device Fault *"
-              keyboardType="default"
-              ref={deviceFaultRef}
-              returnKeyType="next"
-           
-            />
-          </View>
+         <DropDown/>
+         <DropDown/>
+         
           <View style={styles.SectionStyle}>
             <TextInput
               style={styles.inputStyle}

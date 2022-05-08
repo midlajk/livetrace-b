@@ -12,7 +12,7 @@ export default function TrackScreen({navigation}) {
   useEffect(() => {
     getdata()
   }, []);
-   
+       
     async function getdata() {
       
         let response = await api.fetchdata(); 
@@ -54,12 +54,14 @@ export default function TrackScreen({navigation}) {
         
             
                     <View style={{flex:1,alignItems:'center'}}>
+         
                       <Text style={{fontSize:16,color:'#000'}}>{item.Reg_No}</Text>
-                      <Text style={{fontSize:16,color:'#000'}}>Status: Online</Text>
-                    
+
+                      <Text style={{fontSize:16,color:'#000'}}>Ignition Status : {item.Igni==1?'Online':'Offline'}</Text>
+                      <Text style={styles.text}>Speed : {item.Speed}</Text>
                       <Text style={styles.text}>Last Tracked : {item.Time}</Text>
-                        <Text style={styles.text}>Halt Since : 4 Days</Text>
-                
+                      <Text style={styles.text}>IMEI : 168200010991001</Text>
+            <Text style={styles.text}>Address:</Text>
                         <Text style={{color:'#0783cb',fontSize:10}}>Click Here to Track Live</Text>
                       
                         
@@ -83,16 +85,16 @@ const styles = StyleSheet.create({
    
     text: {
          color:'#000',
-         fontSize:12,
-
+         fontSize:14,
+      
        },
        textb: {
         color:'#fff',
         fontSize:16,
-
+     
       },
        button: {
-         width:'90%',height:160,borderRadius:16,backgroundColor:'#fff',justifyContent:'center',alignItems:'center',
+         width:'90%',borderRadius:16,backgroundColor:'#fff',justifyContent:'center',alignItems:'center',
          padding:20,
          flexDirection:'row',justifyContent:'space-between',
          shadowColor:'#000',

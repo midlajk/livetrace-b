@@ -27,7 +27,6 @@ export async function fetchdata(){
   
     let email = await AsyncStorage.getItem('email')
     let password = await AsyncStorage.getItem('password')
-   
     try{
 
   
@@ -39,7 +38,7 @@ export async function fetchdata(){
          return res
         
     }catch (e) {
-console.log(e)
+console.log(e,"here")
         throw handler(e);
     }
 }
