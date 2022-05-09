@@ -5,7 +5,6 @@ import { NavigationContainer } from '@react-navigation/native';
 
 import HomeScreen from '../screens/Home';
 import ReportScreen from '../screens/Report';
-import RegisteredVehicle from '../screens/RegisteredVeicle';
 import TrackingList from '../screens/TrackingList';
 import ReportProblem from '../screens/ReportPrblem';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -57,7 +56,6 @@ marginLeft:10,
         <Drawer.Screen name="Tracking Vehicle" component={Tracking} />
         <Drawer.Screen name="Non-Tracking Vehicle" component={NonTracking} />
         <Drawer.Screen name="Report" component={ReportScreen} />
-        <Drawer.Screen name="Register Vehicle" component={RegisteredVehicle} />
         <Drawer.Screen name="Tracking List" component={TrackingList} />
         <Drawer.Screen name="Report Problem" component={ReportProblem} />
       </Drawer.Navigator>

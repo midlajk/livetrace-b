@@ -5,7 +5,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import Icon from 'react-native-vector-icons/Ionicons';
 import Iconb from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import SelectDropdown from 'react-native-select-dropdown'
+import DropDown from '../Components/dropdown';
 
 
 export default function Notification({navigation,route}) {
@@ -85,17 +85,7 @@ export default function Notification({navigation,route}) {
    
         
         <View style={{flex:7}}>
-        <TouchableOpacity
-        style={{backgroundColor:'#005eaa',paddingLeft:10,height:50,alignItems:'center',justifyContent:'center',borderRadius:10}}
-        onPress={() => {
-                    
-            navigation.navigate('Vehicle List',{ name: 'Select a vehicle',heading:route.params.name,icon:route.params.icon,icontype:route.params.icontype });
-        }}
-            >
-                <Text style={{color:'#fff'}}>
-                    {route.params.number}
-                </Text>
-            </TouchableOpacity>
+      <DropDown/>
         </View>
         
     </View>

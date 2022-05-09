@@ -5,18 +5,23 @@ import * as api from "../services/auth";
 import Loader from '../Components/Loader';
 
 
-export default function TrackScreen({navigation}) {
+export default function TrackScreen({navigation,route}) {
   const [list, setList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchText, setSearchText] = useState('');
   useEffect(() => {
     getdata()
   }, []);
-       
+ 
     async function getdata() {
       
         let response = await api.fetchdata(); 
-        setList(response.data.response.LiveData)
+        route.params.screen=='Tracking Vehicle'?
+         changed = response.data.response.LiveData.filter(x =>
+          x.Igni==1): route.params.screen=='Non-Tracking Vehicle'?changed = response.data.response.LiveData.filter(x =>
+            x.Igni<1):
+            changed = response.data.response.LiveData
+        setList(changed)
         setLoading(false) 
 
     }

@@ -65,7 +65,7 @@ export function DrawerContent(props) {
                                 />
                             )}
                             label="Tracking List"
-                            onPress={() => {props.navigation.navigate('Tracking List')}}
+                            onPress={() => {props.navigation.navigate('Tracking List',{name:'List of all vehicle',screen:'main'})}}
                         />
                         <DrawerItem 
                             icon={({color, size}) => (

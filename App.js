@@ -6,7 +6,6 @@ import 'react-native-gesture-handler'
 import Splash from './screens/Splash';
 import Login from './screens/Login';
 import TrackScreen from './screens/TrackingList';
-import VehicleList from './screens/RegisteredVeicle';
 import SeperateList from './screens/TrackingList';
 import Notification from './screens/Notification';
 import Tabs from './navigation/slidenav.js';
@@ -84,11 +83,7 @@ function App() {
             options={({ route }) => ({ title: "Tracking "+route.params.vehicle })}
             
           />
-           <RootStack.Screen
-            name="Vehicle List"
-            component={VehicleList}
-            options={({ route }) => ({ title: route.params.name })}
-          />
+       
           <RootStack.Screen
             name="Vehicle Seperate List"
             component={SeperateList}

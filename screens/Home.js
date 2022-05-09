@@ -9,12 +9,12 @@ import Mapview from '../Components/MapView';
 export default function HomeScreen({navigation}) {
   const [list, setList] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [buttonVisible, setButtonVisible] = useState(false);
+  const [buttonVisible, setButtonVisible] = useState(true);
   useEffect(() => {
     getdata()
     setTimeout(() => {
       getdata()
-  }, 100);
+    }, 100);
   }, []);
    
     async function getdata() {
@@ -29,10 +29,10 @@ export default function HomeScreen({navigation}) {
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                <Loader loading={loading} navigation={navigation} />
 
-    <Mapview list={list} navigation={navigation}/>
-   <MapTopButton getdata={getdata} navigation={navigation}/>
-
-    <MapButton screen='mainscreen' navigation={navigation}  />
+    <Mapview list={list} navigation={navigation} />
+   <MapTopButton getdata={getdata} navigation={navigation} setButtonVisible={setButtonVisible} buttonVisible={buttonVisible}/>
+{buttonVisible?<MapButton screen='mainscreen' navigation={navigation}  />:<View></View>}
+    
     </View>
   );
 }

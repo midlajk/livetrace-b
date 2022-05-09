@@ -5,16 +5,16 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome5 from 'react-native-vector-icons/Feather';
 
 const App = (props) => {
-    const {navigation,getdata, ...attributes} = props;
+    const {navigation,getdata,setButtonVisible,buttonVisible, ...attributes} = props;
   return (
     <View style={styles.topviewcontainer}>
                   <TouchableOpacity
                   style={styles.button}
-
+                  onPress={()=>{buttonVisible?setButtonVisible(false):setButtonVisible(true)}}
                 > 
                 
                     <Icon
-                                name={'fullscreen'}
+                                name={buttonVisible?'fullscreen':'fullscreen-exit'}
                                 size={25}
                                 color={'#000'}
                            

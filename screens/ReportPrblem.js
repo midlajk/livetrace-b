@@ -10,7 +10,7 @@ import {
   TextInput,
   View,
   Text,
-  FlatList,
+  SafeAreaView,
   KeyboardAvoidingView,
   Keyboard,
   TouchableOpacity,
@@ -72,14 +72,10 @@ async function handleSubmitButton (state) {
   return (
     <View style={{flex: 1,}}>
       <Loader loading={loading} navigation={navigation} />
-      <ScrollView
-
+      <View
+        style={{marginTop:'15%'}}
         keyboardShouldPersistTaps="handled"
-        contentContainerStyle={{
-          justifyContent: 'center',
-          alignContent: 'center',
-          marginTop:'15%'
-        }}>
+       >
         <View style={{alignItems: 'center'}}>
          
           <Text style={{color: 'red'}}>Fields marked with * are mandatory</Text>
@@ -98,7 +94,7 @@ async function handleSubmitButton (state) {
             />
           </View>
          <DropDown/>
-         <DropDown/>
+      
          
           <View style={styles.SectionStyle}>
             <TextInput
@@ -125,7 +121,7 @@ async function handleSubmitButton (state) {
         </KeyboardAvoidingView>
 
         <Text style={{margin:20,textAlign:'center'}}> Report any issues here</Text>
-      </ScrollView>
+      </View>
     </View>
   );
 };

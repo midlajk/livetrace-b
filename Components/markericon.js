@@ -25,7 +25,7 @@ const App = (props) => {
 };
 
 const styles = StyleSheet.create({
-    iconstyle: {width: 20, height: 24},
+    iconstyle: {width: 26, height: 28},
     // iconstyle_selected: {width: 36, height: 38},
 
 });

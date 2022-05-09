@@ -9,7 +9,8 @@ import Mapview from '../Components/MapView';
 export default function Tracking({navigation}) {
   const [list, setList] = useState([]);
   const [loading, setLoading] = useState(false);
-  
+  const [buttonVisible, setButtonVisible] = useState(true);
+
   useEffect(() => {
     getdata()
     setTimeout(() => {
@@ -32,9 +33,11 @@ export default function Tracking({navigation}) {
                      <Loader loading={loading} navigation={navigation} />
                      <Mapview list={list} navigation={navigation}/>
 
-   <MapTopButton getdata={getdata} navigation={navigation}/>
 
-<MapButton screen='Tracking Vehicle' navigation={navigation} />
+   <MapTopButton getdata={getdata} navigation={navigation} setButtonVisible={setButtonVisible} buttonVisible={buttonVisible}/>
+
+{buttonVisible?<MapButton screen='Tracking Vehicle' navigation={navigation}/>:<View></View>}
+
     </View>
   );
 }

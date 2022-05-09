@@ -23,7 +23,7 @@ const App = (props) => {
                     style={[styles.button,{justifyContent:'center',width:'90%'}]}
                     onPress={() => {
                     
-                      props.navigation.navigate('Vehicle Seperate List',{name:'All Vehicle'});
+                      props.navigation.navigate('Vehicle Seperate List',{name:'List of All Vehicle',screen:'main'});
                   }}
                   > 
                  <Icon
@@ -84,7 +84,7 @@ const App = (props) => {
                     style={[styles.button,{justifyContent:'center',width:'95%'}]}
                     onPress={() => {
                     
-                      props.navigation.navigate('Vehicle Seperate List',{name:'List of all' + props.screen});
+                      props.navigation.navigate('Vehicle Seperate List',{name:'List of all ' + props.screen,screen:props.screen});
                   }}
                   > 
                  <Icon

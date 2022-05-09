@@ -7,35 +7,35 @@ import { ScrollView } from "react-native-gesture-handler";
 var items = [
     {
       id: 1,
-      name: 'JavaScript',
+      name: 'KL 12 Ab 6698',
     },
     {
       id: 2,
-      name: 'Java',
+      name: 'Kl 73 fh 678',
     },
     {
       id: 3,
-      name: 'Ruby',
+      name: 'KL 32 hg 788',
     },
     {
       id: 4,
-      name: 'React Native',
+      name: 'KL 32 hg9 788',
     },
     {
       id: 5,
-      name: 'PHP',
+      name: 'KL 2 hg 788',
     },
     {
       id: 6,
-      name: 'Python',
+      name: 'KL 32 hg 88',
     },
     {
       id: 7,
-      name: 'Go',
+      name: 'KL 32 788',
     },
     {
       id: 8,
-      name: 'Swift',
+      name: 'KL 2 88',
     },
   ];
 const App = (props) => {
@@ -65,13 +65,13 @@ const App = (props) => {
                   <View style={styles.SectionStyle}>
           <TextInput
                   value={bankName}
-                  placeholder="Select Bank Name"
+                  placeholder="Select Vehicle Number"
                   style={styles.inputStyle}
                   onChangeText={filterBanks}
+       
                   keyboardType="name-phone-pad"
                 />
           </View>
-          <View>
              <FlatList
           style={{marginLeft: 35,
           marginRight: 35,maxHeight:180}}
@@ -90,7 +90,6 @@ const App = (props) => {
                   )}
                   keyExtractor={item => item.id}
                 />  
-          </View>
          
              
     </View>

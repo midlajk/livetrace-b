@@ -36,7 +36,7 @@ const Mapview = (props) => {
       return(
       <Marker 
       
-      key={marker.Reg_No}
+      key={index}
       identifier={marker.Reg_No}
       coordinate ={{
        latitude: marker.Lat,
