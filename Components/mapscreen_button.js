@@ -6,6 +6,7 @@ import FontAwesome5 from 'react-native-vector-icons/Feather';
 import Trackingicons from './trackingicons';
 import Nontrackingicon from './nontrackingicon';
 import b from "../configuration/Datahandler";
+import SubcatgNAv from './subcategorylistnav';
 
 const App = (props) => {
   const [tracking, setTracking] = useState(true);
@@ -72,7 +73,7 @@ const App = (props) => {
                     style={[styles.button,{justifyContent:'center',width:'90%'}]}
                     onPress={() => {
                     
-                      props.navigation.navigate('Vehicle Seperate List',{name:'List of All Vehicle',screen:'main'});
+                      props.navigation.navigate('Vehicle Seperate List',{name:'List of All Vehicle',data:props.data});
                   }}
                   > 
                  <Icon
@@ -125,26 +126,10 @@ const App = (props) => {
 
 
 
-                  :
-
+                  :props.screen=='Tracking Vehicle sub'||props.screen=='NonTracking Vehicle Sub' ?
+                  <View  style={{width:'100%',alignItems:'center'}}>
                   <View style={{flexDirection:'row',justifyContent:'space-around'}}>
-                    <View style={{width:'70%'}}>
-                       <TouchableOpacity
-                    style={[styles.button,{justifyContent:'center',width:'95%'}]}
-                    onPress={() => {
-                    
-                      props.navigation.navigate('Vehicle Seperate List',{name:'List of all ' + props.screen,screen:props.screen});
-                  }}
-                  > 
-                 <Icon
-                                  name={'format-list-bulleted'}
-                                  size={20}
-                                  color={'#fff'}
-                            
-                              />
-                  <Text style={{color:'#fff'}}> List all {props.screen}</Text>
-                  </TouchableOpacity>
-                  </View>
+                  <SubcatgNAv navigation={props.navigation} screen={props.screen} sub={props.sub} data={props.data}/>
                     <View style={{width:'20%'}}> 
                       <TouchableOpacity
                     style={[styles.button,{justifyContent:'center',width:'100%'}]}
@@ -162,8 +147,82 @@ const App = (props) => {
               
                   </TouchableOpacity>
                       </View>      
-                 
+                 </View>
+
+                 <View style={{width:'100%',alignItems:'center'}}>
+                      <TouchableOpacity
+                    style={[styles.button]}
+                    onPress={() => {
+                    
+                      props.navigation.navigate('Tracking Vehicle');
+                  }}
+                  > 
+                    <Icon
+                                  name={'google-maps'}
+                                  size={20}
+                                  color={'#fff'}
+                            
+                              />
+                  <Text style={{color:'#fff'}}> Tracking Vehicle</Text>
+                <Text style={{color:'#fff'}}> {trackingVehicle.length}</Text>
+                  </TouchableOpacity>
+            
+                  <TouchableOpacity
+                  
+                    style={[styles.button]}
+                    onPress={() => {
+                    
+                      props.navigation.navigate('Non-Tracking Vehicle');
+                  }}
+                  > 
+                    <Icon
+                  name={'map-marker-off'}
+                  size={20}
+                  color={'#fff'}
+            
+              />
+                  <Text style={{color:'#fff'}}> Non-Tracking Vehicle</Text>
+                  <Text style={{color:'#fff'}}> {nonTrackingVehicle.length + (vehicle.length -props.list.length)}</Text>
+                  </TouchableOpacity>
+                  </View> 
                   </View>
+                  :
+                   <View style={{flexDirection:'row',justifyContent:'space-around'}}>
+                   <View style={{width:'70%'}}>
+                      <TouchableOpacity
+                   style={[styles.button,{justifyContent:'center',width:'95%'}]}
+                   onPress={() => {
+                   
+                     props.navigation.navigate('Vehicle Seperate List',{name:'List of all ' + props.screen,data:props.data});
+                 }}
+                 > 
+                <Icon
+                                 name={'format-list-bulleted'}
+                                 size={20}
+                                 color={'#fff'}
+                           
+                             />
+                 <Text style={{color:'#fff'}}> List all {props.screen}</Text>
+                 </TouchableOpacity>
+                 </View>
+                   <View style={{width:'20%'}}> 
+                     <TouchableOpacity
+                   style={[styles.button,{justifyContent:'center',width:'100%'}]}
+                   onPress={() => {
+                   
+                     props.navigation.navigate('All Vehicle');
+                 }}
+                 > 
+                <FontAwesome5
+                                 name={'refresh-ccw'}
+                                 size={20}
+                                 color={'#fff'}
+                           
+                             />
+             
+                 </TouchableOpacity>
+                     </View>      
+                </View>
                   
              ////second condition check
 
@@ -200,7 +259,7 @@ tracking ?
 
                 {/* Vehicle icons and Names of icon */}
                   
-                   <Trackingicons Running={Running}  Idle={Idle} Halt={Halt} Nogps={Nogps} />
+                   <Trackingicons Running={Running}  Idle={Idle} Halt={Halt} Nogps={Nogps} navigation={props.navigation}/>
                 {/* Vehicle icons and Names of icon */}
                   </View>
 
@@ -277,7 +336,7 @@ tracking ?
 
                 {/* Vehicle icons and Names of icon */}
                                 
-                <Nontrackingicon offlinecount={offlinecount}  deadcount={deadcount} nodata={(vehicle.length -props.list.length)} />
+                <Nontrackingicon offlinecount={offlinecount}  deadcount={deadcount} nodata={(vehicle.length -props.list.length)} navigation={props.navigation}/>
                 {/* Vehicle icons and Names of icon */}
 
 

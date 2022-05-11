@@ -8,9 +8,9 @@ import DataHandler from "../configuration/Datahandler";
 export async function login(){
     let email = await AsyncStorage.getItem('email')
     let password = await AsyncStorage.getItem('password')
-    try{
-         
-  
+
+    try{ 
+        
         let res = await axios.post(c.LOGIN, {"request": {
             "userMailid": email,
             "password": password
@@ -40,12 +40,9 @@ export async function fetchdata(){
          return res
         
     }catch (e) {
-console.log(e,"here")
         throw handler(e);
     }
 }
-
-
 
 export function handler(err) {
     let error = err;

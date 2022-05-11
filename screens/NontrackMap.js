@@ -14,8 +14,9 @@ export default function NonTracking({navigation}) {
   const [serverdate, setServerdate] = useState('');
   const [vehicle, setvehicle] = useState([]);
   var nonTrackingVehicle = [];
-
+  var notrack = [];
   useEffect(() => {
+    setLoading(true) 
     getdata()
     setvehicle(b.getVehicle())
     setTimeout(() => {
@@ -24,7 +25,7 @@ export default function NonTracking({navigation}) {
   }, []);
    
     async function getdata() {
-      setLoading(true) 
+    
         let response = await api.fetchdata(); 
           setServerdate(response.data.server.dateTime)
          setList(response.data.response.LiveData)
@@ -47,6 +48,22 @@ export default function NonTracking({navigation}) {
         
       });
     });
+         
+    vehicle.forEach(vehicle => {
+            found=false
+            list.forEach(element => {
+              if(vehicle.Reg_No == element.Reg_No){
+                found=true
+              }
+              });
+              if(!found){
+                notrack=[...notrack,vehicle ];
+              }
+            });
+
+            setTimeout(() => {
+              getdata()
+          }, 6000);
   
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -55,7 +72,7 @@ export default function NonTracking({navigation}) {
 
    <MapTopButton getdata={getdata} navigation={navigation} setButtonVisible={setButtonVisible} buttonVisible={buttonVisible}/>
 
-   {buttonVisible?<MapButton screen='Non-Tracking Vehicle' navigation={navigation} list={list}  serverdate={serverdate}/>:<View></View>}
+   {buttonVisible?<MapButton screen='Non-Tracking Vehicle' navigation={navigation} list={list}  serverdate={serverdate} data={[...notrack,...nonTrackingVehicle]}/>:<View></View>}
     </View>
   
   );

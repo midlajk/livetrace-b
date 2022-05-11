@@ -1,4 +1,5 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest 
+xmlns:android="http://schemas.android.com/apk/res/android"
   package="com.livetrace">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -26,7 +27,7 @@
       </activity>
          <meta-data
         android:name="com.google.android.geo.API_KEY"
-        android:value="AIzaSyD-Bw33d390QuP2ke15uUUxyd1UPhxRYXc"/>
+        android:value="AIzaSyB4Zi4r1J4WhBzLxop9rVY9czHDtI_BOEQ"/>
       <uses-library android:name="org.apache.http.legacy" android:required="false"/>    
 
     </application>

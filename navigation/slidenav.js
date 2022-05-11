@@ -10,6 +10,8 @@ import ReportProblem from '../screens/ReportPrblem';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Tracking from '../screens/Trackingmap';
 import NonTracking from '../screens/NontrackMap';
+import Trackinglistsub from '../screens/Trackingsubmap';
+import NonTrackingsubmap from '../screens/NonTrackingsubmap';
 
 import { DrawerContent } from '../Components/DrawerContent';
 
@@ -58,6 +60,8 @@ marginLeft:10,
         <Drawer.Screen name="Report" component={ReportScreen} />
         <Drawer.Screen name="Tracking List" component={TrackingList} />
         <Drawer.Screen name="Report Problem" component={ReportProblem} />
+        <Drawer.Screen name="Tracking list sub" component={Trackinglistsub}  options={({ route }) => ({ title:"Tracking Vehicle" })}/>
+        <Drawer.Screen name="NonTracking list sub" component={NonTrackingsubmap}  options={({ route }) => ({ title:"Non Tracking Vehicle" })}/>
       </Drawer.Navigator>
     
   );r

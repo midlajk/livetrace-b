@@ -3,13 +3,17 @@
 
 // Import React and Component
 import React from 'react';
-import {StyleSheet, View, Image,Text} from 'react-native';
+import {StyleSheet, View, Image,Text,TouchableOpacity} from 'react-native';
 
 const NontrackingIcons = (props) => {
 
   return (
     <View style={{width:'90%',backgroundColor:'#000',borderBottomLeftRadius:10,borderBottomRightRadius:10,padding:10}}>
-            <View style={{flexDirection:'row',justifyContent:'space-evenly'}}>
+            <TouchableOpacity style={{flexDirection:'row',justifyContent:'space-evenly'}}
+             onPress={() => {
+                  
+                props.navigation.navigate('NonTracking list sub',{name:'Offline Vehicle'});
+            }}>
                         <Image
             source={require('../Assets/vehicle_icon/car_4.png')}
             style={styles.iconstyle}
@@ -21,9 +25,13 @@ const NontrackingIcons = (props) => {
               <Text style={{color:'#fff'}}>
                 {props.offlinecount-props.deadcount}
               </Text >
-              </View>
+              </TouchableOpacity>
              
-              <View style={{flexDirection:'row',justifyContent:'space-evenly'}}>
+              <TouchableOpacity style={{flexDirection:'row',justifyContent:'space-evenly'}}
+                onPress={() => {
+                  
+                    props.navigation.navigate('NonTracking list sub',{name:'No data'});
+                }}>
               <Image
             source={require('../Assets/vehicle_icon/car_1.png')}
             style={styles.iconstyle}
@@ -35,8 +43,12 @@ const NontrackingIcons = (props) => {
               <Text style={{color:'#fff'}}>
                 {props.nodata}
               </Text >
-              </View>
-              <View style={{flexDirection:'row',justifyContent:'space-evenly'}}>
+              </TouchableOpacity>
+              <TouchableOpacity style={{flexDirection:'row',justifyContent:'space-evenly'}}
+              onPress={() => {
+                  
+                props.navigation.navigate('NonTracking list sub',{name:'Dead Vehicle'});
+            }}>
               <Image
             source={require('../Assets/vehicle_icon/car_3.png')}
             style={styles.iconstyle}
@@ -48,7 +60,7 @@ const NontrackingIcons = (props) => {
               <Text style={{color:'#fff'}}>
                 {props.deadcount}
               </Text >
-              </View>
+              </TouchableOpacity>
            
             
             

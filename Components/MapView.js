@@ -6,17 +6,10 @@ import React,{useState,useRef,useEffect,createRef} from 'react';
 import {StyleSheet, View, TouchableHighlight,Text} from 'react-native';
 import MapView, { PROVIDER_GOOGLE,Marker,Callout } from 'react-native-maps';
 import Markericon from './markericon';
-import PropTypes from "prop-types";
 
 const Mapview = (props) => {
     const {list,navigation, ...attributes} = props;
     [select,setSelect]=useState(-1)
-    const [region, setRegion] = useState({
-        latitude:10.850516,
-        longitude: 76.271080,
-        latitudeDelta: 0.5,
-        longitudeDelta: 0.5,
-      });
       const mapRef = createRef();
       useEffect(() => {
         if (mapRef.current) {
@@ -30,7 +23,6 @@ const Mapview = (props) => {
         ref={mapRef} 
       provider={PROVIDER_GOOGLE} // remove if not using Google Maps
       style={styles.map}
-
     >
       {list.map((marker,index)=>{
       return(
@@ -69,7 +61,7 @@ const styles = StyleSheet.create({
     container: {
         ...StyleSheet.absoluteFillObject,
         height: '100%',
-        width: 400,
+        width: '100%',
         justifyContent: 'flex-end',
         alignItems: 'center',
       },

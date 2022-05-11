@@ -12,7 +12,6 @@ export default {
   },
   setVehicle(vehicle) {
     vehicles = vehicle;
-    console.log(vehicles.length)
   },
   getVehicle(vehicle) {
     return vehicles;
