@@ -19,7 +19,8 @@ const Icons = (props) => {
                 Running
               </Text > 
               <Text style={{color:'#fff'}}>
-                9
+              {props.Running}
+
               </Text >
               </View>
              
@@ -33,7 +34,7 @@ const Icons = (props) => {
                  Idle       
               </Text > 
               <Text style={{color:'#fff'}}>
-                9
+                {props.Idle}
               </Text >
               </View>
               <View style={{flexDirection:'row',justifyContent:'space-evenly'}}>
@@ -46,7 +47,8 @@ const Icons = (props) => {
                Halt
               </Text > 
               <Text style={{color:'#fff'}}>
-                9
+              {props.Halt}
+
               </Text >
               </View>
            
@@ -61,7 +63,7 @@ const Icons = (props) => {
                 No Gps
               </Text > 
               <Text style={{color:'#fff'}}>
-                9
+                {props.Nogps}
               </Text >
               </View>
             

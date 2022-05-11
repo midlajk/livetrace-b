@@ -9,7 +9,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 const Icons = (props) => {
     const {number,navigation, ...attributes} = props;
     const [buttonVisible, setButtonVisible] = useState(true);
-
+   
   return (
     <View style={styles.viewstyle}>
                   <View style={{width:'100%',alignItems:'center'}}>

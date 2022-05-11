@@ -1,73 +1,43 @@
 
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import {  StyleSheet, Text, TouchableOpacity, View,FlatList,TextInput } from "react-native";
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import FontAwesome5 from 'react-native-vector-icons/Feather';
-import { ScrollView } from "react-native-gesture-handler";
-var items = [
-    {
-      id: 1,
-      name: 'KL 12 Ab 6698',
-    },
-    {
-      id: 2,
-      name: 'Kl 73 fh 678',
-    },
-    {
-      id: 3,
-      name: 'KL 32 hg 788',
-    },
-    {
-      id: 4,
-      name: 'KL 32 hg9 788',
-    },
-    {
-      id: 5,
-      name: 'KL 2 hg 788',
-    },
-    {
-      id: 6,
-      name: 'KL 32 hg 88',
-    },
-    {
-      id: 7,
-      name: 'KL 32 788',
-    },
-    {
-      id: 8,
-      name: 'KL 2 88',
-    },
-  ];
+import  b from "../configuration/Datahandler";
+
+
 const App = (props) => {
-    const { ...attributes} = props;
+    const [vehicle, setvehicle] = useState({});
 
-  const [filterBankList, setFilterBankList] = useState([]);
-  const [bankName, setBankName] = useState('');
+    useEffect(() => {
+        setvehicle(b.getVehicle())
+   
+      }, []);
+  const [filteredVehicle, setFilterVehicle] = useState([]);
+  const [vehiclename, setVehiclename] = useState('');
 
-    const filterBanks = value => {
+    const filterVehicle = value => {
     
         let filterData =
-        items && items.length > 0
-            ? items.filter(data =>
-                data.name.toLowerCase().includes(value.toLowerCase()),
+        vehicle && vehicle.length > 0
+            ? vehicle.filter(data =>
+                data.Reg_No.toLowerCase().includes(value.toLowerCase()),
               )
             : [];
-        setFilterBankList([...filterData]);
-        setBankName(value);
+            setFilterVehicle([...filterData]);
+        setVehiclename(value);
            
       };
-      const onBankSelected = value => {
-        setBankName(value);
-        setFilterBankList([]);
+      const onVehicleSelected = value => {
+        setVehiclename(value);
+        setFilterVehicle([]);
       };
   return (
     <View>
                   <View style={styles.SectionStyle}>
           <TextInput
-                  value={bankName}
+                  value={vehiclename}
                   placeholder="Select Vehicle Number"
                   style={styles.inputStyle}
-                  onChangeText={filterBanks}
+                  onChangeText={filterVehicle}
        
                   keyboardType="name-phone-pad"
                 />
@@ -75,20 +45,20 @@ const App = (props) => {
              <FlatList
           style={{marginLeft: 35,
           marginRight: 35,maxHeight:180}}
-                  data={filterBankList}
+                  data={filteredVehicle}
                   renderItem={({item, index}) => (
                     <TouchableOpacity
-                      onPress={() => onBankSelected(item?.name)}
+                      onPress={() => onVehicleSelected(item.Reg_No)}
                       style={{padding:10,borderColor:'#000',borderWidth:.3}}>
                   
                         <Text
                           >
-                          {item?.name || ''}
+                          {item?.Reg_No || ''}
                         </Text>
                
                     </TouchableOpacity>
                   )}
-                  keyExtractor={item => item.id}
+                  keyExtractor={item => item.Reg_No}
                 />  
          
              

@@ -1,27 +1,28 @@
-import React from 'react';
+import React,{useEffect,useState} from 'react';
 import { View, StyleSheet } from 'react-native';
 import {
-    useTheme,
+   
     Avatar,
     Title,
     Caption,
-    Paragraph,
     Drawer,
-    Text,
-    TouchableRipple,
-    Switch
+    
 } from 'react-native-paper';
 import {
     DrawerContentScrollView,
     DrawerItem
 } from '@react-navigation/drawer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import  b from "../configuration/Datahandler";
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 export function DrawerContent(props) {
-
-
+    const [user, setUser] = useState({});
+    useEffect(() => {
+        setUser(b.getUser())
+   
+      }, []);
     return(
         <View style={{flex:1}}>
             
@@ -36,8 +37,8 @@ export function DrawerContent(props) {
                                 size={50}
                             />
                             <View style={{marginLeft:15, flexDirection:'column'}}>
-                                <Title style={styles.title}>Kishor Kumar</Title>
-                                <Caption style={styles.caption}>Kochi,Kerala</Caption>
+                                <Title style={styles.title}>{user.CustName}</Title>
+                                <Caption style={styles.caption}>{user.description}</Caption>
                             </View>
                         </View>
 

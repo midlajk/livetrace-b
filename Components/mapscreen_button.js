@@ -1,18 +1,67 @@
 
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import {  StyleSheet, Text, TouchableOpacity, View,Image } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome5 from 'react-native-vector-icons/Feather';
 import Trackingicons from './trackingicons';
 import Nontrackingicon from './nontrackingicon';
+import b from "../configuration/Datahandler";
 
 const App = (props) => {
   const [tracking, setTracking] = useState(true);
   const [nonTracking, setNonTracking] = useState(true);
+  const [vehicle, setvehicle] = useState([]);
+
+    var nonTrackingVehicle = [];
+    var trackingVehicle = [];
+      
+  useEffect(() => {
+    setvehicle(b.getVehicle())
+    }, []);
+    offlinecount=0
+    deadcount=0
+    Running=0
+    Idle=0
+    Halt=0
+    Nogps=0
+    vehicle.forEach(vehicle => {
+      props.list.forEach(element => {
+        if(vehicle.Reg_No == element.Reg_No){
+          servdate = new Date(props.serverdate)
+          lastupdate = new Date(element.Time)
+          lastupdate.setHours(lastupdate.getHours()+5)
+          lastupdate.setMinutes(lastupdate.getMinutes()+30)
+
+          diff = servdate - lastupdate
+          offint = vehicle.Off_Int == null ? 90 : vehicle.Off_Int
+          dead = vehicle.Dead_Int == null ? 180 : vehicle.Dead_Int
+          if(diff>offint*60000){
+
+            nonTrackingVehicle=[...nonTrackingVehicle,element ];
+            offlinecount++
+            if(diff>dead*60000){
+              deadcount++
+            }
+
+          }else{
+
+            trackingVehicle=[...trackingVehicle,element ];
+
+          }
+          element.Igni>0&&element.Speed>2?Running++:
+          element.Igni>0&&element.Speed<2?Idle++:
+          element.Igni<1&&element.Speed<2?Halt++:Nogps++
+        }
+        
+      });
+    });
+  
+
+    
+  
   return (
-    <View style={styles.bottomviewcontainer}>
-      
-      
+
+    <View style={styles.bottomviewcontainer}>    
 {props.screen=='mainscreen' ?
 
 ////Main screen button configuration
@@ -50,7 +99,7 @@ const App = (props) => {
                             
                               />
                   <Text style={{color:'#fff'}}> Tracking Vehicle</Text>
-                  <Text style={{color:'#fff'}}> 8</Text>
+                <Text style={{color:'#fff'}}> {trackingVehicle.length}</Text>
                   </TouchableOpacity>
             
                   <TouchableOpacity
@@ -68,7 +117,7 @@ const App = (props) => {
             
               />
                   <Text style={{color:'#fff'}}> Non-Tracking Vehicle</Text>
-                  <Text style={{color:'#fff'}}> 6</Text>
+                  <Text style={{color:'#fff'}}> {nonTrackingVehicle.length + (vehicle.length -props.list.length)}</Text>
                   </TouchableOpacity>
                   </View>
 
@@ -140,7 +189,7 @@ tracking ?
                             
                               />
                   <Text style={{color:'#fff'}}> Tracking Vehicle</Text>
-                  <Text style={{color:'#fff'}}> 8</Text>
+                  <Text style={{color:'#fff'}}> {trackingVehicle.length}</Text>
                   <Icon
                                   name={'chevron-down'}
                                   size={20}
@@ -151,7 +200,7 @@ tracking ?
 
                 {/* Vehicle icons and Names of icon */}
                   
-                   <Trackingicons/>
+                   <Trackingicons Running={Running}  Idle={Idle} Halt={Halt} Nogps={Nogps} />
                 {/* Vehicle icons and Names of icon */}
                   </View>
 
@@ -171,7 +220,7 @@ tracking ?
                     
                       />
           <Text style={{color:'#fff'}}> Tracking Vehicle</Text>
-          <Text style={{color:'#fff'}}> 8</Text>
+          <Text style={{color:'#fff'}}> {trackingVehicle.length}</Text>
           <Icon
                           name={'chevron-down'}
                           size={20}
@@ -195,7 +244,7 @@ tracking ?
           
             />
                 <Text style={{color:'#fff'}}> Non-Tracking Vehicle</Text>
-                <Text style={{color:'#fff'}}> 6</Text>
+                <Text style={{color:'#fff'}}> {nonTrackingVehicle.length + (vehicle.length -props.list.length)}</Text>
                 </TouchableOpacity>
    
          </View>
@@ -216,7 +265,7 @@ tracking ?
                          
                            />
                <Text style={{color:'#fff'}}> Non-Tracking Vehicle</Text>
-               <Text style={{color:'#fff'}}> 3</Text>
+               <Text style={{color:'#fff'}}> {nonTrackingVehicle.length + (vehicle.length -props.list.length)}</Text>
                <Icon
                                name={'chevron-down'}
                                size={20}
@@ -228,7 +277,7 @@ tracking ?
 
                 {/* Vehicle icons and Names of icon */}
                                 
-                <Nontrackingicon/>
+                <Nontrackingicon offlinecount={offlinecount}  deadcount={deadcount} nodata={(vehicle.length -props.list.length)} />
                 {/* Vehicle icons and Names of icon */}
 
 
@@ -250,7 +299,7 @@ tracking ?
                        
                          />
              <Text style={{color:'#fff'}}> Tracking Vehicle</Text>
-             <Text style={{color:'#fff'}}> 8</Text>
+             <Text style={{color:'#fff'}}> {trackingVehicle.length}</Text>
              </TouchableOpacity>
                <TouchableOpacity
                style={[styles.button]}
@@ -264,7 +313,7 @@ tracking ?
                        
                          />
              <Text style={{color:'#fff'}}> Non-Tracking Vehicle</Text>
-             <Text style={{color:'#fff'}}> 8</Text>
+             <Text style={{color:'#fff'}}> {nonTrackingVehicle.length + (vehicle.length -props.list.length)}</Text>
              <Icon
                              name={'chevron-down'}
                              size={20}

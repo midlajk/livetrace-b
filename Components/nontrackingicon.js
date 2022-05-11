@@ -19,7 +19,7 @@ const NontrackingIcons = (props) => {
                 Offline
               </Text > 
               <Text style={{color:'#fff'}}>
-                9
+                {props.offlinecount-props.deadcount}
               </Text >
               </View>
              
@@ -33,7 +33,7 @@ const NontrackingIcons = (props) => {
                  No Data       
               </Text > 
               <Text style={{color:'#fff'}}>
-                9
+                {props.nodata}
               </Text >
               </View>
               <View style={{flexDirection:'row',justifyContent:'space-evenly'}}>
@@ -46,7 +46,7 @@ const NontrackingIcons = (props) => {
                Device Dead
               </Text > 
               <Text style={{color:'#fff'}}>
-                9
+                {props.deadcount}
               </Text >
               </View>
            

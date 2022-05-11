@@ -10,6 +10,8 @@ export default function HomeScreen({navigation}) {
   const [list, setList] = useState([]);
   const [loading, setLoading] = useState(false);
   const [buttonVisible, setButtonVisible] = useState(true);
+  const [serverdate, setServerdate] = useState('');
+
   useEffect(() => {
     getdata()
     setTimeout(() => {
@@ -21,6 +23,7 @@ export default function HomeScreen({navigation}) {
       setLoading(true) 
         let response = await api.fetchdata(); 
          setList(response.data.response.LiveData)
+         setServerdate(response.data.server.dateTime)
         setLoading(false) 
 
     }
@@ -31,7 +34,7 @@ export default function HomeScreen({navigation}) {
 
     <Mapview list={list} navigation={navigation} />
    <MapTopButton getdata={getdata} navigation={navigation} setButtonVisible={setButtonVisible} buttonVisible={buttonVisible}/>
-{buttonVisible?<MapButton screen='mainscreen' navigation={navigation}  />:<View></View>}
+{buttonVisible?<MapButton screen='mainscreen' navigation={navigation} list={list}  serverdate={serverdate} />:<View></View>}
     
     </View>
   );

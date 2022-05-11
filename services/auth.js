@@ -2,20 +2,22 @@ import axios from 'axios';
 
 import * as c from '../configuration/constant';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import DataHandler from "../configuration/Datahandler";
 
 
 export async function login(){
     let email = await AsyncStorage.getItem('email')
     let password = await AsyncStorage.getItem('password')
-    
     try{
-
+         
   
         let res = await axios.post(c.LOGIN, {"request": {
             "userMailid": email,
             "password": password
             }} );
-       
+            DataHandler.setUser(res.data.status); 
+            DataHandler.setVehicle(res.data.response.ConfigData)// Save User
+            DataHandler.setServerDate(res.data.server.dateTime)
             return res;
     }catch (e) {
 
