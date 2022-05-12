@@ -35,9 +35,7 @@ export default function Tracking({navigation,route}) {
     var deadvehicle = [];
     var offline = [];
     var nodata = [];
-setTimeout(() => {
-    getdata()
-}, 6000); 
+
     vehicle.forEach(vehicle => {
         found=false
       list.forEach(element => {

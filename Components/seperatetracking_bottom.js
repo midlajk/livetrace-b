@@ -7,9 +7,8 @@ import {StyleSheet, View, TouchableOpacity,Text} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const Icons = (props) => {
-    const {number,navigation, ...attributes} = props;
+    const {time,status,speed,address,navigation, ...attributes} = props;
     const [buttonVisible, setButtonVisible] = useState(true);
-   
   return (
     <View style={styles.viewstyle}>
                   <View style={{width:'100%',alignItems:'center'}}>
@@ -32,20 +31,20 @@ const Icons = (props) => {
  </TouchableOpacity>
  {buttonVisible?<View style={{width:'90%',backgroundColor:'#000',borderBottomLeftRadius:10,borderBottomRightRadius:10,padding:10}}>
                 
-              <Text style={{color:'#fff',width:'40%'}}>
-                Last Tracked Time : 
+              <Text style={{color:'#fff',width:'100%'}}>
+                Last Tracked Time :  {time}
               </Text > 
   
               <Text style={{color:'#fff',}}>
-                 Speed :  --kmph
+                 Speed :  {speed} --kmph
               </Text > 
        
             
               <Text style={{color:'#fff',}}>
-               Status :  Online
+               Status :  {status} 
               </Text > 
               <Text style={{color:'#fff'}}>
-                 Location : Kerala,India
+                 Location : {address}
               </Text >
        
            

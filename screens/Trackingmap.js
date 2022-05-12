@@ -47,9 +47,7 @@ export default function Tracking({navigation}) {
         
       });
     });
-    setTimeout(() => {
-      getdata()
-  }, 6000);
+  
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                      <Loader loading={loading} navigation={navigation} />

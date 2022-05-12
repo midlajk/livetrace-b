@@ -19,7 +19,6 @@ var listofdata=[]
     setLoading(true) 
    setvehicle(b.getVehicle()) 
    getdata()
-    
     setTimeout(() => {
       getdata()
     }, 100);
@@ -32,9 +31,7 @@ var listofdata=[]
         setLoading(false) 
 
     }
-    setTimeout(() => {
-      getdata()
-  }, 6000);
+   
     listofdata=list;
           vehicle.forEach(vehicle => {
             found=false

@@ -9,12 +9,20 @@ import Markericon from './markericon';
 
 const Mapview = (props) => {
     const {list,navigation, ...attributes} = props;
-    [select,setSelect]=useState(-1)
       const mapRef = createRef();
       useEffect(() => {
         if (mapRef.current) {
           // list of _id's must same that has been provided to the identifier props of the Marker
-          mapRef.current.fitToSuppliedMarkers(list.map(({ Reg_No }) => Reg_No));
+          mapRef.current.fitToSuppliedMarkers(list.map(({ Reg_No }) => Reg_No),{ edgePadding: 
+            {top: 100,
+              right: 100,
+              bottom: 100,
+              left: 100},
+              animated: true,
+              latitudeDelta: 1,
+             longitudeDelta: 1,
+      
+          });
         }
       }, [list]);
   return (
@@ -23,6 +31,7 @@ const Mapview = (props) => {
         ref={mapRef} 
       provider={PROVIDER_GOOGLE} // remove if not using Google Maps
       style={styles.map}
+      
     >
       {list.map((marker,index)=>{
       return(
@@ -34,12 +43,11 @@ const Mapview = (props) => {
        latitude: marker.Lat,
        longitude: marker.Lon,
       }}
-      onPress= {()=>setSelect(index)} 
       title={marker.Reg_No+" , "+marker.V_Type}
       description="Tap to track live"
       onCalloutPress={() => {
                     
-        navigation.navigate('Individual Map',{ vehicle:marker.Reg_No});
+        navigation.navigate('Individual Map',{ vehicle:marker.Reg_No,imei:marker.imei});
     }}>
          
         <Markericon vehicle={marker.V_Type} ignition={marker.Igni} speed={marker.Speed}  />

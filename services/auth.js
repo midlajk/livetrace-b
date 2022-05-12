@@ -43,6 +43,53 @@ export async function fetchdata(){
         throw handler(e);
     }
 }
+export async function singledata(imei){
+
+
+    let email = await AsyncStorage.getItem('email')
+    let password = await AsyncStorage.getItem('password')
+    try{
+
+  
+        let res = await axios.post(c.DATA_SINGLE, {
+            "header": {
+            "appVersion": "1.0",
+            "clientName": "tracker" 
+            },
+            "request": {
+            "userMailid": email,
+            "password": password,
+            "imei_single": imei	
+            }
+        });
+            
+         return res.data.response.LiveData
+        
+    }catch (e) {
+        throw handler(e);
+    }
+}
+export async function singledat(imei){
+  
+    let email = await AsyncStorage.getItem('email')
+    let password = await AsyncStorage.getItem('password')
+
+    try{
+
+        let res = await axios.post(c.DATA, {"request": {
+            "userMailid": 'radiant',
+            "password": 'radiant',
+         
+
+            }} );
+            console.log(res.response,"here")
+        
+        
+    }catch (e) {
+        throw handler(e);
+    }
+}
+
 
 export function handler(err) {
     let error = err;

@@ -13,6 +13,10 @@ import BotomButton from '../Components/seperatetracking_bottom';
 
 export default function Tracking({navigation,route}) {
   const [list, setList] = useState([]);
+  const [time, setTime] = useState('');
+  const [speed, setSpeed] = useState();
+  const [status, setStatus] = useState('');
+  const [address, setAddress] = useState('');
   const [loading, setLoading] = useState(false);
   const [buttonVisible, setButtonVisible] = useState(true);
   useEffect(() => {
@@ -24,11 +28,19 @@ export default function Tracking({navigation,route}) {
    
     async function getdata() {
       setLoading(true) 
-        let response = await api.fetchdata(); 
-
-        const filteredData = response.data.response.LiveData.filter(x =>
-          x.Reg_No==route.params.vehicle)
-         setList(filteredData)
+      let response = await api.singledata(route.params.imei)
+      if(response.length!=0){
+        setList(response)
+        setTime(response[0].Time)
+        setSpeed(response[0].Speed)
+        setStatus(response[0].Igni>0?'Online':'Offline')
+        result = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=`+response[0].Lat+`,`+response[0].Lon+`&key=AIzaSyB4Zi4r1J4WhBzLxop9rVY9czHDtI_BOEQ`)
+        .then(res => res.json())
+        .then((json) => {
+          setAddress(json.results[0].formatted_address.split(',').slice(1,3))
+            
+     })
+      }
         setLoading(false) 
 
     }
@@ -39,7 +51,7 @@ export default function Tracking({navigation,route}) {
                      <Mapview list={list} navigation={navigation} />
                      <MapTopButton getdata={getdata} navigation={navigation} setButtonVisible={setButtonVisible} buttonVisible={buttonVisible}/>
 
-                     {buttonVisible?<BotomButton number={list} navigation={navigation}/>:<View></View>}
+                     {buttonVisible?<BotomButton time={time} speed={speed} status={status} navigation={navigation} address={address}/>:<View></View>}
     
      
     </View>

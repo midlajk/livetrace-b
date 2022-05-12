@@ -10,29 +10,34 @@ export default function TrackScreen({navigation,route}) {
   //  const [list, setList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchText, setSearchText] = useState('');
-  // const [vehicle, setvehicle] = useState([]);
+   const [vehicle, setvehicle] = useState([]);
   // const [serverdate, setServerdate] = useState('');
 
   // var listofdata = [];
   // var notfound = [];
- var newData = [];
-  
-     route.params.data.forEach(element => {
+  async function getdata(){
+     await route.params.data.forEach(element => {
       element.Speed==null? '':
       result = fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=`+element.Lat+`,`+element.Lon+`&key=AIzaSyB4Zi4r1J4WhBzLxop9rVY9czHDtI_BOEQ`)
       .then(res => res.json())
       .then((json) => {
-        element.address = json.results[0].formatted_address
+        element.address = json.results[0].formatted_address.split(',').slice(1,3)
           
       })
-      newData = [...newData,element]
-     
+      setvehicle(old=>[...old,element])
+      // newData = [...newData,element]
+      setLoading(false)
+
   
 });
-
- 
- 
-  //   async function getdata() {
+  }
+  useEffect(() => {
+    setLoading(true) 
+   getdata()
+   
+  }, []);
+   
+//   async function getdata() {
       
   //       let response = await api.fetchdata(); 
   //       setList(response.data.response.LiveData)
@@ -95,7 +100,7 @@ export default function TrackScreen({navigation,route}) {
 
 
   //Data can be coming from props or any other source as well
-  const data = newData
+  const data = vehicle
   const filteredData = searchText ? data.filter(x =>
     x.Reg_No.toLowerCase().includes(searchText.toLowerCase())
     ): data
@@ -103,7 +108,7 @@ export default function TrackScreen({navigation,route}) {
 
   return (
     <View style={{flex:1,}}>
-            {/* <Loader loading={loading} navigation={navigation} /> */}
+             <Loader loading={loading} navigation={navigation} /> 
          <Searchbar
           placeholder="Search"
           onChangeText={(text) => setSearchText(text)}
@@ -120,7 +125,7 @@ export default function TrackScreen({navigation,route}) {
                 <View style={styles.shadow}>
                <TouchableOpacity style={styles.button}
                 onPress={() => {  
-                  navigation.navigate('Individual Map',{ vehicle:item.Reg_No});
+                  navigation.navigate('Individual Map',{ vehicle:item.Reg_No,imei:item.imei||item.IMEI});
               }}
               >
         
@@ -136,7 +141,7 @@ export default function TrackScreen({navigation,route}) {
                         <View style={{flex:1,alignItems:'center'}}>
                        <Text style={styles.text}>Speed : {item.Speed}</Text>
                       <Text style={styles.text}>Last Tracked : {item.Time}</Text>
-            <Text style={styles.text}>Address: {item.address.split(',').slice(1, 3)}</Text>
+            <Text style={styles.text}>Address: {item.address!=null?item.address:''}</Text>
                         <Text style={{color:'#0783cb',fontSize:10}}>Click Here to Track Live</Text> 
                         </View>}
                       

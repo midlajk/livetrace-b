@@ -33,9 +33,7 @@ export default function Tracking({navigation,route}) {
         setLoading(false) 
 
     }
-    setTimeout(() => {
-        getdata()
-    }, 60000);
+   
     vehicle.forEach(vehicle => {
       list.forEach(element => {
         if(vehicle.Reg_No == vehicle.Reg_No){
