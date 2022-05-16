@@ -12,6 +12,8 @@ import Tabs from './navigation/slidenav.js';
 import ReportGeneration from './screens/ReportFilter';
 import IndividualMap from './screens/IndividualTracking';
 import Report from './screens/Report';
+import Historymap from './screens/Historymapbasic';
+
 function HomeTabs() {
   return (
    
@@ -92,6 +94,11 @@ function App() {
           <RootStack.Screen
             name="Tracking Screen"
             component={TrackScreen}
+            options={({ route }) => ({ title: route.params.name })}
+          />
+           <RootStack.Screen
+            name="History Map"
+            component={Historymap}
             options={({ route }) => ({ title: route.params.name })}
           />
         </RootStack.Navigator>

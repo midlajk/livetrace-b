@@ -31,12 +31,16 @@ export default function Tracking({navigation,route}) {
           setServerdate(response.data.server.dateTime)
          setList(response.data.response.LiveData)
         setLoading(false) 
-
+       
     }
-   
-    vehicle.forEach(vehicle => {
+
+    var running=[]
+    var idle=[]
+    var halt=[]
+    var nogps=[]
+     vehicle.forEach(vehicle => {
       list.forEach(element => {
-        if(vehicle.Reg_No == vehicle.Reg_No){
+        if(vehicle.Reg_No == element.Reg_No){
           servdate = new Date(serverdate)
           lastupdate = new Date(element.Time)
           lastupdate.setHours(lastupdate.getHours()+5)
@@ -46,6 +50,8 @@ export default function Tracking({navigation,route}) {
           if(diff<offint*60000){
             if(route.params.name=='Running Vehicle' && element.Igni>0&&element.Speed>2 ){
                 running = [...running,element]
+                console.log('updated',vehicle.Reg_No )
+
             }  
             else if(route.params.name=='Idle Vehicle' && element.Igni>0&&element.Speed<2 ){
                 idle = [...idle,element]
@@ -60,6 +66,8 @@ export default function Tracking({navigation,route}) {
         
       });
     });
+ 
+    
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                      <Loader loading={loading} navigation={navigation} />

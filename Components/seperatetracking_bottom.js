@@ -7,7 +7,7 @@ import {StyleSheet, View, TouchableOpacity,Text} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const Icons = (props) => {
-    const {time,status,speed,address,navigation, ...attributes} = props;
+    const {time,status,speed,address,vnumber,setPicker,navigation,gethistory, ...attributes} = props;
     const [buttonVisible, setButtonVisible] = useState(true);
   return (
     <View style={styles.viewstyle}>
@@ -57,12 +57,13 @@ const Icons = (props) => {
 
  </View>
         <TouchableOpacity   style={[styles.button]}
-    >
+    onPress={()=>{navigation.navigate('History Map',{name:'Travel History Of '+vnumber})
+  }}>
     <Text style={{color:'#fff'}}> Travel Reply</Text>
    </TouchableOpacity>
     <TouchableOpacity   style={[styles.button]}
     onPress={() => {  
-      navigation.navigate('Report Screen',{ vehicle:number[0].Reg_No});
+      navigation.navigate('Report Screen',{ vehicle:vnumber});
   }}>
     <Text style={{color:'#fff'}}> Report</Text>
    </TouchableOpacity>

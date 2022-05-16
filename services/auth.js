@@ -69,26 +69,37 @@ export async function singledata(imei){
         throw handler(e);
     }
 }
-export async function singledat(imei){
-  
+
+export async function history(imei){
+
+
     let email = await AsyncStorage.getItem('email')
     let password = await AsyncStorage.getItem('password')
-
     try{
 
-        let res = await axios.post(c.DATA, {"request": {
-            "userMailid": 'radiant',
-            "password": 'radiant',
-         
-
-            }} );
-            console.log(res.response,"here")
-        
+  
+        let res = await axios.post(c.HISTORY_DATA, {
+            "header": {
+            "appVersion": "1.0",
+            "clientName": "tracker" 
+            },
+            "request": {
+            "userMailid": "radiant",
+            "password": "radiant",
+            "regNumber": "KL-10-AF-9836",
+            "fromDate": "2022-05-01",
+            "toDate": "2022-05-02",
+            "rowLimit": "10"
+            }
+        });
+            
+         return res.data.response
         
     }catch (e) {
         throw handler(e);
     }
 }
+
 
 
 export function handler(err) {

@@ -19,8 +19,6 @@ const Mapview = (props) => {
               bottom: 100,
               left: 100},
               animated: true,
-              latitudeDelta: 1,
-             longitudeDelta: 1,
       
           });
         }
@@ -31,7 +29,12 @@ const Mapview = (props) => {
         ref={mapRef} 
       provider={PROVIDER_GOOGLE} // remove if not using Google Maps
       style={styles.map}
-      
+      initialRegion={{
+        latitude: 11.949263,
+        longitude: 75.609764,
+        latitudeDelta: 1,
+        longitudeDelta: 1,
+      }}
     >
       {list.map((marker,index)=>{
       return(

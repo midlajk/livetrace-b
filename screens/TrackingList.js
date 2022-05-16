@@ -16,26 +16,44 @@ export default function TrackScreen({navigation,route}) {
   // var listofdata = [];
   // var notfound = [];
   async function getdata(){
-     await route.params.data.forEach(element => {
-      element.Speed==null? '':
-      result = fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=`+element.Lat+`,`+element.Lon+`&key=AIzaSyB4Zi4r1J4WhBzLxop9rVY9czHDtI_BOEQ`)
-      .then(res => res.json())
-      .then((json) => {
-        element.address = json.results[0].formatted_address.split(',').slice(1,3)
-          
-      })
-      setvehicle(old=>[...old,element])
-      // newData = [...newData,element]
-      setLoading(false)
+    setLoading(true) 
+    let items = route.params.data;
+    let i = 0;
+    await new Promise(async (resolve, reject) => {
+    try {
+        if (items.length == 0) return resolve();
+        let funSync = async () => {
+            await setdata(items[i]);
+            i++;
+            if (i == items.length) 
+            { 
+              setLoading(false)
+              resolve();
+            }
 
-  
+            else funSync();
+        }
+        funSync();
+    } catch (e) {
+        reject(e);
+    }
 });
+      function setdata(props){
+        props.Speed==null? '':
+            result = fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=`+props.Lat+`,`+props.Lon+`&key=AIzaSyB4Zi4r1J4WhBzLxop9rVY9czHDtI_BOEQ`)
+            .then(res => res.json())
+            .then((json) => {
+              props.address = json.results[0].formatted_address.split(',').slice(1,3)
+                
+            })
+            setvehicle(old=>[...old,props])
+      }
+            
+  
   }
   useEffect(() => {
-    setLoading(true) 
    getdata()
-   
-  }, []);
+  }, [1]);
    
 //   async function getdata() {
       

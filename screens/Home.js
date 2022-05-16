@@ -48,7 +48,7 @@ var listofdata=[]
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                <Loader loading={loading} navigation={navigation} />
 
-    <Mapview list={list} navigation={navigation} />
+    <Mapview list={list} navigation={navigation} first={list[0]}/>
    <MapTopButton getdata={getdata} navigation={navigation} setButtonVisible={setButtonVisible} buttonVisible={buttonVisible}/>
 {buttonVisible?<MapButton screen='mainscreen' navigation={navigation} list={list}  serverdate={serverdate} data={listofdata}/>:<View></View>}
     
