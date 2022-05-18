@@ -44,7 +44,8 @@ const RegisterScreen = (props) => {
   const [userPassword, setUserPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [errortext, setErrortext] = useState('');
-  
+  const [buttonpressed, setPressed] = useState(false);
+
 
   const emailInputRef = createRef();
   const passwordInputRef = createRef();
@@ -54,11 +55,13 @@ async function handleSubmitButton (state) {
     await AsyncStorage.setItem('password', userPassword);
     if (!userEmail) {
       alert('Please fill Email');
+      setPressed(false)
       return;
     }
 
     if (!userPassword) {
       alert('Please fill Password');
+      setPressed(false)
       return;
     }
     //Show Loader
@@ -88,6 +91,8 @@ async function handleSubmitButton (state) {
                         Alert.alert('Error','Wrong Username / Password!');
                       }, 100);       
             setLoading(false)
+            setPressed(false)
+
   }
   
    
@@ -123,7 +128,7 @@ async function handleSubmitButton (state) {
               style={styles.inputStyle}
               onChangeText={(UserEmail) => setUserEmail(UserEmail)}
               underlineColorAndroid="#f000"
-              placeholder="Enter email"
+              placeholder="Enter Username"
               placeholderTextColor="#8b9cb5"
               keyboardType="email-address"
               ref={emailInputRef}
@@ -159,7 +164,10 @@ async function handleSubmitButton (state) {
           <TouchableOpacity
             style={styles.buttonStyle}
             activeOpacity={0.5}
-            onPress={handleSubmitButton}>
+            onPress={()=>{
+              handleSubmitButton()
+              setPressed(true)}}
+            disabled={buttonpressed}>
             <Text style={styles.buttonTextStyle}>Login</Text>
           </TouchableOpacity>
         </KeyboardAvoidingView>

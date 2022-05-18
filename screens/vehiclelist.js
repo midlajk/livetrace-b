@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react';
+import React,{useState,useEffect,useRef} from 'react';
 import { Text, View,TextInput,StyleSheet,TouchableOpacity,ScrollView,FlatList } from 'react-native';
 import { Searchbar } from 'react-native-paper';
 import * as api from "../services/auth";
@@ -7,61 +7,60 @@ import b from "../configuration/Datahandler";
 
 
 export default function TrackScreen({navigation,route}) {
-  //  const [list, setList] = useState([]);
+   const [list, setList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchText, setSearchText] = useState('');
    const [vehicle, setvehicle] = useState([]);
-  // const [serverdate, setServerdate] = useState('');
-
-  // var listofdata = [];
+  const [serverdate, setServerdate] = useState('');
+  const [datas, setData] = useState([]);
+  const vehicleRef = useRef();
+  vehicleRef.current = vehicle;
+  const listRef = useRef();
+listRef.current = list;
+   var listofdata = [];
   // var notfound = [];
-  async function getdata(){
-    setvehicle([])
-    setLoading(true) 
-    let items = route.params.data;
-    let i = 0;
-    await new Promise(async (resolve, reject) => {
-    try {
-        if (items.length == 0) return resolve();
-        let funSync = async () => {
-            await setdata(items[i]);
-            i++;
-            if (i == items.length) 
-            { 
-              setLoading(false)
-              resolve();
-            }
 
-            else funSync();
-        }
-        funSync();
-    } catch (e) {
-        reject(e);
-    }
-});
-      function setdata(props){
-        props.Speed==null? '':
-            result = fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=`+props.Lat+`,`+props.Lon+`&key=AIzaSyB4Zi4r1J4WhBzLxop9rVY9czHDtI_BOEQ`)
-            .then(res => res.json())
-            .then((json) => {
-              props.address = json.results[0].formatted_address.split(' ').slice(1,20)
-                
-            })
-            setvehicle(old=>[...old,props])
-      }
-            
-  
-  }
   useEffect(() => {
-   getdata()
-   setTimeout(() => {
+    setvehicle(b.getVehicle()) 
     getdata()
-   }, 3000);
 
   }, [1]);
    
+  async function getdata() {
+    setData([])
+        let response = await api.fetchdata(); 
+        setList(response.data.response.LiveData)
+        setServerdate(response.data.server.dateTime)
+      
+        setLoading(false) 
+        vehicleRef.current.forEach(vehic => {
+          found=false
+          listRef.current.forEach(element => {
+            if(vehic.Reg_No == element.Reg_No){
+              found=true
+              result = fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=`+element.Lat+`,`+element.Lon+`&key=AIzaSyB4Zi4r1J4WhBzLxop9rVY9czHDtI_BOEQ`)
+              .then(res => res.json())
+              .then((json) => {
+                element.address = json.results[0].formatted_address.split(',').slice(1,3)
+                  
+              })
+              element.LastPay_Date = vehic.LastPay_Date;
+              setData(old=>[...old,element])
+              
+            }
+            });
+            if(!found){
+                setData(old=>[...old,vehic])
+            }
+          })
+      
+    } 
 
-  const data = vehicle
+        
+
+
+  //Data can be coming from props or any other source as well
+  const data = datas
   const filteredData = searchText ? data.filter(x =>
     x.Reg_No.toLowerCase().includes(searchText.toLowerCase())
     ): data
@@ -94,6 +93,9 @@ export default function TrackScreen({navigation,route}) {
                     <View style={{flex:1,alignItems:'center'}}>
          
                       <Text style={{fontSize:16,color:'#000'}}>{item.Reg_No}</Text>
+            <Text style={{fontSize:16,color:'#0783cb'}}>Last Payment : {item.LastPay_Date}</Text>
+            <Text style={{fontSize:16,color:'#0783cb'}}>Subscription Status : {new Date(serverdate)-new Date(item.LastPay_Date)<=2629800000 && new Date(serverdate)-new Date(item.LastPay_Date)>=0?'Suspended':new Date(serverdate)-new Date(item.LastPay_Date)<0?'Deactivated':'Active'}</Text>
+
                       <Text style={styles.text}>IMEI : {item.IMEI || item.imei}</Text>
                       <Text style={{fontSize:16,color:'#000'}}>Ignition Status : {item.Igni==1?'Online':'Offline'}</Text>
                       {item.Speed==null?<Text style={styles.text}>

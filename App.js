@@ -13,6 +13,7 @@ import ReportGeneration from './screens/ReportFilter';
 import IndividualMap from './screens/IndividualTracking';
 import Report from './screens/Report';
 import Historymap from './screens/Historymapbasic';
+import Reportlist from './screens/Reportlist';
 
 function HomeTabs() {
   return (
@@ -76,6 +77,12 @@ function App() {
            <RootStack.Screen
             name="Report Screen"
             component={Report}
+            
+            
+          />
+           <RootStack.Screen
+            name="Reports View"
+            component={Reportlist}
             
             
           />

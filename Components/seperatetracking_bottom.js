@@ -5,10 +5,37 @@
 import React,{useState} from 'react';
 import {StyleSheet, View, TouchableOpacity,Text} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import DatePicker from 'react-native-date-picker'
 
 const Icons = (props) => {
     const {time,status,speed,address,vnumber,setPicker,navigation,gethistory, ...attributes} = props;
     const [buttonVisible, setButtonVisible] = useState(true);
+    const [butVisible, setButnVisible] = useState(false);
+    const [from, setFrom] = useState(new Date());
+    const [to, setTo] = useState(new Date());
+    const [clicker, seclicker] = useState('');
+    const [open, setOpen] = useState(false)
+    const setToday = () => {
+      var startdate = new Date()
+      startdate.setHours(0,0,0,0);
+      var enddate = new Date()
+      enddate.setHours(23,59,59,999);
+      setFrom(startdate)
+      setTo(enddate)
+      seclicker('from')
+    };
+  
+    const setYesterday = () => {
+      var startdate = new Date()
+      startdate.setDate(startdate.getDate()-1)
+      startdate.setHours(0,0,0,0);
+      var enddate = new Date()
+      enddate.setDate(enddate.getDate()-1)
+      enddate.setHours(23,59,59,999);
+      setFrom(startdate)
+      setTo(enddate)
+      seclicker('from')
+    };
   return (
     <View style={styles.viewstyle}>
                   <View style={{width:'100%',alignItems:'center'}}>
@@ -56,11 +83,106 @@ const Icons = (props) => {
 
 
  </View>
-        <TouchableOpacity   style={[styles.button]}
-    onPress={()=>{navigation.navigate('History Map',{name:'Travel History Of '+vnumber})
-  }}>
-    <Text style={{color:'#fff'}}> Travel Reply</Text>
-   </TouchableOpacity>
+ <View style={{width:'100%',alignItems:'center'}}>
+
+
+<TouchableOpacity
+   style={butVisible?[styles.button,{borderBottomLeftRadius:0,borderBottomRightRadius:0}]:[styles.button]}
+   onPress={()=>{butVisible?setButnVisible(false):setButnVisible(true)}}
+ > 
+   
+ <Text style={{color:'#fff'}}> Travel Reply
+ {/* {number[0].Reg_No} */}
+ </Text>
+ <Icon
+                                  name={'chevron-down'}
+                                  size={20}
+                                  color={'#fff'}
+                            
+                              />
+ </TouchableOpacity>
+ {butVisible?<View style={{width:'90%',backgroundColor:'#000',borderBottomLeftRadius:10,borderBottomRightRadius:10,padding:10,alignItems:'center'}}>
+                
+              <Text style={{color:'#cdf'}}>
+               { vnumber}
+              </Text > 
+  <View style={{flexDirection:'row',justifyContent:'space-around',width:'100%',padding:5}}>
+        <TouchableOpacity onPress={setToday}> 
+          <Text style={{color:'#fff',}}>
+                       Today
+                      </Text > 
+        </TouchableOpacity>
+        <TouchableOpacity onPress={setYesterday}> 
+          <Text style={{color:'#fff',}}>
+                       Yesterday
+                      </Text > 
+        </TouchableOpacity>
+  </View>
+  <View style={{flexDirection:'row',justifyContent:'space-around',width:'100%',padding:5}}>
+        <TouchableOpacity onPress={()=> {setOpen(true); seclicker('from')}}> 
+          <Text style={{color:'#fff',textDecorationLine: 'underline',fontSize:12}} adjustsFontSizeToFit={true}>
+                       From : {clicker?from.toLocaleString():'Choose date'}
+                      </Text > 
+        </TouchableOpacity>
+        <TouchableOpacity onPress={()=> {setOpen(true); seclicker('To')}}> 
+          <Text style={{color:'#fff',textDecorationLine: 'underline',fontSize:12}} adjustsFontSizeToFit={true}>
+                       To : {clicker?to.toLocaleString():'Choose date'}
+                      </Text >
+                       
+        </TouchableOpacity>
+        {open && (
+            <DatePicker
+            modal
+            mode='datetime'
+            open={open}
+            date={clicker=='from'?from:to}
+            onConfirm={(date) => {
+              if(clicker=='from'){
+                if(date>new Date()){
+                  setOpen(false)
+                  setFrom(new Date())
+                }else{
+                     setOpen(false)
+                setFrom(date)
+                }
+             
+              }else{
+                if(date>new Date()){
+                  setOpen(false)
+                  setTo(new Date())
+                }else{
+                     setOpen(false)
+                     setTo(date)
+                }
+             
+              }
+              
+            }}
+            onCancel={() => {
+              setOpen(false)
+            }}
+          />
+      )}
+  </View>
+
+              
+  <TouchableOpacity style={{width:100,padding:5,backgroundColor:'#f7951d',alignItems:'center',borderRadius:10}}  onPress={()=>{navigation.navigate('History Map',{name:'Travel History Of '+vnumber,from:from.toISOString(),to:to.toISOString(),vehicle:vnumber})
+  }}> 
+          <Text style={{color:'#fff'}}>
+                     Start
+                      </Text > 
+        </TouchableOpacity>
+       
+           
+            
+            
+            </View>:<View>
+                </View>}
+ 
+
+
+ </View>
+
     <TouchableOpacity   style={[styles.button]}
     onPress={() => {  
       navigation.navigate('Report Screen',{ vehicle:vnumber});

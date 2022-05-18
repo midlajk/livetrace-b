@@ -70,7 +70,7 @@ export async function singledata(imei){
     }
 }
 
-export async function history(imei){
+export async function history(from,to,vehicle){
 
 
     let email = await AsyncStorage.getItem('email')
@@ -84,12 +84,14 @@ export async function history(imei){
             "clientName": "tracker" 
             },
             "request": {
-            "userMailid": "radiant",
-            "password": "radiant",
-            "regNumber": "KL-10-AF-9836",
-            "fromDate": "2022-05-01",
-            "toDate": "2022-05-02",
-            "rowLimit": "10"
+            "userMailid": email,
+            "password": password,
+            "regNumber": vehicle,
+            "fromDate": from.split('T')[0],
+            "fromTime": from.split('T')[1].slice(0,5),
+            "toDate": to.split('T')[0],
+            "toTime": to.split('T')[1].slice(0,5),
+            "rowLimit": "1000"
             }
         });
             

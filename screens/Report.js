@@ -21,7 +21,7 @@ export default function ReportScreen({navigation,route}) {
       <TouchableOpacity style={{width:'30%',height:100,backgroundColor:'#fff',borderRadius:16,marginBottom:10,justifyContent:'center',alignItems:'center',elevation:3}}
         onPress={() => {
                     
-          navigation.navigate('Report Generation',{number:initial, name: 'AOI IN/OUT',icon:'sync-outline',icontype:"Icon" });
+          navigation.navigate('Report Generation',{number:initial, name: 'AD IN/OUT',icon:'sync-outline',icontype:"Icon" });
       }}>
                         <Icon
                                 name={'sync-outline'}
@@ -29,7 +29,7 @@ export default function ReportScreen({navigation,route}) {
                                 color={'#000'}
                            
                             />
-                            <Text>AOI IN/OUT</Text>
+                            <Text>AD IN/OUT</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.button}
         onPress={() => {
@@ -58,6 +58,7 @@ export default function ReportScreen({navigation,route}) {
                             <Text style={{textAlign:'center'}}>Current Summary</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.button}
+      disabled={true}
       onPress={() => {
                     
         navigation.navigate('Report Generation',{number:initial, name: 'Day wise',icon:'calendar-outline',icontype:"Icon" });
@@ -110,6 +111,8 @@ export default function ReportScreen({navigation,route}) {
                             <Text style={{textAlign:'center',padding:5}}>Ignition ON/OFF</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.button}
+            disabled={true}
+
       onPress={() => {
                     
         navigation.navigate('Report Generation',{number:initial, name: 'J1939',icon:'truck',icontype:"Iconb" });
@@ -123,6 +126,8 @@ export default function ReportScreen({navigation,route}) {
                             <Text>J1939</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.button}
+            disabled={true}
+
       onPress={() => {
                     
         navigation.navigate('Report Generation',{number:initial, name: 'OBD II',icon:'usb-flash-drive-outline',icontype:"Iconb" });

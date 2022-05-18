@@ -7,17 +7,68 @@ import Iconb from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import DropDown from '../Components/dropdown';
 
+import DatePicker from 'react-native-date-picker'
 
 export default function Notification({navigation,route}) {
-   
+    const [from, setFrom] = useState(new Date());
+    const [to, setTo] = useState(new Date());
+    const [clicker, seclicker] = useState('');
+    const [open, setOpen] = useState(false)
+    const setToday = () => {
+        var startdate = new Date()
+        startdate.setHours(0,0,0,0);
+        var enddate = new Date()
+        enddate.setHours(23,59,59,999);
+        setFrom(startdate)
+        setTo(enddate)
+        seclicker('from')
+      };
+    
+      const setYesterday = () => {
+        var startdate = new Date()
+        startdate.setDate(startdate.getDate()-1)
+        startdate.setHours(0,0,0,0);
+        var enddate = new Date()
+        enddate.setDate(enddate.getDate()-1)
+        enddate.setHours(23,59,59,999);
+        setFrom(startdate)
+        setTo(enddate)
+        seclicker('from')
+      };
+      const setWeek = () => {
+        var startdate = new Date()
+        startdate.setDate(startdate.getDate()-7)
+        startdate.setHours(0,0,0,0);
+        var enddate = new Date()
+        enddate.setHours(23,59,59,999);
+        setFrom(startdate)
+        setTo(enddate)
+        seclicker('from')
+      };
+      const setMonth = () => {
+        var startdate = new Date()
+        startdate.setMonth(startdate.getMonth()-1)
+        startdate.setHours(0,0,0,0);
+        var enddate = new Date()
+        enddate.setHours(23,59,59,999);
+        setFrom(startdate)
+        setTo(enddate)
+        seclicker('from')
+      };
+     function settodate(){
+        var startdate = new Date(from)
+        startdate.setDate(startdate.getDate()+1)
+        startdate.setHours(23,59,59,999);
+        setTo(startdate)
+     }
   return (
-    <View style={{ flex: 1,alignItems: 'center',backgroundColor:'#dedfe0' }}>
+    <View style={{ flex: 1,alignItems: 'center',backgroundColor:'#fff' }}>
         <View style={styles.header}>
         {route.params.icontype == 'Icon' ?
         <Icon
         style={{marginRight:20}}
                                 name={route.params.icon}
-                                size={40}
+                                size={25}
                                 color={'#000'}
                            
                             />
@@ -25,40 +76,53 @@ export default function Notification({navigation,route}) {
         <Iconb
         style={{marginRight:20}}
                                 name={route.params.icon}
-                                size={40}
+                                size={25}
                                 color={'#000'}
                            
                             />
         }
-            <Text >
+        <View style={{alignItems:'center',width:'70%'}}>
+            <Text style={{color:'#000',fontSize:16}}>
                     {route.params.name}
             </Text>
         </View>
+            
+        </View>
+        <View style={{flexDirection:'row',marginTop:30,width:'90%'}}>
+   
+        
+   <View style={{flex:7}}>
+       <Text style={{color:'#000',fontWeight:'bold'}}>Select Vehicle Number</Text>
+ <DropDown style={{marginLeft: 0,
+        marginRight: 0}}/>
+   </View>
+   
+</View>
         <View style={{flexDirection:'row',margin:10,flexWrap:'wrap',justifyContent:'space-around',}}>
+         <TouchableOpacity style={styles.datebutton} onPress={setToday}>
+                <Text> Today </Text>
 
-                    <TouchableOpacity style={styles.datebutton}>
+                </TouchableOpacity>
+                    <TouchableOpacity style={styles.datebutton} onPress={setYesterday}>
                         <Text> Last Day </Text>
 
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.datebutton}>
+                    <TouchableOpacity style={styles.datebutton} onPress={setWeek}>
                     <Text> Last Week </Text>
 
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.datebutton}>
+                <TouchableOpacity style={styles.datebutton} onPress={setMonth}>
                 <Text> Last Month </Text>
 
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.datebutton}>
-                <Text> Custom Range  </Text>
-
-                </TouchableOpacity>
+             
 
     </View>
    
     <View style={styles.datecard}>
         <View style={{width:'100%',alignItems:'center',padding:5}}>
             <Text style={{color:'#000',fontSize:17}}>
-            Selected Date
+            Selected Custom Date
         </Text>
         </View>
     
@@ -72,25 +136,61 @@ export default function Notification({navigation,route}) {
         </View>
         
         <View style={{flex:5,paddingLeft:10}}>
-        <Text style={{fontSize:16,marginBottom:10}}>
-        Thursday, 28 April 2022
+            <TouchableOpacity onPress={()=> {setOpen(true); seclicker('from')}}> 
+                <Text style={{fontSize:16,marginBottom:10,textDecorationLine:'underline',color:'#000'}}>
+       {clicker?from.toLocaleString():'Select A Date'}
                 </Text>
-        <Text style={{fontSize:16}}>
-        Thursday, 28 April 2022
-        </Text>
+                </TouchableOpacity>
+       <TouchableOpacity onPress={()=> {setOpen(true); seclicker('To')}}>
+           <Text style={{fontSize:16,textDecorationLine:'underline',color:'#000'}}>
+        {clicker?to.toLocaleString():'Select A Date'}
+        </Text> 
+       </TouchableOpacity>
+       
         </View>
-        
+        {open && (
+            <DatePicker
+            modal
+            mode='datetime'
+            open={open}
+            date={clicker=='from'?from:to}
+            onConfirm={(date) => {
+              if(clicker=='from'){
+                if(date>new Date()){
+                  setOpen(false)
+                  setFrom(new Date())
+                }else{
+                     setOpen(false)
+                setFrom(date)
+                settodate()
+
+                }
+             
+              }else{
+                if(date>new Date()){
+                  setOpen(false)
+                  setTo(new Date())
+             
+                }else{
+                     setOpen(false)
+                     setTo(date)
+
+                }
+             
+              }
+              
+            }}
+            onCancel={() => {
+              setOpen(false)
+            }}
+          />
+      )}
+       
     </View>
-    <View style={{flexDirection:'row',marginTop:30,width:'90%'}}>
    
-        
-        <View style={{flex:7}}>
-      <DropDown/>
-        </View>
-        
-    </View>
-    <TouchableOpacity
+     <TouchableOpacity
                   style={styles.button}
+                  onPress={()=>navigation.navigate('Reports View',{name:route.params.name,vehicle:'KL 12 B 893',from:from.toLocaleString(),to:to.toLocaleString()})}
                 > 
                 
                    <Text style={{color:'#fff'}}>Generate Report</Text>
@@ -103,10 +203,10 @@ export default function Notification({navigation,route}) {
 
 const styles = StyleSheet.create({
     datebutton:{
-        width:'45%',height:40,backgroundColor:'#fff',borderRadius:15,marginBottom:10,alignItems:'center',justifyContent:'center',elevation:3
+        width:'45%',height:40,backgroundColor:'#dedfe0',borderRadius:15,marginBottom:10,alignItems:'center',justifyContent:'center',elevation:3
     },
-    header:{width:'90%',height:70,backgroundColor:'#fff',marginTop:30,borderRadius:15,flexDirection:'row',justifyContent:'flex-start',alignItems:'center',paddingLeft:20,elevation:3},
-    datecard:{flexDirection:'row',width:'90%',justifyContent:'flex-start',backgroundColor:'#fff',borderRadius:10,padding:10,flexWrap:'wrap',elevation:3},
+    header:{width:'90%',height:70,backgroundColor:'#fff',borderColor:'#F33A6A',borderWidth:1,marginTop:30,borderRadius:15,flexDirection:'row',justifyContent:'flex-start',alignItems:'center',paddingLeft:20,elevation:3},
+    datecard:{flexDirection:'row',width:'90%',justifyContent:'flex-start',backgroundColor:'#dedfe0',borderRadius:10,padding:10,flexWrap:'wrap',elevation:3},
     button: {
         width: '90%',
         height: 50,
@@ -115,8 +215,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         position: 'absolute',
-        bottom: 50,
+        bottom: 20,
         elevation: 5,
+        
     },
     
 })

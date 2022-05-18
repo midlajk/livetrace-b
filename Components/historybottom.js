@@ -24,8 +24,8 @@ useEffect(() => {
 }, [pause])
     function manageanimation(){
       loopTimeout = pauseRef.current
-      if(loopTimeout==50||valueRef.current>data.length-5){
-        if(valueRef.current>data.length-5){
+      if(loopTimeout==50||valueRef.current>data.length-2){
+        if(valueRef.current>data.length-2){
                  setValue(0)
         setValue(0)
         setValue(0)
@@ -121,7 +121,7 @@ useEffect(() => {
              </TouchableOpacity>
           
                               <View style={{width:'90%'}}>
-   <Slider     maximumValue={data.length-3} thumbStyle={{ height: 10, width: 10, backgroundColor: '#fff' }} onValueChange={c=>{setValue(c)}} value={valueRef.current} step={1} thumbTintColor={'#fff'} maximumTrackTintColor={'#fff'} 
+   <Slider     maximumValue={data.length-2} thumbStyle={{ height: 10, width: 10, backgroundColor: '#fff' }} onValueChange={c=>{setValue(c)}} value={valueRef.current} step={1} thumbTintColor={'#fff'} maximumTrackTintColor={'#fff'} 
      />
                               </View>
           </View>

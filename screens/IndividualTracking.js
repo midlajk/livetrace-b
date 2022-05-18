@@ -7,7 +7,6 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MapView, { PROVIDER_GOOGLE, Marker,Callout } from 'react-native-maps';
 import * as api from "../services/auth";
 import Loader from '../Components/Loader';
-import Datepick from '../Components/Datepicker';
 
 import MapTopButton from '../Components/maptopscreen';
 import Mapview from '../Components/MapView';
@@ -60,7 +59,7 @@ export default function Tracking({navigation,route}) {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                      <Loader loading={loading} navigation={navigation} />
-                     <Datepick picker={picker} setPicker={setPicker} fromdate={fromdate} setFromdate={setFromdate} toDate={toDate} setToDate={setToDate} />
+                  
 
                      <Mapview list={list} navigation={navigation} />
                      <MapTopButton getdata={getdata} navigation={navigation} setButtonVisible={setButtonVisible} buttonVisible={buttonVisible}/>

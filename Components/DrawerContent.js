@@ -31,14 +31,14 @@ export function DrawerContent(props) {
                     <View style={styles.userInfoSection}>
                         <View style={{flexDirection:'row',marginTop: 15}}>
                             <Avatar.Image 
-                                source={{
-                                    uri: 'https://api.adorable.io/avatars/50/abott@adorable.png'
-                                }}
+                                
+                                    source={require('../Assets/radiantlogo.png')}
+                    
                                 size={50}
                             />
                             <View style={{marginLeft:15, flexDirection:'column'}}>
                                 <Title style={styles.title}>{user.CustName}</Title>
-                                <Caption style={styles.caption}>{user.description}</Caption>
+                                <Caption style={styles.caption}>Welcome Back !</Caption>
                             </View>
                         </View>
 
@@ -65,8 +65,8 @@ export function DrawerContent(props) {
                                 size={size}
                                 />
                             )}
-                            label="Tracking List"
-                            onPress={() => {props.navigation.navigate('Tracking List',{name:'List of all vehicle',screen:'main'})}}
+                            label="Vehicle List"
+                            onPress={() => {props.navigation.navigate('Vehicle List')}}
                         />
                         <DrawerItem 
                             icon={({color, size}) => (

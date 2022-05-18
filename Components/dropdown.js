@@ -13,7 +13,9 @@ const App = (props) => {
       }, []);
   const [filteredVehicle, setFilterVehicle] = useState([]);
   const [vehiclename, setVehiclename] = useState('');
-
+ function initialise(){
+  setFilterVehicle(vehicle)
+ }
     const filterVehicle = value => {
     
         let filterData =
@@ -32,13 +34,13 @@ const App = (props) => {
       };
   return (
     <View>
-                  <View style={styles.SectionStyle}>
+                  <View style={[styles.SectionStyle,props.style]}>
           <TextInput
                   value={vehiclename}
                   placeholder="Select Vehicle Number"
                   style={styles.inputStyle}
                   onChangeText={filterVehicle}
-       
+                onFocus={initialise}
                   keyboardType="name-phone-pad"
                 />
           </View>
@@ -83,7 +85,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         height:50,
     
-        borderColor: '#dadae8',
+        borderColor: '#000',
       },
 
 

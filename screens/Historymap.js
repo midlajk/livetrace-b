@@ -5,6 +5,7 @@ import MapViewDirections from 'react-native-maps-directions';
  import {Data} from './data'
  import MapTopButton from '../Components/maptopscreen';
 import BotomButton from '../Components/historybottom';
+import Markericon from '../Components/markericon';
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
@@ -62,12 +63,8 @@ class Example extends Component {
             longitude:this.props.data[this.props.i].longitude}} 
 
              >
-               <Image
-        source={require('../Assets/vehicle_icon/car_2.png')}
-        style={{width: 26, height: 28}}
-        // {selected?styles.iconstyle_selected:styles.iconstyle}
-        resizeMode="contain"
-        />
+              <Markericon vehicle={this.props.data[this.props.i].V_Type} ignition={this.props.data[this.props.i].Igni} speed={this.props.data[this.props.i].Speed}  />
+            
                </MapView.Marker>
             <MapView.Marker  coordinate ={{latitude: this.props.data[this.props.data.length-1].latitude,
             longitude:this.props.data[this.props.data.length-1].longitude}} 
@@ -84,7 +81,7 @@ class Example extends Component {
           '#238C23',
           '#7F0000'
         ]}
-        strokeWidth={6}
+        strokeWidth={2}
         
         />
       
