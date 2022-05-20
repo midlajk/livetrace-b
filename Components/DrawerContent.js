@@ -33,7 +33,7 @@ export function DrawerContent(props) {
                             <Avatar.Image 
                                 
                                     source={require('../Assets/radiantlogo.png')}
-                    
+                    style={{backgroundColor:'#007ec7'}}
                                 size={50}
                             />
                             <View style={{marginLeft:15, flexDirection:'column'}}>

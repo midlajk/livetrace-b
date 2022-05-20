@@ -6,6 +6,7 @@ import MapButton from '../Components/mapscreen_button';
 import MapTopButton from '../Components/maptopscreen';
 import Mapview from '../Components/MapView';
 import b from "../configuration/Datahandler";
+import IndividualMap from '../Components/individualmapview';
 
 export default function NonTracking({navigation}) {
   const [list, setList] = useState([]);
@@ -13,16 +14,26 @@ export default function NonTracking({navigation}) {
   const [buttonVisible, setButtonVisible] = useState(true);
   const [serverdate, setServerdate] = useState('');
   const [vehicle, setvehicle] = useState([]);
+  const [userdata, setUserdata] = useState({});
+  const [counter, setCounter] = useState(0);
+
   var nonTrackingVehicle = [];
   var notrack = [];
   useEffect(() => {
     setLoading(true) 
     getdata()
+    setUserdata(b.getUser())  
     setvehicle(b.getVehicle())
-    setTimeout(() => {
-      getdata()
-  }, 100);
+
   }, []);
+  useEffect(() => {
+    setTimeout(() => {
+
+      setCounter(old=>old+1)
+      getdata()
+    }, userdata.int_Refresh*1000);
+  }, [counter]);
+   
    
     async function getdata() {
     
@@ -64,8 +75,7 @@ export default function NonTracking({navigation}) {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                      <Loader loading={loading} navigation={navigation} />
-                     <Mapview list={nonTrackingVehicle} navigation={navigation}/>
-
+                     {nonTrackingVehicle.length>0&&nonTrackingVehicle.length<2?<IndividualMap list={nonTrackingVehicle} navigation={navigation} />:<Mapview list={nonTrackingVehicle} navigation={navigation} />}
    <MapTopButton getdata={getdata} navigation={navigation} setButtonVisible={setButtonVisible} buttonVisible={buttonVisible}/>
 
    {buttonVisible?<MapButton screen='Non-Tracking Vehicle' navigation={navigation} list={list}  serverdate={serverdate} data={[...notrack,...nonTrackingVehicle]}/>:<View></View>}

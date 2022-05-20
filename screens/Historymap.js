@@ -59,7 +59,9 @@ class Example extends Component {
         <MapView.Marker  coordinate ={{latitude: this.props.data[0].latitude,
             longitude:this.props.data[0].longitude}} 
              />   
-          <MapView.Marker  coordinate ={{latitude: this.props.data[this.props.i].latitude,
+          <MapView.Marker 
+            rotation={parseFloat(this.props.data[this.props.i].Course)}
+           coordinate ={{latitude: this.props.data[this.props.i].latitude,
             longitude:this.props.data[this.props.i].longitude}} 
 
              >

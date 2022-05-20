@@ -44,7 +44,7 @@ listRef.current = list;
                 element.address = json.results[0].formatted_address.split(',').slice(1,3)
                   
               })
-              element.LastPay_Date = vehic.LastPay_Date;
+              element.Expiry_Date = vehic.Expiry_Date;
               setData(old=>[...old,element])
               
             }
@@ -93,8 +93,8 @@ listRef.current = list;
                     <View style={{flex:1,alignItems:'center'}}>
          
                       <Text style={{fontSize:16,color:'#000'}}>{item.Reg_No}</Text>
-            <Text style={{fontSize:16,color:'#0783cb'}}>Last Payment : {item.LastPay_Date}</Text>
-            <Text style={{fontSize:16,color:'#0783cb'}}>Subscription Status : {new Date(serverdate)-new Date(item.LastPay_Date)<=2629800000 && new Date(serverdate)-new Date(item.LastPay_Date)>=0?'Suspended':new Date(serverdate)-new Date(item.LastPay_Date)<0?'Deactivated':'Active'}</Text>
+            <Text style={{fontSize:16,color:'#0783cb'}}>Expiry Date : {item.Expiry_Date}</Text>
+            <Text style={{fontSize:16,color:'#0783cb'}}>Subscription Status : {new Date(serverdate) < new Date(item.Expiry_Date)?'Active':'Expired'}</Text>
 
                       <Text style={styles.text}>IMEI : {item.IMEI || item.imei}</Text>
                       <Text style={{fontSize:16,color:'#000'}}>Ignition Status : {item.Igni==1?'Online':'Offline'}</Text>

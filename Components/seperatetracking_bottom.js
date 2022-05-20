@@ -36,6 +36,12 @@ const Icons = (props) => {
       setTo(enddate)
       seclicker('from')
     };
+    function settodate(){
+      var startdate = new Date(from)
+      startdate.setDate(startdate.getDate()+1)
+      startdate.setHours(23,59,59,999);
+      setTo(startdate)
+   }
   return (
     <View style={styles.viewstyle}>
                   <View style={{width:'100%',alignItems:'center'}}>
@@ -141,9 +147,12 @@ const Icons = (props) => {
                 if(date>new Date()){
                   setOpen(false)
                   setFrom(new Date())
+                  settodate(new Date())
+
                 }else{
                      setOpen(false)
                 setFrom(date)
+                settodate(new Date())
                 }
              
               }else{

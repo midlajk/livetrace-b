@@ -7,9 +7,9 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MapView, { PROVIDER_GOOGLE, Marker,Callout } from 'react-native-maps';
 import * as api from "../services/auth";
 import Loader from '../Components/Loader';
-
+import b from "../configuration/Datahandler";
 import MapTopButton from '../Components/maptopscreen';
-import Mapview from '../Components/MapView';
+import Mapview from '../Components/individualmapview';
 import BotomButton from '../Components/seperatetracking_bottom';
 
 export default function Tracking({navigation,route}) {
@@ -25,16 +25,26 @@ export default function Tracking({navigation,route}) {
   const [picker, setPicker] = useState(false);
   const [fromdate, setFromdate] = useState(new Date());
   const [toDate, setToDate] = useState(new Date());
+  const [counter, setCounter] = useState(0);
+  const [vehicle, setvehicle] = useState([]);
+  const [userdata, setUserdata] = useState({});
 
   useEffect(() => {
+    setLoading(true) 
+    setvehicle(b.getVehicle())
+    setUserdata(b.getUser())  
     getdata()
-    setTimeout(() => {
-      getdata()
-    }, 100);
-  }, []);
    
+
+  }, []);
+   useEffect(() => {
+    setTimeout(() => {
+      setCounter(old=>old+1)
+      getdata()
+    }, userdata.int_Refresh*1000);
+   }, [counter])
+
     async function getdata() {
-      setLoading(true) 
       let response = await api.singledata(route.params.imei)
       if(response.length!=0){
         setList(response)
@@ -52,19 +62,16 @@ export default function Tracking({navigation,route}) {
         setLoading(false) 
 
     }
-    async function gethistory() {
    
-    
-    }  
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                      <Loader loading={loading} navigation={navigation} />
                   
 
-                     <Mapview list={list} navigation={navigation} />
+                     {list.length>0?<Mapview list={list} navigation={navigation} />:<View></View>}
                      <MapTopButton getdata={getdata} navigation={navigation} setButtonVisible={setButtonVisible} buttonVisible={buttonVisible}/>
 
-                     {buttonVisible?<BotomButton setPicker={setPicker} time={time} speed={speed} status={status} navigation={navigation} address={address} vnumber={vnumber} gethistory={gethistory} />:<View></View>}
+                     {buttonVisible?<BotomButton setPicker={setPicker} time={time} speed={speed} status={status} navigation={navigation} address={address} vnumber={vnumber}  />:<View></View>}
     
      
     </View>

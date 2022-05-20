@@ -4,19 +4,19 @@
 // Import React and Component
 import React,{useState,useRef,useEffect,createRef} from 'react';
 import {StyleSheet, View, TouchableHighlight,Text} from 'react-native';
+import MapView, { PROVIDER_GOOGLE,Marker,Callout } from 'react-native-maps';
 import Markericon from './markericon';
-import MapView, { PROVIDER_GOOGLE, LatLng, Marker } from 'react-native-maps';
 
 const Mapview = (props) => {
     const {list,navigation, ...attributes} = props;
-      const mapRef = createRef();
+      const mapRef = useRef();
       useEffect(() => {
         if (mapRef.current) {
           // list of _id's must same that has been provided to the identifier props of the Marker
           mapRef.current.fitToSuppliedMarkers(list.map(({ Reg_No }) => Reg_No),{ edgePadding: 
-            {top: 650,
+            {top: 150,
               right: 100,
-              bottom: 500,
+              bottom: 100,
               left: 100},
               animated: true,
       
@@ -26,12 +26,9 @@ const Mapview = (props) => {
   return (
     <View style={styles.container}>
     <MapView
-    toolbarEnabled={true}
         ref={mapRef} 
       provider={PROVIDER_GOOGLE} // remove if not using Google Maps
       style={styles.map}
-      showUserLocation={true}
-      followUserLocation={true}
       initialRegion={{
         latitude: 11.949263,
         longitude: 75.609764,

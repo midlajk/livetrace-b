@@ -16,9 +16,7 @@ function change(){
        if(c<b.length){
     setTimeout(() => {
           c++
-          console.log(c)
           setTime(c)
-          console.log(time,"h")
           change()
         
     }, 100);

@@ -133,6 +133,7 @@ async function handleSubmitButton (state) {
               keyboardType="email-address"
               ref={emailInputRef}
               returnKeyType="next"
+              caretHidden={false}
               onSubmitEditing={() =>
                 passwordInputRef.current &&
                 passwordInputRef.current.focus()
@@ -152,7 +153,6 @@ async function handleSubmitButton (state) {
               ref={passwordInputRef}
               returnKeyType="next"
               secureTextEntry={true}
-             
               blurOnSubmit={false}
             />
           </View>
@@ -162,7 +162,7 @@ async function handleSubmitButton (state) {
             </Text>
           ) : null}
           <TouchableOpacity
-            style={styles.buttonStyle}
+            style={[styles.buttonStyle,buttonpressed?{backgroundColor:'#ccc'}:{}]}
             activeOpacity={0.5}
             onPress={()=>{
               handleSubmitButton()

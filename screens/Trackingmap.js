@@ -6,6 +6,7 @@ import MapButton from '../Components/mapscreen_button';
 import MapTopButton from '../Components/maptopscreen';
 import Mapview from '../Components/MapView';
 import b from "../configuration/Datahandler";
+import IndividualMap from '../Components/individualmapview';
 
 export default function Tracking({navigation}) {
   const [list, setList] = useState([]);
@@ -13,17 +14,25 @@ export default function Tracking({navigation}) {
   const [buttonVisible, setButtonVisible] = useState(true);
   const [serverdate, setServerdate] = useState('');
   const [vehicle, setvehicle] = useState([]);
+  const [userdata, setUserdata] = useState({});
+  const [counter, setCounter] = useState(0);
   var trackingVehicle = [];
 
   useEffect(() => {
     setLoading(true) 
     getdata()
     setvehicle(b.getVehicle())
-    setTimeout(() => {
-      getdata()
-  }, 100);
+    setUserdata(b.getUser())  
+
   }, []);
    
+  useEffect(() => {
+    setTimeout(() => {
+
+      setCounter(old=>old+1)
+      getdata()
+    }, userdata.int_Refresh*1000);
+  }, [counter]);
     async function getdata() {
         let response = await api.fetchdata(); 
           setServerdate(response.data.server.dateTime)
@@ -51,8 +60,7 @@ export default function Tracking({navigation}) {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                      <Loader loading={loading} navigation={navigation} />
-                     <Mapview list={trackingVehicle} navigation={navigation}/>
-
+                     {trackingVehicle.length>0&&trackingVehicle.length<2?<IndividualMap list={trackingVehicle} navigation={navigation} />:<Mapview list={trackingVehicle} navigation={navigation} />}
 
    <MapTopButton getdata={getdata} navigation={navigation} setButtonVisible={setButtonVisible} buttonVisible={buttonVisible}/>
 

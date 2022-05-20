@@ -36,7 +36,6 @@ function AuthProvider(props) {
 
     const handleLogin = async (data) => {
         try{
-            console.log("login")
             //STORE DATA
             let {token, user} = data;
             let data_ = [[USER_KEY, JSON.stringify(user)], [TOKEN_KEY, token]];

@@ -6,6 +6,7 @@ import MapButton from '../Components/mapscreen_button';
 import MapTopButton from '../Components/maptopscreen';
 import Mapview from '../Components/MapView';
 import b from "../configuration/Datahandler";
+import IndividualMap from '../Components/individualmapview';
 
 export default function Tracking({navigation,route}) {
   const [list, setList] = useState([]);
@@ -13,18 +14,26 @@ export default function Tracking({navigation,route}) {
   const [buttonVisible, setButtonVisible] = useState(true);
   const [serverdate, setServerdate] = useState('');
   const [vehicle, setvehicle] = useState([]);
+  const [userdata, setUserdata] = useState({});
+  const [counter, setCounter] = useState(0);
   var offline=[];
   var dead=[];
   var nodata=[]
   useEffect(() => {
     setLoading(true) 
     getdata()
-    setvehicle(b.getVehicle())
-    setTimeout(() => {
-      getdata()
-  }, 100);
+    setvehicle(b.getVehicle()) 
+    setUserdata(b.getUser())  
   }, []);
-  
+
+  useEffect(() => {
+    setTimeout(() => {
+
+      setCounter(old=>old+1)
+      getdata()
+    }, userdata.int_Refresh*1000);
+  }, [counter]);
+
     async function getdata() {
         let response = await api.fetchdata(); 
           setServerdate(response.data.server.dateTime)
@@ -70,11 +79,11 @@ export default function Tracking({navigation,route}) {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                      <Loader loading={loading} navigation={navigation} />
-                     {route.params.name=='Offline Vehicle'?
-                     <Mapview list={offline} navigation={navigation}/>
+                     {route.params.name=='Offline Vehicle'?offline.length>0&&offline.length<2?
+                     <IndividualMap list={offline} navigation={navigation}/>:<Mapview list={offline} navigation={navigation}/>
                      :
-                     route.params.name=='Dead Vehicle'?
-                     <Mapview list={deadvehicle} navigation={navigation}/>
+                     route.params.name=='Dead Vehicle'?deadvehicle.length>0&&deadvehicle.length<2?
+                     <IndividualMap list={deadvehicle} navigation={navigation}/>:<Mapview list={deadvehicle} navigation={navigation}/>
                      :<Mapview list={[]} navigation={navigation}/> }
                      
 

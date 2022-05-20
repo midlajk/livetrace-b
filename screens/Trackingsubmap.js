@@ -6,6 +6,7 @@ import MapButton from '../Components/mapscreen_button';
 import MapTopButton from '../Components/maptopscreen';
 import Mapview from '../Components/MapView';
 import b from "../configuration/Datahandler";
+import IndividualMap from '../Components/individualmapview';
 
 export default function Tracking({navigation,route}) {
   const [list, setList] = useState([]);
@@ -13,6 +14,8 @@ export default function Tracking({navigation,route}) {
   const [buttonVisible, setButtonVisible] = useState(true);
   const [serverdate, setServerdate] = useState('');
   const [vehicle, setvehicle] = useState([]);
+  const [userdata, setUserdata] = useState({});
+  const [counter, setCounter] = useState(0);
   var running=[]
   var idle=[]
   var halt=[]
@@ -21,11 +24,16 @@ export default function Tracking({navigation,route}) {
     setLoading(true) 
     getdata()
     setvehicle(b.getVehicle())
-    setTimeout(() => {
-      getdata()
-  }, 100);
+    setUserdata(b.getUser())  
+
   }, []);
-   
+  useEffect(() => {
+    setTimeout(() => {
+
+      setCounter(old=>old+1)
+      getdata()
+    }, userdata.int_Refresh*1000);
+  }, [counter]);
     async function getdata() {
         let response = await api.fetchdata(); 
           setServerdate(response.data.server.dateTime)
@@ -50,7 +58,6 @@ export default function Tracking({navigation,route}) {
           if(diff<offint*60000){
             if(route.params.name=='Running Vehicle' && element.Igni>0&&element.Speed>2 ){
                 running = [...running,element]
-                console.log('updated',vehicle.Reg_No )
 
             }  
             else if(route.params.name=='Idle Vehicle' && element.Igni>0&&element.Speed<2 ){
@@ -71,17 +78,21 @@ export default function Tracking({navigation,route}) {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                      <Loader loading={loading} navigation={navigation} />
-                     {route.params.name=='Running Vehicle'?
-                     <Mapview list={running} navigation={navigation}/>
-                     :
-                     route.params.name=='Idle Vehicle'?
-                     <Mapview list={idle} navigation={navigation}/>
-                     :
-                     route.params.name=='Halt Vehicle'?
-                     <Mapview list={halt} navigation={navigation}/>
-                     :
+                     {route.params.name=='Running Vehicle'?running.length>0&&running.length<2?
+                      <IndividualMap list={running} navigation={navigation}/>:
+                      <Mapview list={running} navigation={navigation}/>:
+                     route.params.name=='Idle Vehicle'?idle.length>0&&idle.length<2?
+                     <IndividualMap list={running} navigation={navigation}/>:
+                     <Mapview list={idle} navigation={navigation}/> :                     
+                     route.params.name=='Halt Vehicle'? halt.length>0&&halt.length<2?
+                     <IndividualMap list={halt} navigation={navigation}/>:
+                     <Mapview list={halt} navigation={navigation}/>:
+                     nogps.length>0&&nogps.length<2?
+                     <IndividualMap list={running} navigation={navigation}/>:
                      <Mapview list={nogps} navigation={navigation}/> }
+                    
                      
+
 
 
    <MapTopButton getdata={getdata} navigation={navigation} setButtonVisible={setButtonVisible} buttonVisible={buttonVisible}/>

@@ -5,64 +5,47 @@
 import React,{useState,useRef,useEffect,createRef} from 'react';
 import {StyleSheet, View, TouchableHighlight,Text} from 'react-native';
 import Markericon from './markericon';
-import MapView, { PROVIDER_GOOGLE, LatLng, Marker } from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE, LatLng, Marker,AnimatedRegion } from 'react-native-maps';
 
 const Mapview = (props) => {
     const {list,navigation, ...attributes} = props;
-      const mapRef = createRef();
-      useEffect(() => {
-        if (mapRef.current) {
-          // list of _id's must same that has been provided to the identifier props of the Marker
-          mapRef.current.fitToSuppliedMarkers(list.map(({ Reg_No }) => Reg_No),{ edgePadding: 
-            {top: 650,
-              right: 100,
-              bottom: 500,
-              left: 100},
-              animated: true,
-      
-          });
-        }
-      }, [list]);
+      const mapRef = useRef();
+      mapRef.current={latitude:list[0].Lat,longitude:list[0].Lon}
   return (
     <View style={styles.container}>
     <MapView
-    toolbarEnabled={true}
-        ref={mapRef} 
       provider={PROVIDER_GOOGLE} // remove if not using Google Maps
       style={styles.map}
       showUserLocation={true}
       followUserLocation={true}
       initialRegion={{
-        latitude: 11.949263,
-        longitude: 75.609764,
-        latitudeDelta: 1,
-        longitudeDelta: 1,
+        latitude: list[0].Lat,
+        longitude: list[0].Lon,
+        latitudeDelta: .01,
+        longitudeDelta: .01,
       }}
     >
-      {list.map((marker,index)=>{
-      return(
-      <Marker 
-      
-      key={index}
-      identifier={marker.Reg_No}
+  
+      <Marker.Animated
       coordinate ={{
-       latitude: marker.Lat,
-       longitude: marker.Lon,
+       latitude: list[0].Lat,
+       longitude: list[0].Lon,
       }}
-      rotation={parseFloat(marker.Course)}
-      title={marker.Reg_No+" , "+marker.V_Type}
+       onpress
+      rotation={parseFloat(list[0].Course)}
+      title={list[0].Reg_No+" , "+list[0].V_Type}
       description="Tap to track live"
+      ref={mapRef.current}
+
       onCalloutPress={() => {
                     
-        navigation.navigate('Individual Map',{ vehicle:marker.Reg_No,imei:marker.imei});
+        navigation.navigate('Individual Map',{ vehicle:list[0].Reg_No,imei:list[0].imei});
     }}>
          
-        <Markericon vehicle={marker.V_Type} ignition={marker.Igni} speed={marker.Speed}  />
+        <Markericon vehicle={list[0].V_Type} ignition={list[0].Igni} speed={list[0].Speed}  />
                
-           </Marker>
+           </Marker.Animated>
 
-      )
-    })}
     </MapView>
   </View> 
             
@@ -79,6 +62,7 @@ const styles = StyleSheet.create({
         width: '100%',
         justifyContent: 'flex-end',
         alignItems: 'center',
+        
       },
       map: {
         ...StyleSheet.absoluteFillObject,
