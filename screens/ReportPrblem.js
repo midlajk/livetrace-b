@@ -93,7 +93,7 @@ async function handleSubmitButton (state) {
            
             />
           </View>
-         <DropDown/>
+         <DropDown />
       
          
           <View style={styles.SectionStyle}>

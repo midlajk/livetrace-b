@@ -68,7 +68,7 @@ export function DrawerContent(props) {
                             label="Vehicle List"
                             onPress={() => {props.navigation.navigate('Vehicle List')}}
                         />
-                        <DrawerItem 
+                        {/* <DrawerItem 
                             icon={({color, size}) => (
                                 <Icon 
                                 name="alarm-panel" 
@@ -90,7 +90,7 @@ export function DrawerContent(props) {
                             )}
                             label="Report a problem"
                             onPress={() => {props.navigation.navigate('Report Problem')}}
-                        />
+                        /> 
                            <DrawerItem 
                             icon={({color, size}) => (
                                 <MaterialIcon 
@@ -100,8 +100,9 @@ export function DrawerContent(props) {
                                 />
                             )}
                             label="Recharge"
-                        />
+                        />   */}
                         </Drawer.Section>
+                     
                       
                 </View>
             </DrawerContentScrollView>
@@ -109,7 +110,7 @@ export function DrawerContent(props) {
                 <DrawerItem 
                 onPress={() => {
                     AsyncStorage.clear()
-                    props.navigation.navigate('Login Screen')
+                    props.navigation.replace('Login Screen')
                 }}
                     icon={({color, size}) => (
                         <Icon 

@@ -88,16 +88,21 @@ export default function Notification({navigation,route}) {
         </View>
             
         </View>
-        <View style={{flexDirection:'row',marginTop:30,width:'90%'}}>
+        <View style={{flexDirection:'row',marginTop:30,width:'100%'}}>
    
         
    <View style={{flex:7}}>
-       <Text style={{color:'#000',fontWeight:'bold'}}>Select Vehicle Number</Text>
- <DropDown style={{marginLeft: 0,
-        marginRight: 0}}/>
+       <Text style={{color:'#000',fontWeight:'bold',marginLeft:20}}>Select Vehicle Number</Text>
+ <DropDown />
    </View>
    
 </View>
+
+{route.params.name=='Current Summary'?<View></View>:
+
+<View style={{alignItems:'center'}}>
+
+
         <View style={{flexDirection:'row',margin:10,flexWrap:'wrap',justifyContent:'space-around',}}>
          <TouchableOpacity style={styles.datebutton} onPress={setToday}>
                 <Text> Today </Text>
@@ -187,8 +192,11 @@ export default function Notification({navigation,route}) {
       )}
        
     </View>
-   
-     <TouchableOpacity
+    
+    </View>}
+
+    
+    <TouchableOpacity
                   style={styles.button}
                   onPress={()=>navigation.navigate('Reports View',{name:route.params.name,vehicle:'KL 12 B 893',from:from.toLocaleString(),to:to.toLocaleString()})}
                 > 
@@ -196,6 +204,7 @@ export default function Notification({navigation,route}) {
                    <Text style={{color:'#fff'}}>Generate Report</Text>
 
                  </TouchableOpacity>
+    
                
     </View>
   );
@@ -203,10 +212,10 @@ export default function Notification({navigation,route}) {
 
 const styles = StyleSheet.create({
     datebutton:{
-        width:'45%',height:40,backgroundColor:'#dedfe0',borderRadius:15,marginBottom:10,alignItems:'center',justifyContent:'center',elevation:3
+        width:'45%',height:30,backgroundColor:'#fff',borderRadius:15,marginBottom:10,alignItems:'center',justifyContent:'center',elevation:3
     },
     header:{width:'90%',height:70,backgroundColor:'#fff',borderColor:'#F33A6A',borderWidth:1,marginTop:30,borderRadius:15,flexDirection:'row',justifyContent:'flex-start',alignItems:'center',paddingLeft:20,elevation:3},
-    datecard:{flexDirection:'row',width:'90%',justifyContent:'flex-start',backgroundColor:'#dedfe0',borderRadius:10,padding:10,flexWrap:'wrap',elevation:3},
+    datecard:{flexDirection:'row',width:'90%',justifyContent:'flex-start',backgroundColor:'#fff',borderRadius:10,padding:10,flexWrap:'wrap',elevation:3},
     button: {
         width: '90%',
         height: 50,
@@ -214,8 +223,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#000',
         justifyContent: 'center',
         alignItems: 'center',
-        position: 'absolute',
-        bottom: 20,
+        marginTop:20,
         elevation: 5,
         
     },

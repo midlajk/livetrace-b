@@ -1,4 +1,4 @@
-package com.livetrace.newarchitecture;
+package com.radiant.LiveTrace.newarchitecture;
 
 import android.app.Application;
 import androidx.annotation.NonNull;
@@ -19,9 +19,9 @@ import com.facebook.react.fabric.CoreComponentsRegistry;
 import com.facebook.react.fabric.EmptyReactNativeConfig;
 import com.facebook.react.fabric.FabricJSIModuleProvider;
 import com.facebook.react.uimanager.ViewManagerRegistry;
-import com.livetrace.BuildConfig;
-import com.livetrace.newarchitecture.components.MainComponentsRegistry;
-import com.livetrace.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
+import com.radiant.LiveTrace.BuildConfig;
+import com.radiant.LiveTrace.newarchitecture.components.MainComponentsRegistry;
+import com.radiant.LiveTrace.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
 import java.util.ArrayList;
 import java.util.List;
 

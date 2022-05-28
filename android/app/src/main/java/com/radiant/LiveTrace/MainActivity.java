@@ -1,4 +1,4 @@
-package com.livetrace;
+package com.radiant.LiveTrace;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;

@@ -192,12 +192,12 @@ const Icons = (props) => {
 
  </View>
 
-    <TouchableOpacity   style={[styles.button]}
+    {/* <TouchableOpacity   style={[styles.button]}
     onPress={() => {  
       navigation.navigate('Report Screen',{ vehicle:vnumber});
   }}>
     <Text style={{color:'#fff'}}> Report</Text>
-   </TouchableOpacity>
+   </TouchableOpacity> */}
 
   
             

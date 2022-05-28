@@ -24,13 +24,21 @@ export default function Splash({ navigation }) {
         setLoading(true)
         await AsyncStorage.getItem('email').then(async (res) => {
             if(res){
+                try {
             let response = await api.login();
             dataparse = JSON.parse(response.config.data)
             logindata = dataparse.request
+            console.log(logindata)
             if (logindata.userMailid !== undefined){
             return navigation.replace('App Screens');
             }
             else return navigation.replace('Login Screen');
+        } catch (error) {
+            return navigation.replace('Login Screen');
+
+      
+        }
+        
         }
         else navigation.replace('Login Screen');
     })
