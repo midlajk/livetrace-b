@@ -26,16 +26,38 @@ export default function TrackScreen({navigation,route}) {
 
   // var listofdata = [];
   // var notfound = [];
+  const [list, setList] = useState({});
 
+  useEffect(() => {
+    setLoading(true) 
+    if(route.params.name !='Current Summary'){
+          getdata()
+    }
 
+  }, []);
+   
+    async function getdata() {  
+      let response = await api.history(route.params.from,route.params.to,route.params.vehicle);
+      console.log(response.HistoryData)
+      
+      setList(response.HistoryData)
+      setLoading(false) 
+   
+
+    }
   const data = Data.HistoryData
-  const filteredData = searchText ? data.filter(x =>
-    x.Reg_No.toLowerCase().includes(searchText.toLowerCase())
-    ): data
-    
+  function isObjectEmpty(obj) {
+    var name;
+    for (name in obj) {
+      return false;
+    }
+    return true;
+  }
 
   return (
     <View style={{flex:1,}}>
+                           <Loader loading={loading} navigation={navigation} />
+
          <View style={styles.header}>
              <View style={{width:'100%',flexDirection:'row',justifyContent:'center'}}>
             <Text style={{color:'#000',fontWeight:'bold'}}>{route.params.name} :</Text>
@@ -52,25 +74,25 @@ export default function TrackScreen({navigation,route}) {
       
         </View>
         {
-            route.params.name =='AD IN/OUT'?
-            <ADReport data={data}/>:
-            route.params.name =='Consolidated'?
-            <Consolidted data={data}/>:
+            route.params.name =='AD IN/OUT'?isObjectEmpty(list)?<View></View>:
+            <ADReport data={list} setLoading={setLoading}/>:
+            route.params.name =='Consolidated'?isObjectEmpty(list)?<View></View>:
+            <Consolidted data={list}/>:
             route.params.name =='Current Summary'?
-            <CurrentSummary data={data}/>:
-            route.params.name =='Halt'?
-            <Halt data={data}/>:
-            route.params.name =='Idiling'?
-            <Idiling data={data}/>:
-            route.params.name =='Ignition ON/OFF'?
-            <IgnitionON_off data={data}/>:
-            route.params.name =='Panic'?
-            <Panic data={data}/>:
-            route.params.name =='Over Speed'?
-            <OverSpeed data={data}/>:
-            route.params.name =='Trip'?
-            <Trip data={data}/>:
-               <TrackingReport data={data}/>
+            <CurrentSummary setLoading={setLoading} imei={route.params.imei}/>:
+            route.params.name =='Halt'?isObjectEmpty(list)?<View></View>:
+            <Halt data={list}/>:
+            route.params.name =='Idiling'?isObjectEmpty(list)?<View></View>:
+            <Idiling data={list}/>:
+            route.params.name =='Ignition ON/OFF'?isObjectEmpty(list)?<View></View>:
+            <IgnitionON_off data={list}/>:
+            route.params.name =='Panic'?isObjectEmpty(list)?<View></View>:
+            <Panic data={list}/>:
+            route.params.name =='Over Speed'?isObjectEmpty(list)?<View></View>:
+            <OverSpeed data={list}/>:
+            route.params.name =='Trip'?isObjectEmpty(list)?<View></View>:
+            <Trip data={list}/>:isObjectEmpty(list)?<View></View>:
+               <TrackingReport data={list} setLoading={setLoading}/>
         }
     
  

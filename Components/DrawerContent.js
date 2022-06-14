@@ -68,7 +68,7 @@ export function DrawerContent(props) {
                             label="Vehicle List"
                             onPress={() => {props.navigation.navigate('Vehicle List')}}
                         />
-                        {/* <DrawerItem 
+                        <DrawerItem 
                             icon={({color, size}) => (
                                 <Icon 
                                 name="alarm-panel" 
@@ -79,7 +79,7 @@ export function DrawerContent(props) {
                             label="Report"
                             onPress={() => {props.navigation.navigate('Report')}}
                         />
-                    
+                     {/*
                                <DrawerItem 
                             icon={({color, size}) => (
                                 <MaterialIcon 

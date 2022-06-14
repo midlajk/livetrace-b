@@ -72,7 +72,7 @@ export async function singledata(imei){
 
 export async function history(from,to,vehicle){
 
-
+console.log('here')
     let email = await AsyncStorage.getItem('email')
     let password = await AsyncStorage.getItem('password')
     try{
@@ -98,7 +98,10 @@ export async function history(from,to,vehicle){
          return res.data.response
         
     }catch (e) {
+        console.log('here err')
+
         throw handler(e);
+
     }
 }
 

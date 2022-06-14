@@ -31,7 +31,7 @@ export default function ReportScreen({navigation,route}) {
                             />
                             <Text>AD IN/OUT</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button}
+      {/* <TouchableOpacity style={styles.button}
         onPress={() => {
                     
           navigation.navigate('Report Generation',{number:initial, name: 'Consolidated',icon:'file-alert-outline',icontype:"Iconb" });
@@ -43,7 +43,7 @@ export default function ReportScreen({navigation,route}) {
                            
                             />
                             <Text>Consolidated</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       <TouchableOpacity style={styles.button}
       onPress={() => {
                     
@@ -57,7 +57,7 @@ export default function ReportScreen({navigation,route}) {
                             />
                             <Text style={{textAlign:'center'}}>Current Summary</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button}
+      {/* <TouchableOpacity style={styles.button}
       disabled={true}
       onPress={() => {
                     
@@ -70,8 +70,8 @@ export default function ReportScreen({navigation,route}) {
                            
                             />
                             <Text>Day wise</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button}
+      </TouchableOpacity> */}
+      {/* <TouchableOpacity style={styles.button}
       onPress={() => {
                     
         navigation.navigate('Report Generation',{number:initial, name: 'Halt',icon:'bus-stop',icontype:"Iconb" });
@@ -109,8 +109,8 @@ export default function ReportScreen({navigation,route}) {
                            
                             />
                             <Text style={{textAlign:'center',padding:5}}>Ignition ON/OFF</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button}
+      </TouchableOpacity> */}
+      {/* <TouchableOpacity style={styles.button}
             disabled={true}
 
       onPress={() => {
@@ -124,8 +124,8 @@ export default function ReportScreen({navigation,route}) {
                            
                             />
                             <Text>J1939</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button}
+      </TouchableOpacity> */}
+      {/* <TouchableOpacity style={styles.button}
             disabled={true}
 
       onPress={() => {
@@ -139,8 +139,8 @@ export default function ReportScreen({navigation,route}) {
                            
                             />
                             <Text>OBD II</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button}
+      </TouchableOpacity> */}
+      {/* <TouchableOpacity style={styles.button}
       onPress={() => {
                     
         navigation.navigate('Report Generation',{number:initial, name: 'Over Speed',icon:'speedometer-outline',icontype:"Icon" });
@@ -165,7 +165,7 @@ export default function ReportScreen({navigation,route}) {
                            
                             />
                             <Text>Panic</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <TouchableOpacity style={styles.button}
         onPress={() => {
                     
@@ -179,7 +179,7 @@ export default function ReportScreen({navigation,route}) {
                             />
                             <Text>Tracking</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button}
+        {/* <TouchableOpacity style={styles.button}
          onPress={() => {
                     
           navigation.navigate('Report Generation',{number:initial, name: 'Trip',icon:'arrow-up-down-bold-outline',icontype:"Iconb" });
@@ -191,7 +191,7 @@ export default function ReportScreen({navigation,route}) {
                            
                             />
                             <Text>Trip</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
     </View>
   );
 }

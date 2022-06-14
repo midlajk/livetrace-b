@@ -28,8 +28,11 @@ const App = (props) => {
         setVehiclename(value);
            
       };
-      const onVehicleSelected = value => {
+      const onVehicleSelected = (value,im) => {
         setVehiclename(value);
+        props.setVehicle(value)
+        props.setImei(im)
+
         setFilterVehicle([]);
       };
   return (
@@ -50,7 +53,7 @@ const App = (props) => {
                   data={filteredVehicle}
                   renderItem={({item, index}) => (
                     <TouchableOpacity
-                      onPress={() => onVehicleSelected(item.Reg_No)}
+                      onPress={() => onVehicleSelected(item.Reg_No,item.IMEI)}
                       style={{padding:10,borderColor:'#000',borderWidth:.3}}>
                   
                         <Text

@@ -10,10 +10,15 @@ import DropDown from '../Components/dropdown';
 import DatePicker from 'react-native-date-picker'
 
 export default function Notification({navigation,route}) {
-    const [from, setFrom] = useState(new Date());
+    const day = new Date()
+    day.setDate(day.getDate()-1)
+    const [from, setFrom] = useState(day);
     const [to, setTo] = useState(new Date());
     const [clicker, seclicker] = useState('');
     const [open, setOpen] = useState(false)
+    const [vehicle, setVehicle] = useState('')
+    const [imei, setImei] = useState('')
+
     const setToday = () => {
         var startdate = new Date()
         startdate.setHours(0,0,0,0);
@@ -61,6 +66,15 @@ export default function Notification({navigation,route}) {
         startdate.setHours(23,59,59,999);
         setTo(startdate)
      }
+     function submit() {
+      if (!vehicle) {
+        alert('Please select vehicle');
+        return;
+      }else{ 
+          navigation.navigate('Reports View',{name:route.params.name,vehicle:vehicle,from:from.toISOString(),to:to.toISOString(),imei:imei})
+      }
+    
+     }
   return (
     <View style={{ flex: 1,alignItems: 'center',backgroundColor:'#fff' }}>
         <View style={styles.header}>
@@ -93,7 +107,7 @@ export default function Notification({navigation,route}) {
         
    <View style={{flex:7}}>
        <Text style={{color:'#000',fontWeight:'bold',marginLeft:20}}>Select Vehicle Number</Text>
- <DropDown />
+ <DropDown setVehicle={setVehicle} setImei={setImei} />
    </View>
    
 </View>
@@ -198,7 +212,7 @@ export default function Notification({navigation,route}) {
     
     <TouchableOpacity
                   style={styles.button}
-                  onPress={()=>navigation.navigate('Reports View',{name:route.params.name,vehicle:'KL 12 B 893',from:from.toLocaleString(),to:to.toLocaleString()})}
+                  onPress={()=>{submit()}}
                 > 
                 
                    <Text style={{color:'#fff'}}>Generate Report</Text>

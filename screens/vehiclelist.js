@@ -8,7 +8,7 @@ import b from "../configuration/Datahandler";
 
 export default function TrackScreen({navigation,route}) {
    const [list, setList] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [searchText, setSearchText] = useState('');
    const [vehicle, setvehicle] = useState([]);
   const [serverdate, setServerdate] = useState('');
@@ -21,18 +21,18 @@ listRef.current = list;
   // var notfound = [];
 
   useEffect(() => {
-    setvehicle(b.getVehicle()) 
+    setvehicle(b.getVehicle())
+    setLoading(true)  
     getdata()
-
-  }, [1]);
+  
+  }, []);
    
   async function getdata() {
-    setData([])
+         setData([])
         let response = await api.fetchdata(); 
         setList(response.data.response.LiveData)
         setServerdate(response.data.server.dateTime)
       
-        setLoading(false) 
         vehicleRef.current.forEach(vehic => {
           found=false
           listRef.current.forEach(element => {
@@ -53,6 +53,8 @@ listRef.current = list;
                 setData(old=>[...old,vehic])
             }
           })
+          setLoading(false) 
+
       
     } 
 
