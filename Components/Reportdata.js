@@ -102,49 +102,148 @@ useEffect(() => {
   );
        }
 
-export  function Consolidted(params) {
+export  function Consolidted(props) {
+  const [data, setdata] = useState([]);
+ 
 
-        return (
-          <View style={{ flex: 1,marginTop:20}}>
-      
-                  
-      
-                      <View style={styles.shadow}>
-                     <View style={styles.button}
-                    
-                    >
+  async function getdata(){
+  setdata([])
+  props.setLoading(true) 
+  let items = props.data;
+  let i = 0;
+  await new Promise(async (resolve, reject) => {
+  try {
+      if (items.length == 0) return resolve();
+      let funSync = async () => {
+        console.log(i)
+          if (i == items.length) 
+          {   
+            if(countarray.length>0){
+             await setstart(items[countarray[0]])
+             await setend(items[countarray[countarray.length-1]])
+            pushdata.starttime = items[countarray[0]].Time
+            pushdata.endtime = items[countarray[countarray.length-1]].Time
+            timediff = new Date(pushdata.endtime)-new Date(pushdata.starttime)
+            pushdata.timediff=(timediff/60000).toFixed(2)
+            setdata(old=>[...old,pushdata])
+
+             }
+            props.setLoading(false)
+            resolve();
+          }else if(items[i].Igni>=1){
+       
+            await setobject(i)
+          i++
+          setTimeout( function() {
+            funSync();
+        }, 0 );
+    
+
+          }else{
+
+
+              if(countarray.length>0){
+               await setstart(items[countarray[0]])
+               await setend(items[countarray[countarray.length-1]])
+              pushdata.starttime = items[countarray[0]].Time
+              pushdata.endtime = items[countarray[countarray.length-1]].Time
+              timediff = new Date(pushdata.endtime)-new Date(pushdata.starttime)
+               pushdata.timediff=(timediff/60000).toFixed(2)
+              setdata(old=>[...old,pushdata])
+            
+            }
+            pushdata={}
+            countarray=[]
+            i++
+            setTimeout( function() {
+              funSync();
+          }, 0 );
+          
+
+          }
+
+
+      }
+      funSync();
+  } catch (e) {
+      reject(e);
+  }
+});
+  
+   
+          
+
+} 
+pushdata={}
+countarray=[]
+async function setobject(i){
+ await countarray.push(i)
+
+
+}
+
+async function setstart(props){
+      props.Speed==null? '':
+          result = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=`+props.latitude+`,`+props.longitude+`&key=AIzaSyB4Zi4r1J4WhBzLxop9rVY9czHDtI_BOEQ`)
+          .then(res => res.json())
+          .then((json) => {
+            pushdata.startaddress = json.results[0].formatted_address.split(' ').slice(1,20)
               
-                  
-                          <View style={{flex:1,flexDirection:'row',flexWrap:'wrap',justifyContent:'flex-start'}}>
-      
-                          <Text style={styles.textc}>Group Name: </Text>
-                            <Text style={styles.textc}></Text>
-                            <Text style={styles.textc}>Start Time  </Text>
-                            <Text style={styles.textc}>  </Text>
-
-                            <Text style={styles.textc}>Start Address  </Text>
-                            <Text style={styles.textc}>Kannur , India</Text>
-                            <Text style={styles.textc}>End Time  </Text>
-                            <Text style={styles.textc}>  </Text>
-
-                            <Text style={styles.textc}>End Address  </Text>
-                            <Text style={styles.textc}>Kannur , India</Text>
-                            <Text style={styles.textc}>Total Distance (Kms)</Text>
+          })
+    }
+    async function setend(props){
+      props.Speed==null? '':
+          result = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=`+props.latitude+`,`+props.longitude+`&key=AIzaSyB4Zi4r1J4WhBzLxop9rVY9czHDtI_BOEQ`)
+          .then(res => res.json())
+          .then((json) => {
+            pushdata.endaddress = json.results[0].formatted_address.split(' ').slice(1,20)
+              
+          })
+    }
+useEffect(() => {
+  props.setLoading(true)
+ getdata()
+ 
+}, [1]);
+        return (
+          <View style={{ flex: 1, justifyContent: 'center',marginTop:20}}>
+          <FlatList
+                data={data}
+                renderItem={({ item }) => (
+    
+                <View style={styles.shadow}>
+               <View style={styles.button}
+              
+              >
+        
+            
+                    <View style={{flex:1,flexDirection:'row',flexWrap:'wrap',justifyContent:'space-around'}}>
+    
+                    <Text style={styles.text}>Start Time : </Text>
+                      <Text style={styles.text}>{item.starttime}</Text>
+                      <Text style={styles.text}>Start Address  </Text>
+                      <Text style={styles.text}>{item.startaddress}</Text>
+                      <Text style={styles.text}>End Time</Text>
+                      <Text style={styles.text}>{item.endtime}</Text>
+                      <Text style={styles.text}>End Address</Text>
+                      <Text style={styles.text}>{item.endaddress}</Text>
+                      <Text style={styles.textc}>Total Distance (Kms)</Text>
                             <Text style={styles.textc}>0 Kms</Text>
                             <Text style={styles.textc}>Average Speed (km/Hr)</Text>
                             <Text style={styles.textc}>0 Kmph</Text>
                             <Text style={styles.textc}>Maximum Speed (km/Hr)</Text>
                             <Text style={styles.textc}>0 Kmph</Text>
              
-                            
-                              
-                              </View>
-                    
-                     </View>
-                    </View>
-                     
-      
-        </View>
+                        </View>
+              
+               </View>
+              </View>
+                )}
+                keyExtractor={(item, Reg_No) => Reg_No.toString()}/>
+    
+        
+          </View>
+          
         );
              }
 export  function ADReport(props) {
@@ -313,12 +412,106 @@ export  function CurrentSummary(props) {
 </View>
     );
 }
-export  function Halt(params) {
+export  function Halt(props) {
+  const [data, setdata] = useState([]);
+ 
 
+  async function getdata(){
+  setdata([])
+  props.setLoading(true) 
+  let items = props.data;
+  let i = 0;
+  await new Promise(async (resolve, reject) => {
+  try {
+      if (items.length == 0) return resolve();
+      let funSync = async () => {
+          if (i == items.length) 
+          {   
+            if(countarray.length>0){
+             await setstart(items[countarray[0]])
+             await setend(items[countarray[countarray.length-1]])
+            pushdata.starttime = items[countarray[0]].Time
+            pushdata.endtime = items[countarray[countarray.length-1]].Time
+            timediff = new Date(pushdata.endtime)-new Date(pushdata.starttime)
+            pushdata.timediff=(timediff/60000).toFixed(2)
+            setdata(old=>[...old,pushdata])
+
+             }
+            props.setLoading(false)
+            resolve();
+          }else if(items[i].Igni<1&&items[i].Speed<2){
+            await setobject(i)
+          i++
+          funSync();
+
+          }else{
+
+              if(countarray.length>0){
+               await setstart(items[countarray[0]])
+               await setend(items[countarray[countarray.length-1]])
+              pushdata.starttime = items[countarray[0]].Time
+              pushdata.endtime = items[countarray[countarray.length-1]].Time
+              timediff = new Date(pushdata.endtime)-new Date(pushdata.starttime)
+               pushdata.timediff=(timediff/60000).toFixed(2)
+              setdata(old=>[...old,pushdata])
+
+            }
+            pushdata={}
+            countarray=[]
+            i++
+            funSync();
+          
+
+          }
+
+
+      }
+      funSync();
+  } catch (e) {
+      reject(e);
+  }
+});
+  
+   
+          
+
+} 
+pushdata={}
+countarray=[]
+async function setobject(i){
+ await countarray.push(i)
+
+
+}
+
+async function setstart(props){
+      props.Speed==null? '':
+          result = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=`+props.latitude+`,`+props.longitude+`&key=AIzaSyB4Zi4r1J4WhBzLxop9rVY9czHDtI_BOEQ`)
+          .then(res => res.json())
+          .then((json) => {
+            pushdata.startaddress = json.results[0].formatted_address.split(' ').slice(1,20)
+              
+          })
+    }
+    async function setend(props){
+      props.Speed==null? '':
+          result = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=`+props.latitude+`,`+props.longitude+`&key=AIzaSyB4Zi4r1J4WhBzLxop9rVY9czHDtI_BOEQ`)
+          .then(res => res.json())
+          .then((json) => {
+            pushdata.endaddress = json.results[0].formatted_address.split(' ').slice(1,20)
+              
+          })
+    }
+useEffect(() => {
+  props.setLoading(true)
+ getdata()
+ 
+}, [1]);
+ 
     return (
       <View style={{ flex: 1, justifyContent: 'center',marginTop:20}}>
       <FlatList
-            data={params.data}
+            data={data}
             renderItem={({ item }) => (
 
             <View style={styles.shadow}>
@@ -330,15 +523,15 @@ export  function Halt(params) {
                 <View style={{flex:1,flexDirection:'row',flexWrap:'wrap',justifyContent:'space-around'}}>
 
                 <Text style={styles.text}>Start Time : </Text>
-                  <Text style={styles.text}>{item.Time}</Text>
+                  <Text style={styles.text}>{item.starttime}</Text>
                   <Text style={styles.text}>Start Address  </Text>
-                  <Text style={styles.text}>Kannur , India</Text>
+                  <Text style={styles.text}>{item.startaddress}</Text>
                   <Text style={styles.text}>End Time</Text>
-                  <Text style={styles.text}>{item.A1}</Text>
+                  <Text style={styles.text}>{item.endtime}</Text>
                   <Text style={styles.text}>End Address</Text>
-                  <Text style={styles.text}>{item.D1}</Text>
-                  <Text style={styles.text}>Total Ignition Off Time</Text>
-                  <Text style={styles.text}>{item.D1}</Text>
+                  <Text style={styles.text}>{item.endaddress}</Text>
+                  <Text style={styles.text}>Halt Time</Text>
+                  <Text style={styles.text}>{item.timediff} mins</Text>
                   
                     
                     </View>
@@ -352,12 +545,113 @@ export  function Halt(params) {
       </View>
     );
 }
-export  function Idiling(params) {
+export  function Idiling(props) {
+  const [data, setdata] = useState([]);
+ 
 
+  async function getdata(){
+  setdata([])
+  props.setLoading(true) 
+  let items = props.data;
+  let i = 0;
+  await new Promise(async (resolve, reject) => {
+  try {
+      if (items.length == 0) return resolve();
+      let funSync = async () => {
+        console.log(i)
+          if (i == items.length) 
+          {   
+            if(countarray.length>0){
+             await setstart(items[countarray[0]])
+             await setend(items[countarray[countarray.length-1]])
+            pushdata.starttime = items[countarray[0]].Time
+            pushdata.endtime = items[countarray[countarray.length-1]].Time
+            timediff = new Date(pushdata.endtime)-new Date(pushdata.starttime)
+            pushdata.timediff=(timediff/60000).toFixed(2)
+            setdata(old=>[...old,pushdata])
+
+             }
+            props.setLoading(false)
+            resolve();
+          }else if(items[i].Igni>0&&items[i].Speed<2){
+       
+            await setobject(i)
+          i++
+          setTimeout( function() {
+            funSync();
+        }, 0 );
+    
+
+          }else{
+
+
+              if(countarray.length>0){
+               await setstart(items[countarray[0]])
+               await setend(items[countarray[countarray.length-1]])
+              pushdata.starttime = items[countarray[0]].Time
+              pushdata.endtime = items[countarray[countarray.length-1]].Time
+              timediff = new Date(pushdata.endtime)-new Date(pushdata.starttime)
+               pushdata.timediff=(timediff/60000).toFixed(2)
+              setdata(old=>[...old,pushdata])
+            
+            }
+            pushdata={}
+            countarray=[]
+            i++
+            setTimeout( function() {
+              funSync();
+          }, 0 );
+          
+
+          }
+
+
+      }
+      funSync();
+  } catch (e) {
+      reject(e);
+  }
+});
+  
+   
+          
+
+} 
+pushdata={}
+countarray=[]
+async function setobject(i){
+ await countarray.push(i)
+
+
+}
+
+async function setstart(props){
+      props.Speed==null? '':
+          result = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=`+props.latitude+`,`+props.longitude+`&key=AIzaSyB4Zi4r1J4WhBzLxop9rVY9czHDtI_BOEQ`)
+          .then(res => res.json())
+          .then((json) => {
+            pushdata.startaddress = json.results[0].formatted_address.split(' ').slice(1,20)
+              
+          })
+    }
+    async function setend(props){
+      props.Speed==null? '':
+          result = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=`+props.latitude+`,`+props.longitude+`&key=AIzaSyB4Zi4r1J4WhBzLxop9rVY9czHDtI_BOEQ`)
+          .then(res => res.json())
+          .then((json) => {
+            pushdata.endaddress = json.results[0].formatted_address.split(' ').slice(1,20)
+              
+          })
+    }
+useEffect(() => {
+  props.setLoading(true)
+ getdata()
+ 
+}, [1]);
     return (
       <View style={{ flex: 1, justifyContent: 'center',marginTop:20}}>
       <FlatList
-            data={params.data}
+            data={data}
             renderItem={({ item }) => (
 
             <View style={styles.shadow}>
@@ -369,15 +663,15 @@ export  function Idiling(params) {
                 <View style={{flex:1,flexDirection:'row',flexWrap:'wrap',justifyContent:'space-around'}}>
 
                 <Text style={styles.text}>Start Time : </Text>
-                  <Text style={styles.text}>{item.Time}</Text>
+                  <Text style={styles.text}>{item.starttime}</Text>
                   <Text style={styles.text}>Start Address  </Text>
-                  <Text style={styles.text}>Kannur , India</Text>
+                  <Text style={styles.text}>{item.startaddress}</Text>
                   <Text style={styles.text}>End Time</Text>
-                  <Text style={styles.text}>{item.A1}</Text>
+                  <Text style={styles.text}>{item.endtime}</Text>
                   <Text style={styles.text}>End Address</Text>
-                  <Text style={styles.text}>{item.D1}</Text>
-                  <Text style={styles.text}> Total Idle Time</Text>
-                  <Text style={styles.text}>{item.D1}</Text>
+                  <Text style={styles.text}>{item.endaddress}</Text>
+                  <Text style={styles.text}>Total Idle Time</Text>
+                  <Text style={styles.text}>{item.timediff} mins</Text>
                   
                     
                     </View>
@@ -391,64 +685,162 @@ export  function Idiling(params) {
       </View>
     );
 }
-export  function IgnitionON_off(params) {
+export  function IgnitionON_off(props) {
+  const [data, setdata] = useState([]);
+ 
 
-    return (
-      <View style={{ flex: 1, justifyContent: 'center',marginTop:20}}>
-      <FlatList
-            data={params.data}
-            renderItem={({ item }) => (
+  async function getdata(){
+  setdata([])
+  props.setLoading(true) 
+  let items = props.data;
+  let i = 0;
+  await new Promise(async (resolve, reject) => {
+  try {
+      if (items.length == 0) return resolve();
+      let funSync = async () => {
+          if (i == items.length) 
+          {   
+            if(onarray.length>0){
+             await setstart(items[countarray[0]],'on')
+             await setend(items[countarray[countarray.length-1]],'on')
+             onpushdata.starttime = items[countarray[0]].Time
+             onpushdata.endtime = items[countarray[countarray.length-1]].Time
+            timediff = new Date(onpushdata.endtime)-new Date(onpushdata.starttime)
+            onpushdata.timediff=(timediff/60000).toFixed(2)
+            onpushdata.igni='On'
 
-            <View style={styles.shadow}>
-           <View style={styles.button}
+            setdata(old=>[...old,onpushdata])
+
+             }
+             if(offarray.length>0){
+              await setstart(items[countarray[0]],'off')
+              await setend(items[countarray[countarray.length-1]],'off')
+              offpushdata.starttime = items[countarray[0]].Time
+              offpushdata.endtime = items[countarray[countarray.length-1]].Time
+             timediff = new Date(offpushdata.endtime)-new Date(offpushdata.starttime)
+             offpushdata.timediff=(timediff/60000).toFixed(2)
+             offpushdata.igni='Off'
+
+             setdata(old=>[...old,offpushdata])
+           
+           }
+            props.setLoading(false)
+            resolve();
+          }else if(items[i].Igni>=1){
+
+            if(offarray.length>0){
+              await setstart(items[countarray[0]],'off')
+              await setend(items[countarray[countarray.length-1]],'off')
+              offpushdata.starttime = items[countarray[0]].Time
+              offpushdata.endtime = items[countarray[countarray.length-1]].Time
+             timediff = new Date(offpushdata.endtime)-new Date(offpushdata.starttime)
+             offpushdata.timediff=(timediff/60000).toFixed(2)
+             offpushdata.igni='Off'
+
+             setdata(old=>[...old,offpushdata])
+             offpushdata={}
+            offarray=[]
+           }
           
-          >
+            await seton(i)
+          i++
+          setTimeout( function() {
+            funSync();
+        }, 0 );
     
-        
-                <View style={{flex:1,flexDirection:'row',flexWrap:'wrap',justifyContent:'space-around'}}>
-                <Text style={styles.text}>User Name : </Text>
-                  <Text style={styles.text}></Text>
-                <Text style={styles.text}>Start Time : </Text>
-                  <Text style={styles.text}>{item.Time}</Text>
-                  <Text style={styles.text}>Start Address  </Text>
-                  <Text style={styles.text}>Kannur , India</Text>
-                  <Text style={styles.text}>End Time</Text>
-                  <Text style={styles.text}>{item.A1}</Text>
-                  <Text style={styles.text}>End Address</Text>
-                  <Text style={styles.text}>{item.D1}</Text>
-                  <Text style={styles.text}>Alert Duration</Text>
-                  <Text style={styles.text}>{item.D1}</Text>
-                  <Text style={styles.text}>Total Distance</Text>
-                  <Text style={styles.text}>{item.D1}</Text>
-                  <Text style={styles.text}>Total Runing Time</Text>
-                  <Text style={styles.text}>{item.D1}</Text>
-                  <Text style={styles.text}>Average Speed</Text>
-                  <Text style={styles.text}>{item.D1}</Text>
-                  <Text style={styles.text}>Total Idling Time</Text>
-                  <Text style={styles.text}>{item.D1}</Text>
-                  <Text style={styles.text}>Total Overspeed Distance</Text>
-                  <Text style={styles.text}>{item.D1}</Text>
-                  <Text style={styles.text}>Idle Percentage</Text>
-                  <Text style={styles.text}>{item.D1}</Text>
-                  <Text style={styles.text}>Max Speed</Text>
-                  <Text style={styles.text}>{item.D1}</Text>
-                    </View>
-          
-           </View>
-          </View>
-            )}
-            keyExtractor={(item, Reg_No) => Reg_No.toString()}/>
 
-    
-      </View>
-    );
+          }else{
+
+
+              if(onarray.length>0){
+               await setstart(items[countarray[0]],'on')
+               await setend(items[countarray[countarray.length-1]],'on')
+               onpushdata.starttime = items[countarray[0]].Time
+              onpushdata.endtime = items[countarray[countarray.length-1]].Time
+              timediff = new Date(onpushdata.endtime)-new Date(onpushdata.starttime)
+              onpushdata.timediff=(timediff/60000).toFixed(2)
+               onpushdata.igni='On'
+
+              setdata(old=>[...old,onpushdata])
+              onpushdata={}
+              onpushdata=[]
+            }
+            
+            await setoff(i)
+
+            i++
+            setTimeout( function() {
+              funSync();
+          }, 0 );
+          
+
+          }
+
+
+      }
+      funSync();
+  } catch (e) {
+      reject(e);
+  }
+});
+  
+   
+          
+
+} 
+onpushdata={}
+onarray=[]
+async function seton(i){
+ await onarray.push(i)
+
 }
-export  function OverSpeed(params) {
+offpushdata={}
+offarray=[]
+async function setoff(i){
+ await offarray.push(i)
 
+
+}
+
+async function setstart(props,igni){
+      props.Speed==null? '':
+          result = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=`+props.latitude+`,`+props.longitude+`&key=AIzaSyB4Zi4r1J4WhBzLxop9rVY9czHDtI_BOEQ`)
+          .then(res => res.json())
+          .then((json) => {
+            if(igni=='off'){
+              offpushdata.startaddress = json.results[0].formatted_address.split(' ').slice(1,20)
+
+            }else{
+              onpushdata.startaddress = json.results[0].formatted_address.split(' ').slice(1,20)
+
+            }
+              
+          })
+    }
+    async function setend(props,igni){
+      props.Speed==null? '':
+          result = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=`+props.latitude+`,`+props.longitude+`&key=AIzaSyB4Zi4r1J4WhBzLxop9rVY9czHDtI_BOEQ`)
+          .then(res => res.json())
+          .then((json) => {
+            if(igni=='off'){
+              offpushdata.endaddress = json.results[0].formatted_address.split(' ').slice(1,20)
+
+            }else{
+              onpushdata.endaddress = json.results[0].formatted_address.split(' ').slice(1,20)
+
+            }
+              
+          })
+    }
+useEffect(() => {
+  props.setLoading(true)
+ getdata()
+ 
+}, [1]);
     return (
       <View style={{ flex: 1, justifyContent: 'center',marginTop:20}}>
       <FlatList
-            data={params.data}
+            data={data}
             renderItem={({ item }) => (
 
             <View style={styles.shadow}>
@@ -458,27 +850,178 @@ export  function OverSpeed(params) {
     
         
                 <View style={{flex:1,flexDirection:'row',flexWrap:'wrap',justifyContent:'space-around'}}>
-
-                <Text style={styles.text}>Username : </Text>
-                  <Text style={styles.text}>{item.Time}</Text>
+                <Text style={styles.text}>Ignition Status : </Text>
+                  <Text style={styles.text}>{item.igni}</Text>
                   <Text style={styles.text}>Start Time : </Text>
-                  <Text style={styles.text}>{item.Time}</Text>
+                  <Text style={styles.text}>{item.starttime}</Text>
                   <Text style={styles.text}>Start Address  </Text>
-                  <Text style={styles.text}>Kannur , India</Text>
+                  <Text style={styles.text}>{item.startaddress}</Text>
                   <Text style={styles.text}>End Time</Text>
-                  <Text style={styles.text}>{item.A1}</Text>
+                  <Text style={styles.text}>{item.endtime}</Text>
                   <Text style={styles.text}>End Address</Text>
-                  <Text style={styles.text}>{item.D1}</Text>
+                  <Text style={styles.text}>{item.endaddress}</Text>
+                  <Text style={styles.text}> Total Duration</Text>
+                  <Text style={styles.text}>{item.timediff} mins</Text>
+                  <Text style={styles.text}>Total Distance</Text>
+                  <Text style={styles.text}></Text>
+                  <Text style={styles.text}>Total Runing Time</Text>
+                  <Text style={styles.text}></Text>
+                  <Text style={styles.text}>Average Speed</Text>
+                  <Text style={styles.text}></Text>
+                  <Text style={styles.text}>Total Idling Time</Text>
+                  <Text style={styles.text}></Text>
+                  <Text style={styles.text}>Total Overspeed Distance</Text>
+                  <Text style={styles.text}></Text>
+                  <Text style={styles.text}>Idle Percentage</Text>
+                  <Text style={styles.text}></Text>
+                  <Text style={styles.text}>Max Speed</Text>
+                  <Text style={styles.text}></Text>
+                    </View>
+          
+           </View>
+          </View>
+            )}
+            keyExtractor={(item, Reg_No) => Reg_No.toString()}/>
+
+    
+      </View>
+    );
+}
+export  function OverSpeed(props) {
+  const [data, setdata] = useState([]);
+ 
+
+  async function getdata(){
+  setdata([])
+  props.setLoading(true) 
+  let items = props.data;
+  let i = 0;
+  await new Promise(async (resolve, reject) => {
+  try {
+      if (items.length == 0) return resolve();
+      let funSync = async () => {
+        console.log(i)
+          if (i == items.length) 
+          {   
+            if(countarray.length>0){
+             await setstart(items[countarray[0]])
+             await setend(items[countarray[countarray.length-1]])
+            pushdata.starttime = items[countarray[0]].Time
+            pushdata.endtime = items[countarray[countarray.length-1]].Time
+            timediff = new Date(pushdata.endtime)-new Date(pushdata.starttime)
+            pushdata.timediff=(timediff/60000).toFixed(2)
+            setdata(old=>[...old,pushdata])
+
+             }
+            props.setLoading(false)
+            resolve();
+          }else if(items[i].Speed>60){
+       
+            await setobject(i)
+          i++
+          setTimeout( function() {
+            funSync();
+        }, 0 );
+    
+
+          }else{
+
+
+              if(countarray.length>0){
+               await setstart(items[countarray[0]])
+               await setend(items[countarray[countarray.length-1]])
+              pushdata.starttime = items[countarray[0]].Time
+              pushdata.endtime = items[countarray[countarray.length-1]].Time
+              timediff = new Date(pushdata.endtime)-new Date(pushdata.starttime)
+               pushdata.timediff=(timediff/60000).toFixed(2)
+              setdata(old=>[...old,pushdata])
+            
+            }
+            pushdata={}
+            countarray=[]
+            i++
+            setTimeout( function() {
+              funSync();
+          }, 0 );
+          
+
+          }
+
+
+      }
+      funSync();
+  } catch (e) {
+      reject(e);
+  }
+});
+  
+   
+          
+
+} 
+pushdata={}
+countarray=[]
+async function setobject(i){
+ await countarray.push(i)
+
+
+}
+
+async function setstart(props){
+      props.Speed==null? '':
+          result = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=`+props.latitude+`,`+props.longitude+`&key=AIzaSyB4Zi4r1J4WhBzLxop9rVY9czHDtI_BOEQ`)
+          .then(res => res.json())
+          .then((json) => {
+            pushdata.startaddress = json.results[0].formatted_address.split(' ').slice(1,20)
+              
+          })
+    }
+    async function setend(props){
+      props.Speed==null? '':
+          result = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=`+props.latitude+`,`+props.longitude+`&key=AIzaSyB4Zi4r1J4WhBzLxop9rVY9czHDtI_BOEQ`)
+          .then(res => res.json())
+          .then((json) => {
+            pushdata.endaddress = json.results[0].formatted_address.split(' ').slice(1,20)
+              
+          })
+    }
+useEffect(() => {
+  props.setLoading(true)
+ getdata()
+ 
+}, [1]);
+    return (
+      <View style={{ flex: 1, justifyContent: 'center',marginTop:20}}>
+      <FlatList
+            data={data}
+            renderItem={({ item }) => (
+
+            <View style={styles.shadow}>
+           <View style={styles.button}
+          
+          >
+    
+        
+                <View style={{flex:1,flexDirection:'row',flexWrap:'wrap',justifyContent:'space-around'}}>
+
+                  <Text style={styles.text}>Start Time : </Text>
+                  <Text style={styles.text}>{item.starttime}</Text>
+                  <Text style={styles.text}>Start Address  </Text>
+                  <Text style={styles.text}>{item.startaddress}</Text>
+                  <Text style={styles.text}>End Time</Text>
+                  <Text style={styles.text}>{item.endtime}</Text>
+                  <Text style={styles.text}>End Address</Text>
+                  <Text style={styles.text}>{item.endaddress}</Text>
                   <Text style={styles.text}> Alert Duration</Text>
-                  <Text style={styles.text}>{item.D1}</Text>
+                  <Text style={styles.text}>{item.timediff} mins</Text>
                   
-                  <Text style={styles.text}> Total Overspeed Distance</Text>
-                  <Text style={styles.text}>{item.D1}</Text>
+                   <Text style={styles.text}> Total Overspeed Distance</Text>
+                  <Text style={styles.text}></Text>
 
                   <Text style={styles.text}> Maximum Speed</Text>
-                  <Text style={styles.text}>{item.D1}</Text>
+                  <Text style={styles.text}></Text>
                   <Text style={styles.text}> Speed Limit</Text>
-                  <Text style={styles.text}>{item.D1}</Text>
+                  <Text style={styles.text}></Text> 
                     </View>
           
            </View>
@@ -490,12 +1033,113 @@ export  function OverSpeed(params) {
       </View>
     );
 }
-export  function Panic(params) {
+export  function Panic(props) {
+  const [data, setdata] = useState([]);
+ 
 
+  async function getdata(){
+  setdata([])
+  props.setLoading(true) 
+  let items = props.data;
+  let i = 0;
+  await new Promise(async (resolve, reject) => {
+  try {
+      if (items.length == 0) return resolve();
+      let funSync = async () => {
+        console.log(i)
+          if (i == items.length) 
+          {   
+            if(countarray.length>0){
+             await setstart(items[countarray[0]])
+             await setend(items[countarray[countarray.length-1]])
+            pushdata.starttime = items[countarray[0]].Time
+            pushdata.endtime = items[countarray[countarray.length-1]].Time
+            timediff = new Date(pushdata.endtime)-new Date(pushdata.starttime)
+            pushdata.timediff=(timediff/60000).toFixed(2)
+            setdata(old=>[...old,pushdata])
+
+             }
+            props.setLoading(false)
+            resolve();
+          }else if(items[i].SOS>=1){
+       
+            await setobject(i)
+          i++
+          setTimeout( function() {
+            funSync();
+        }, 0 );
+    
+
+          }else{
+
+
+              if(countarray.length>0){
+               await setstart(items[countarray[0]])
+               await setend(items[countarray[countarray.length-1]])
+              pushdata.starttime = items[countarray[0]].Time
+              pushdata.endtime = items[countarray[countarray.length-1]].Time
+              timediff = new Date(pushdata.endtime)-new Date(pushdata.starttime)
+               pushdata.timediff=(timediff/60000).toFixed(2)
+              setdata(old=>[...old,pushdata])
+            
+            }
+            pushdata={}
+            countarray=[]
+            i++
+            setTimeout( function() {
+              funSync();
+          }, 0 );
+          
+
+          }
+
+
+      }
+      funSync();
+  } catch (e) {
+      reject(e);
+  }
+});
+  
+   
+          
+
+} 
+pushdata={}
+countarray=[]
+async function setobject(i){
+ await countarray.push(i)
+
+
+}
+
+async function setstart(props){
+      props.Speed==null? '':
+          result = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=`+props.latitude+`,`+props.longitude+`&key=AIzaSyB4Zi4r1J4WhBzLxop9rVY9czHDtI_BOEQ`)
+          .then(res => res.json())
+          .then((json) => {
+            pushdata.startaddress = json.results[0].formatted_address.split(' ').slice(1,20)
+              
+          })
+    }
+    async function setend(props){
+      props.Speed==null? '':
+          result = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=`+props.latitude+`,`+props.longitude+`&key=AIzaSyB4Zi4r1J4WhBzLxop9rVY9czHDtI_BOEQ`)
+          .then(res => res.json())
+          .then((json) => {
+            pushdata.endaddress = json.results[0].formatted_address.split(' ').slice(1,20)
+              
+          })
+    }
+useEffect(() => {
+  props.setLoading(true)
+ getdata()
+ 
+}, [1]);
     return (
       <View style={{ flex: 1, justifyContent: 'center',marginTop:20}}>
       <FlatList
-            data={params.data}
+            data={data}
             renderItem={({ item }) => (
 
             <View style={styles.shadow}>
@@ -506,18 +1150,19 @@ export  function Panic(params) {
         
                 <View style={{flex:1,flexDirection:'row',flexWrap:'wrap',justifyContent:'space-around'}}>
 
-                <Text style={styles.text}>Username : </Text>
-                  <Text style={styles.text}>{item.Time}</Text>
-                  <Text style={styles.text}>Start Time : </Text>
-                  <Text style={styles.text}>{item.Time}</Text>
+                {/* <Text style={styles.text}>Username : </Text>
+                  <Text style={styles.text}>{item.Time}</Text> */}
+                      <Text style={styles.text}>Start Time : </Text>
+                  <Text style={styles.text}>{item.starttime}</Text>
                   <Text style={styles.text}>Start Address  </Text>
-                  <Text style={styles.text}>Kannur , India</Text>
+                  <Text style={styles.text}>{item.startaddress}</Text>
                   <Text style={styles.text}>End Time</Text>
-                  <Text style={styles.text}>{item.A1}</Text>
+                  <Text style={styles.text}>{item.endtime}</Text>
                   <Text style={styles.text}>End Address</Text>
-                  <Text style={styles.text}>{item.D1}</Text>
-                  <Text style={styles.text}> Alert Duration</Text>
-                  <Text style={styles.text}>{item.D1}</Text>
+                  <Text style={styles.text}>{item.endaddress}</Text>
+                  <Text style={styles.text}>Alert Duration</Text>
+                  <Text style={styles.text}>{item.timediff} mins</Text>
+                
                   
                   <Text style={styles.text}> Total Alert Distance</Text>
                   <Text style={styles.text}>{item.D1}</Text>
@@ -532,12 +1177,113 @@ export  function Panic(params) {
       </View>
     );
 }
-export  function Trip(params) {
+export  function Trip(props) {
+  const [data, setdata] = useState([]);
+ 
 
+  async function getdata(){
+  setdata([])
+  props.setLoading(true) 
+  let items = props.data;
+  let i = 0;
+  await new Promise(async (resolve, reject) => {
+  try {
+      if (items.length == 0) return resolve();
+      let funSync = async () => {
+        console.log(i)
+          if (i == items.length) 
+          {   
+            if(countarray.length>0){
+             await setstart(items[countarray[0]])
+             await setend(items[countarray[countarray.length-1]])
+            pushdata.starttime = items[countarray[0]].Time
+            pushdata.endtime = items[countarray[countarray.length-1]].Time
+            timediff = new Date(pushdata.endtime)-new Date(pushdata.starttime)
+            pushdata.timediff=(timediff/60000).toFixed(2)
+            setdata(old=>[...old,pushdata])
+
+             }
+            props.setLoading(false)
+            resolve();
+          }else if(items[i].Igni>=1){
+       
+            await setobject(i)
+          i++
+          setTimeout( function() {
+            funSync();
+        }, 0 );
+    
+
+          }else{
+
+
+              if(countarray.length>0){
+               await setstart(items[countarray[0]])
+               await setend(items[countarray[countarray.length-1]])
+              pushdata.starttime = items[countarray[0]].Time
+              pushdata.endtime = items[countarray[countarray.length-1]].Time
+              timediff = new Date(pushdata.endtime)-new Date(pushdata.starttime)
+               pushdata.timediff=(timediff/60000).toFixed(2)
+              setdata(old=>[...old,pushdata])
+            
+            }
+            pushdata={}
+            countarray=[]
+            i++
+            setTimeout( function() {
+              funSync();
+          }, 0 );
+          
+
+          }
+
+
+      }
+      funSync();
+  } catch (e) {
+      reject(e);
+  }
+});
+  
+   
+          
+
+} 
+pushdata={}
+countarray=[]
+async function setobject(i){
+ await countarray.push(i)
+
+
+}
+
+async function setstart(props){
+      props.Speed==null? '':
+          result = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=`+props.latitude+`,`+props.longitude+`&key=AIzaSyB4Zi4r1J4WhBzLxop9rVY9czHDtI_BOEQ`)
+          .then(res => res.json())
+          .then((json) => {
+            pushdata.startaddress = json.results[0].formatted_address.split(' ').slice(1,20)
+              
+          })
+    }
+    async function setend(props){
+      props.Speed==null? '':
+          result = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=`+props.latitude+`,`+props.longitude+`&key=AIzaSyB4Zi4r1J4WhBzLxop9rVY9czHDtI_BOEQ`)
+          .then(res => res.json())
+          .then((json) => {
+            pushdata.endaddress = json.results[0].formatted_address.split(' ').slice(1,20)
+              
+          })
+    }
+useEffect(() => {
+  props.setLoading(true)
+ getdata()
+ 
+}, [1]);
     return (
       <View style={{ flex: 1, justifyContent: 'center',marginTop:20}}>
       <FlatList
-            data={params.data}
+            data={data}
             renderItem={({ item }) => (
 
             <View style={styles.shadow}>
@@ -548,29 +1294,23 @@ export  function Trip(params) {
         
                 <View style={{flex:1,flexDirection:'row',flexWrap:'wrap',justifyContent:'space-around'}}>
 
-                <Text style={styles.text}>Username : </Text>
-                  <Text style={styles.text}>{item.Time}</Text>
-                  <Text style={styles.text}>Start Time : </Text>
-                  <Text style={styles.text}>{item.Time}</Text>
+                <Text style={styles.text}>Start Time : </Text>
+                  <Text style={styles.text}>{item.starttime}</Text>
                   <Text style={styles.text}>Start Address  </Text>
-                  <Text style={styles.text}>Kannur , India</Text>
+                  <Text style={styles.text}>{item.startaddress}</Text>
                   <Text style={styles.text}>End Time</Text>
-                  <Text style={styles.text}>{item.A1}</Text>
+                  <Text style={styles.text}>{item.endtime}</Text>
                   <Text style={styles.text}>End Address</Text>
-                  <Text style={styles.text}>{item.D1}</Text>
+                  <Text style={styles.text}>{item.endaddress}</Text>
+                  <Text style={styles.text}>Total Running Time</Text>
+                  <Text style={styles.text}>{item.timediff} mins</Text>
  
                   <Text style={styles.text}> Total Distance</Text>
-                  <Text style={styles.text}>{item.D1}</Text>
-                  <Text style={styles.text}> Total Running Time</Text>
-                  <Text style={styles.text}>{item.D1}</Text>
+                 
                   <Text style={styles.text}> Average Speed</Text>
-                  <Text style={styles.text}>{item.D1}</Text>
                   <Text style={styles.text}> Total Idling Time</Text>
-                  <Text style={styles.text}>{item.D1}</Text>
                   <Text style={styles.text}> Idle(%)</Text>
-                  <Text style={styles.text}>{item.D1}</Text>
                   <Text style={styles.text}> Max Speed</Text>
-                  <Text style={styles.text}>{item.D1}</Text>
                     </View>
           
            </View>

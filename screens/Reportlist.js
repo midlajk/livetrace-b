@@ -29,7 +29,7 @@ export default function TrackScreen({navigation,route}) {
   const [list, setList] = useState({});
 
   useEffect(() => {
-    setLoading(true) 
+    // setLoading(true) 
     if(route.params.name !='Current Summary'){
           getdata()
     }
@@ -37,11 +37,9 @@ export default function TrackScreen({navigation,route}) {
   }, []);
    
     async function getdata() {  
-      let response = await api.history(route.params.from,route.params.to,route.params.vehicle);
-      console.log(response.HistoryData)
-      
-      setList(response.HistoryData)
-      setLoading(false) 
+      // let response = await api.history(route.params.from,route.params.to,route.params.vehicle);      
+      // setList(response.HistoryData)
+      // setLoading(false) 
    
 
     }
@@ -74,25 +72,25 @@ export default function TrackScreen({navigation,route}) {
       
         </View>
         {
-            route.params.name =='AD IN/OUT'?isObjectEmpty(list)?<View></View>:
-            <ADReport data={list} setLoading={setLoading}/>:
-            route.params.name =='Consolidated'?isObjectEmpty(list)?<View></View>:
-            <Consolidted data={list}/>:
+            route.params.name =='AD IN/OUT'?isObjectEmpty(data)?<View></View>:
+            <ADReport data={data} setLoading={setLoading}/>:
+            route.params.name =='Consolidated'?isObjectEmpty(data)?<View></View>:
+            <Consolidted data={data} setLoading={setLoading}/>:
             route.params.name =='Current Summary'?
             <CurrentSummary setLoading={setLoading} imei={route.params.imei}/>:
-            route.params.name =='Halt'?isObjectEmpty(list)?<View></View>:
-            <Halt data={list}/>:
-            route.params.name =='Idiling'?isObjectEmpty(list)?<View></View>:
-            <Idiling data={list}/>:
-            route.params.name =='Ignition ON/OFF'?isObjectEmpty(list)?<View></View>:
-            <IgnitionON_off data={list}/>:
-            route.params.name =='Panic'?isObjectEmpty(list)?<View></View>:
-            <Panic data={list}/>:
-            route.params.name =='Over Speed'?isObjectEmpty(list)?<View></View>:
-            <OverSpeed data={list}/>:
-            route.params.name =='Trip'?isObjectEmpty(list)?<View></View>:
-            <Trip data={list}/>:isObjectEmpty(list)?<View></View>:
-               <TrackingReport data={list} setLoading={setLoading}/>
+            route.params.name =='Halt'?isObjectEmpty(data)?<View></View>:
+            <Halt data={data} setLoading={setLoading}/>:
+            route.params.name =='Idiling'?isObjectEmpty(data)?<View></View>:
+            <Idiling data={data} setLoading={setLoading}/>:
+            route.params.name =='Ignition ON/OFF'?isObjectEmpty(data)?<View></View>:
+            <IgnitionON_off data={data} setLoading={setLoading}/>:
+            route.params.name =='Panic'?isObjectEmpty(data)?<View></View>:
+            <Panic data={data} setLoading={setLoading}/>:
+            route.params.name =='Over Speed'?isObjectEmpty(data)?<View></View>:
+            <OverSpeed data={data} setLoading={setLoading}/>:
+            route.params.name =='Trip'?isObjectEmpty(data)?<View></View>:
+            <Trip data={data} setLoading={setLoading}/>:isObjectEmpty(data)?<View></View>:
+               <TrackingReport data={data} setLoading={setLoading}/>
         }
     
  

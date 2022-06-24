@@ -39,9 +39,9 @@ export default function TrackScreen({navigation,route}) {
         reject(e);
     }
 });
-      function setdata(props){
+      async function setdata(props){
         props.Speed==null? '':
-            result = fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=`+props.Lat+`,`+props.Lon+`&key=AIzaSyB4Zi4r1J4WhBzLxop9rVY9czHDtI_BOEQ`)
+            result = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=`+props.Lat+`,`+props.Lon+`&key=AIzaSyB4Zi4r1J4WhBzLxop9rVY9czHDtI_BOEQ`)
             .then(res => res.json())
             .then((json) => {
               props.address = json.results[0].formatted_address.split(' ').slice(1,20)

@@ -31,7 +31,7 @@ export default function ReportScreen({navigation,route}) {
                             />
                             <Text>AD IN/OUT</Text>
       </TouchableOpacity>
-      {/* <TouchableOpacity style={styles.button}
+      <TouchableOpacity style={styles.button}
         onPress={() => {
                     
           navigation.navigate('Report Generation',{number:initial, name: 'Consolidated',icon:'file-alert-outline',icontype:"Iconb" });
@@ -43,7 +43,7 @@ export default function ReportScreen({navigation,route}) {
                            
                             />
                             <Text>Consolidated</Text>
-      </TouchableOpacity> */}
+      </TouchableOpacity> 
       <TouchableOpacity style={styles.button}
       onPress={() => {
                     
@@ -57,21 +57,8 @@ export default function ReportScreen({navigation,route}) {
                             />
                             <Text style={{textAlign:'center'}}>Current Summary</Text>
       </TouchableOpacity>
-      {/* <TouchableOpacity style={styles.button}
-      disabled={true}
-      onPress={() => {
-                    
-        navigation.navigate('Report Generation',{number:initial, name: 'Day wise',icon:'calendar-outline',icontype:"Icon" });
-    }}>
-      <Icon
-                                name={'calendar-outline'}
-                                size={40}
-                                color={'#000'}
-                           
-                            />
-                            <Text>Day wise</Text>
-      </TouchableOpacity> */}
-      {/* <TouchableOpacity style={styles.button}
+     
+     <TouchableOpacity style={styles.button}
       onPress={() => {
                     
         navigation.navigate('Report Generation',{number:initial, name: 'Halt',icon:'bus-stop',icontype:"Iconb" });
@@ -97,7 +84,7 @@ export default function ReportScreen({navigation,route}) {
                             />
                             <Text>Idiling</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button}
+        <TouchableOpacity style={styles.button}
        onPress={() => {
                     
         navigation.navigate('Report Generation',{number:initial, name: 'Ignition ON/OFF',icon:'key-outline',icontype:"Icon" });
@@ -109,8 +96,73 @@ export default function ReportScreen({navigation,route}) {
                            
                             />
                             <Text style={{textAlign:'center',padding:5}}>Ignition ON/OFF</Text>
-      </TouchableOpacity> */}
-      {/* <TouchableOpacity style={styles.button}
+      </TouchableOpacity> 
+   
+    <TouchableOpacity style={styles.button}
+      onPress={() => {
+                    
+        navigation.navigate('Report Generation',{number:initial, name: 'Over Speed',icon:'speedometer-outline',icontype:"Icon" });
+    }}>
+      <Icon
+                                name={'speedometer-outline'}
+                                size={40}
+                                color={'#000'}
+                           
+                            />
+                            <Text>Over Speed</Text>
+                            </TouchableOpacity> 
+          <TouchableOpacity style={styles.button}
+        onPress={() => {
+                    
+          navigation.navigate('Report Generation',{number:initial, name: 'Panic',icon:'stop-circle-outline',icontype:"Icon" });
+      }}>
+        <Icon
+                                name={'stop-circle-outline'}
+                                size={40}
+                                color={'#000'}
+                           
+                            />
+                            <Text>Panic</Text>
+        </TouchableOpacity> 
+        <TouchableOpacity style={styles.button}
+        onPress={() => {
+                    
+          navigation.navigate('Report Generation',{number:initial, name: 'Tracking',icon:'location-outline',icontype:"Icon" });
+      }}>
+        <Icon
+                                name={'location-outline'}
+                                size={40}
+                                color={'#000'}
+                           
+                            />
+                            <Text>Tracking</Text>
+        </TouchableOpacity>
+         <TouchableOpacity style={styles.button}
+         onPress={() => {
+                    
+          navigation.navigate('Report Generation',{number:initial, name: 'Trip',icon:'arrow-up-down-bold-outline',icontype:"Iconb" });
+      }}>
+        <Iconb
+                                name={'arrow-up-down-bold-outline'}
+                                size={40}
+                                color={'#000'}
+                           
+                            />
+                            <Text>Trip</Text>
+        </TouchableOpacity> 
+    </View>
+  );
+}
+const styles = StyleSheet.create({
+ 
+  button: {
+    width:'30%',height:100,backgroundColor:'#fff',borderRadius:16,marginBottom:10,justifyContent:'center',alignItems:'center',elevation:3
+
+  }
+
+})
+
+   {/* <TouchableOpacity style={styles.button}
             disabled={true}
 
       onPress={() => {
@@ -140,66 +192,17 @@ export default function ReportScreen({navigation,route}) {
                             />
                             <Text>OBD II</Text>
       </TouchableOpacity> */}
-      {/* <TouchableOpacity style={styles.button}
+       {/* <TouchableOpacity style={styles.button}
+      disabled={true}
       onPress={() => {
                     
-        navigation.navigate('Report Generation',{number:initial, name: 'Over Speed',icon:'speedometer-outline',icontype:"Icon" });
+        navigation.navigate('Report Generation',{number:initial, name: 'Day wise',icon:'calendar-outline',icontype:"Icon" });
     }}>
       <Icon
-                                name={'speedometer-outline'}
+                                name={'calendar-outline'}
                                 size={40}
                                 color={'#000'}
                            
                             />
-                            <Text>Over Speed</Text>
-                            </TouchableOpacity> 
-        <TouchableOpacity style={styles.button}
-        onPress={() => {
-                    
-          navigation.navigate('Report Generation',{number:initial, name: 'Panic',icon:'stop-circle-outline',icontype:"Icon" });
-      }}>
-        <Icon
-                                name={'stop-circle-outline'}
-                                size={40}
-                                color={'#000'}
-                           
-                            />
-                            <Text>Panic</Text>
-        </TouchableOpacity> */}
-        <TouchableOpacity style={styles.button}
-        onPress={() => {
-                    
-          navigation.navigate('Report Generation',{number:initial, name: 'Tracking',icon:'location-outline',icontype:"Icon" });
-      }}>
-        <Icon
-                                name={'location-outline'}
-                                size={40}
-                                color={'#000'}
-                           
-                            />
-                            <Text>Tracking</Text>
-        </TouchableOpacity>
-        {/* <TouchableOpacity style={styles.button}
-         onPress={() => {
-                    
-          navigation.navigate('Report Generation',{number:initial, name: 'Trip',icon:'arrow-up-down-bold-outline',icontype:"Iconb" });
-      }}>
-        <Iconb
-                                name={'arrow-up-down-bold-outline'}
-                                size={40}
-                                color={'#000'}
-                           
-                            />
-                            <Text>Trip</Text>
-        </TouchableOpacity> */}
-    </View>
-  );
-}
-const styles = StyleSheet.create({
- 
-  button: {
-    width:'30%',height:100,backgroundColor:'#fff',borderRadius:16,marginBottom:10,justifyContent:'center',alignItems:'center',elevation:3
-
-  }
-
-})
+                            <Text>Day wise</Text>
+      </TouchableOpacity> */}
