@@ -107,7 +107,7 @@ export default function Notification({navigation,route}) {
         
    <View style={{flex:7}}>
        <Text style={{color:'#000',fontWeight:'bold',marginLeft:20}}>Select Vehicle Number</Text>
- <DropDown setVehicle={setVehicle} setImei={setImei} />
+ <DropDown setVehicle={setVehicle} setImei={setImei} vehicle={vehicle} />
    </View>
    
 </View>

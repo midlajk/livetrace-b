@@ -104,90 +104,55 @@ useEffect(() => {
 
 export  function Consolidted(props) {
   const [data, setdata] = useState([]);
- 
+  const [startaddress, setstartaddress] = useState('');
+  const [endaddress, setendaddress] = useState('');
 
+  pushdata={}
+  countarray=[]
   async function getdata(){
   setdata([])
-  props.setLoading(true) 
   let items = props.data;
+  setdata(props.data)
   let i = 0;
   await new Promise(async (resolve, reject) => {
   try {
-      if (items.length == 0) return resolve();
-      let funSync = async () => {
-        console.log(i)
-          if (i == items.length) 
-          {   
-            if(countarray.length>0){
-             await setstart(items[countarray[0]])
-             await setend(items[countarray[countarray.length-1]])
-            pushdata.starttime = items[countarray[0]].Time
-            pushdata.endtime = items[countarray[countarray.length-1]].Time
-            timediff = new Date(pushdata.endtime)-new Date(pushdata.starttime)
-            pushdata.timediff=(timediff/60000).toFixed(2)
-            setdata(old=>[...old,pushdata])
-
-             }
-            props.setLoading(false)
-            resolve();
-          }else if(items[i].Igni>=1){
-       
-            await setobject(i)
-          i++
-          setTimeout( function() {
-            funSync();
-        }, 0 );
-    
-
-          }else{
-
-
-              if(countarray.length>0){
-               await setstart(items[countarray[0]])
-               await setend(items[countarray[countarray.length-1]])
-              pushdata.starttime = items[countarray[0]].Time
-              pushdata.endtime = items[countarray[countarray.length-1]].Time
-              timediff = new Date(pushdata.endtime)-new Date(pushdata.starttime)
-               pushdata.timediff=(timediff/60000).toFixed(2)
-              setdata(old=>[...old,pushdata])
-            
-            }
-            pushdata={}
-            countarray=[]
-            i++
-            setTimeout( function() {
-              funSync();
-          }, 0 );
+    await setstart(items[0])
+    await setend(items[items.length-1])
+    props.setLoading(false)
+    // if (items.length == 0) return resolve();
+      // let funSync = async () => {
+      //     if (i == items.length) 
+      //     {   
+          
+      //       props.setLoading(false)
+      //       resolve();
+          
+           
           
 
-          }
+      //     }
+      //       i++
+      //       funSync();
 
-
-      }
-      funSync();
+      // }
+      // funSync();
   } catch (e) {
       reject(e);
   }
 });
-  
+
    
           
 
 } 
-pushdata={}
-countarray=[]
-async function setobject(i){
- await countarray.push(i)
 
-
-}
 
 async function setstart(props){
       props.Speed==null? '':
           result = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=`+props.latitude+`,`+props.longitude+`&key=AIzaSyB4Zi4r1J4WhBzLxop9rVY9czHDtI_BOEQ`)
           .then(res => res.json())
           .then((json) => {
-            pushdata.startaddress = json.results[0].formatted_address.split(' ').slice(1,20)
+            setstartaddress(json.results[0].formatted_address.split(' ').slice(1,20))
               
           })
     }
@@ -196,7 +161,7 @@ async function setstart(props){
           result = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=`+props.latitude+`,`+props.longitude+`&key=AIzaSyB4Zi4r1J4WhBzLxop9rVY9czHDtI_BOEQ`)
           .then(res => res.json())
           .then((json) => {
-            pushdata.endaddress = json.results[0].formatted_address.split(' ').slice(1,20)
+            setendaddress(json.results[0].formatted_address.split(' ').slice(1,20))
               
           })
     }
@@ -206,44 +171,44 @@ useEffect(() => {
  
 }, [1]);
         return (
-          <View style={{ flex: 1, justifyContent: 'center',marginTop:20}}>
-          <FlatList
-                data={data}
-                renderItem={({ item }) => (
+
+           <View style={{ flex: 1,marginTop:20}}>
+      
+                  
+      
+      <View style={styles.shadow}>
+     <View style={styles.button}
     
-                <View style={styles.shadow}>
-               <View style={styles.button}
-              
-              >
-        
+    >
+
+  
+          <View style={{flex:1,flexDirection:'row',flexWrap:'wrap',justifyContent:'flex-start'}}>
+
+    <Text style={styles.textc}>Day Start Time: </Text>
+            <Text style={styles.textc}>{props.data[0].Time}</Text>
+            <Text style={styles.textc}>Day Start Address  </Text>
+            <Text style={styles.textc}>{startaddress}  </Text>
+            <Text style={styles.textc}>End Time: </Text>
+            <Text style={styles.textc}>{props.data[props.data.length-1].Time}</Text>
+            <Text style={styles.textc}>End Address  </Text>
+            <Text style={styles.textc}>{endaddress}  </Text>
+
+
+            <Text style={styles.textc}>Last Tracked Time </Text>
+            <Text style={styles.textc}> {props.data[props.data.length-1].Time} </Text>
+            <Text style={styles.textc}>Distance Covered Today</Text>
+           {/*  <Text style={styles.textc}>{distance}</Text> */}
+           
+
             
-                    <View style={{flex:1,flexDirection:'row',flexWrap:'wrap',justifyContent:'space-around'}}>
-    
-                    <Text style={styles.text}>Start Time : </Text>
-                      <Text style={styles.text}>{item.starttime}</Text>
-                      <Text style={styles.text}>Start Address  </Text>
-                      <Text style={styles.text}>{item.startaddress}</Text>
-                      <Text style={styles.text}>End Time</Text>
-                      <Text style={styles.text}>{item.endtime}</Text>
-                      <Text style={styles.text}>End Address</Text>
-                      <Text style={styles.text}>{item.endaddress}</Text>
-                      <Text style={styles.textc}>Total Distance (Kms)</Text>
-                            <Text style={styles.textc}>0 Kms</Text>
-                            <Text style={styles.textc}>Average Speed (km/Hr)</Text>
-                            <Text style={styles.textc}>0 Kmph</Text>
-                            <Text style={styles.textc}>Maximum Speed (km/Hr)</Text>
-                            <Text style={styles.textc}>0 Kmph</Text>
-             
-                        </View>
               
-               </View>
               </View>
-                )}
-                keyExtractor={(item, Reg_No) => Reg_No.toString()}/>
     
-        
-          </View>
-          
+     </View>
+    </View>
+     
+
+</View>
         );
              }
 export  function ADReport(props) {

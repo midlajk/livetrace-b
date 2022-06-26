@@ -72,7 +72,6 @@ export async function singledata(imei){
 
 export async function history(from,to,vehicle){
 
-console.log('here')
     let email = await AsyncStorage.getItem('email')
     let password = await AsyncStorage.getItem('password')
     try{
@@ -104,6 +103,39 @@ console.log('here')
 
     }
 }
+export async function report(data){
+
+    let email = await AsyncStorage.getItem('email')
+    let password = await AsyncStorage.getItem('password')
+    try{
+
+  
+        let res = await axios.post(c.REPORT, {
+            "header": {
+            "appVersion": "1.0",
+            "clientName": "tracker" 
+            },
+            "request": {
+            "CustName": data.name,
+            "RegNo": data.vehicle,
+            "MobNo": data.mobile,
+            "Serial": data.imei,
+            "Fault": data.fault,
+            "Comments": data.comment,
+            "UserName": email,
+            "Password": password
+            }
+        });
+            
+         return res.data.status
+        
+    }catch (e) {
+
+        throw handler(e);
+
+    }
+}
+
 
 
 

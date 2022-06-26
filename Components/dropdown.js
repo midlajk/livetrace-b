@@ -39,8 +39,8 @@ const App = (props) => {
     <View>
                   <View style={[styles.SectionStyle,props.style]}>
           <TextInput
-                  value={vehiclename}
-                  placeholder="Select Vehicle Number"
+                  value={props.vehicle}
+                  placeholder="Select Vehicle Number *"
                   style={styles.inputStyle}
                   onChangeText={filterVehicle}
                 onFocus={initialise}

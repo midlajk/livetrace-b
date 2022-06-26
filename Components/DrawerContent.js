@@ -79,7 +79,7 @@ export function DrawerContent(props) {
                             label="Report"
                             onPress={() => {props.navigation.navigate('Report')}}
                         />
-                     {/*
+                    
                                <DrawerItem 
                             icon={({color, size}) => (
                                 <MaterialIcon 
@@ -91,7 +91,7 @@ export function DrawerContent(props) {
                             label="Report a problem"
                             onPress={() => {props.navigation.navigate('Report Problem')}}
                         /> 
-                           <DrawerItem 
+                        {/*    <DrawerItem 
                             icon={({color, size}) => (
                                 <MaterialIcon 
                                 name="payment" 

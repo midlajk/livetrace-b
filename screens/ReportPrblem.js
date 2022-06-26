@@ -16,62 +16,86 @@ import {
   TouchableOpacity,
   ScrollView,
   Alert,
-  VariantsBox
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from '../Components/Loader';
-import DropDown from '../Components/dropdown';
+import DropDownv from '../Components/dropdown';
+import { Dropdown } from 'react-native-element-dropdown';
+
+const data = [
+  { label: 'Vehicle Tracking is not live in App', value: '1' },
+  { label: 'Emergency Alarm Off Request', value: '2' },
+  { label: 'Device not Working/ Wiring Complaint', value: '3' },
+  { label: 'Enquiry For Recharge', value: '4' },
+  { label: 'Request a call back', value: '5' },
+  { label: 'Others ( add detailed comments)', value: '6' },
+
+];
 
 
 const RegisterScreen = (props) => {
 
-  const {navigation} = props;
-  const {navigate} = navigation;
-  const [error, setError] = useState(null);
-
+  const [vehicle, setVehicle] = useState('')
+    const [imei, setImei] = useState('')
   const [userContact, setUserContact] = useState('');
-  const [vehicleNumber, setVehicleNumber] = useState('');
-
-  const [deviceFault, setDeviceFault] = useState('');
+  const [username, setusername] = useState('');
+  const [deviceFault, setDeviceFault] = useState('Select Fault *');
   const [comment, setComment] = useState('');
+  const [isFocus, setIsFocus] = useState(false);
 
-  const [loading, setLoading] = useState(false);
-  const [errortext, setErrortext] = useState('');
-  
-
-  const userContactRef = createRef();
- 
-
+  const [loading, setLoading] = useState(false); 
 async function handleSubmitButton (state) {
-
+ if (!username) {
+      alert('Please fill User Name');
+      return;
+    }
     if (!userContact) {
       alert('Please fill User Contact');
       return;
     }
 
-    if (!vehicleNumber) {
-      alert('Please fill Vehicle Number');
+    if (!vehicle) {
+      alert('Please select a Vehicle Number');
       return;
     }
-
-    if (!deviceFault) {
-      alert('Please fill Device Fault');
-      return;
-    }
-    //Show Loader
-    setLoading(true);
-    setTimeout(() => {
-      Alert.alert('Error','Report submitted successfully');
-      setLoading(false)
-    }, 1000); 
-
-  
    
+    if (deviceFault == 'Select Fault') {
+      alert('Please select Device Fault');
+      return;
+    }
+    let response = await api.report({
+      name:username,
+      mobile:userContact,
+      vehicle:vehicle,
+      imei:imei,
+      fault:deviceFault,
+      comment:comment
+    }) 
+   
+    // alert(response.description);
+    
+    Alert.alert(  
+      'Alert',  
+      response.description,  
+      [  
+           
+          {text: 'OK', onPress: () => {
+            setVehicle('')
+            setImei('')
+            setusername('')
+            setUserContact('')
+            setDeviceFault('Select Fault')
+            setComment('')
+
+          }},  
+      ]  
+  );  
+    
   };
 
   return (
     <View style={{flex: 1,}}>
-      <Loader loading={loading} navigation={navigation} />
+      <Loader loading={loading} navigation={props.navigation} />
       <View
         style={{marginTop:'15%'}}
         keyboardShouldPersistTaps="handled"
@@ -81,21 +105,52 @@ async function handleSubmitButton (state) {
           <Text style={{color: 'red'}}>Fields marked with * are mandatory</Text>
         </View>
         <KeyboardAvoidingView enabled>
-   
+        <View style={styles.SectionStyle}>
+            <TextInput
+              style={styles.inputStyle}
+              onChangeText={(name) => setusername(name)}
+              placeholder="Customer Name *"
+              keyboardType='default'
+              returnKeyType="next"
+              value={username}
+            />
+          </View>
           <View style={styles.SectionStyle}>
             <TextInput
               style={styles.inputStyle}
               onChangeText={(UserContact) => setUserContact(UserContact)}
               placeholder="Contact Number *"
               keyboardType="phone-pad"
-              ref={userContactRef}
               returnKeyType="next"
-           
+              value={userContact}
             />
           </View>
-         <DropDown />
+          <DropDownv setVehicle={setVehicle} setImei={setImei} vehicle={vehicle} />
       
-         
+          <Dropdown
+          style={[{ borderColor:'#000',
+          borderWidth:1,
+          width:'83%',
+          marginTop:20,
+          alignSelf:'center',
+          paddingLeft: 15,
+          paddingRight: 15,
+          height:50,
+        }, isFocus && { borderColor: 'blue' }]}
+          data={data}
+          maxHeight={300}
+          labelField="label"
+          valueField="value"
+          placeholder={!isFocus ? deviceFault : '...'}
+          value={deviceFault}
+          onFocus={() => setIsFocus(true)}
+          onBlur={() => setIsFocus(false)}
+          onChange={item => {
+            setDeviceFault(item.label);
+            setIsFocus(false);
+          }}
+       
+        />
           <View style={styles.SectionStyle}>
             <TextInput
               style={styles.inputStyle}
@@ -103,15 +158,11 @@ async function handleSubmitButton (state) {
               placeholder="Comment"
               keyboardType="default"
               returnKeyType="send"
-           
+              value={comment}
+
             />
           </View>
      
-         {errortext != '' ? (
-            <Text style={styles.errorTextStyle}>
-              {errortext}
-            </Text>
-          ) : null}
           <TouchableOpacity
             style={styles.buttonStyle}
             activeOpacity={0.5}
@@ -130,11 +181,10 @@ export default RegisterScreen;
 const styles = StyleSheet.create({
   SectionStyle: {
     flexDirection: 'row',
-    height: 40,
+    height: 50,
     marginTop: 20,
     marginLeft: 35,
     marginRight: 35,
-    margin: 10,
   },
   buttonStyle: {
     backgroundColor: '#000',
@@ -163,7 +213,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     height:50,
 
-    borderColor: '#dadae8',
+    borderColor: '#000',
   },
   errorTextStyle: {
     color: 'red',
