@@ -28,6 +28,7 @@ export default function Tracking({navigation,route}) {
   const [counter, setCounter] = useState(0);
   const [vehicle, setvehicle] = useState([]);
   const [userdata, setUserdata] = useState({});
+  const [imei, setimei] = useState('');
 
   useEffect(() => {
     setLoading(true) 
@@ -52,6 +53,8 @@ export default function Tracking({navigation,route}) {
         setSpeed(response[0].Speed)
         setStatus(response[0].Igni>0?'Online':'Offline')
         setVNumber(response[0].Reg_No)
+        setimei(route.params.imei)
+
         result = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=`+response[0].Lat+`,`+response[0].Lon+`&key=AIzaSyB4Zi4r1J4WhBzLxop9rVY9czHDtI_BOEQ`)
         .then(res => res.json())
         .then((json) => {
@@ -71,7 +74,7 @@ export default function Tracking({navigation,route}) {
                      {list.length>0?<Mapview list={list} navigation={navigation} />:<View></View>}
                      <MapTopButton getdata={getdata} navigation={navigation} setButtonVisible={setButtonVisible} buttonVisible={buttonVisible}/>
 
-                     {buttonVisible?<BotomButton setPicker={setPicker} time={time} speed={speed} status={status} navigation={navigation} address={address} vnumber={vnumber}  />:<View></View>}
+                     {buttonVisible?<BotomButton setPicker={setPicker} time={time} speed={speed} status={status} navigation={navigation} address={address} vnumber={vnumber} imei={imei} />:<View></View>}
     
      
     </View>

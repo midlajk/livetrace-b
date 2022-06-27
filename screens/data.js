@@ -307,7 +307,7 @@ export const Data =  {
     "latitude": 11.900195,
     "longitude": 75.734886,
     "Nick": "Lorry_3",
-    "Reg_No": "KL-10-AF-9836", "SOS": null,
+    "Reg_No": "KL-10-AF-9836", "SOS": 1,
     "Speed": 0,
     
      "Time": "2022-05-11 11:21:30",
@@ -539,7 +539,7 @@ export const Data =  {
     "longitude": 75.734818,
     "Nick": "Lorry_3",
     "Reg_No": "KL-10-AF-9836", "SOS": null,
-    "Speed": 0,
+    "Speed": 500,
     "Time": "2022-05-11 11:36:27", "V_Type": "Truck"
     },  {"A1": "0",
     "Course": "121",
@@ -555,7 +555,7 @@ export const Data =  {
     "longitude": 75.734825,
     "Nick": "Lorry_3",
     "Reg_No": "KL-10-AF-9836", "SOS": null,
-    "Speed": 0,
+    "Speed": 500,
     "Time": "2022-05-11 11:37:26", "V_Type": "Truck"
 },{"A1": "0", "Course": "120", "D1": "0",
     "Dist": 0.0, "EBV": "12681", "Event": 1, "HDOP": 0.83, "IBV": 4293.0, "Igni": 3, "ImVio": "0", "latitude": 11.9002, "longitude": 75.73484,
@@ -578,7 +578,7 @@ export const Data =  {
     "longitude": 75.73494,
     "Nick": "Lorry_3",
     "Reg_No": "KL-10-AF-9836", "SOS": null,
-    "Speed": 0,
+    "Speed": 6000,
     "Time": "2022-05-11 11:39:26", "V_Type": "Truck"
 },{"A1": "0",
     "Course": "297",

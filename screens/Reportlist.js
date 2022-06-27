@@ -30,9 +30,8 @@ export default function TrackScreen({navigation,route}) {
 
   useEffect(() => {
     // setLoading(true) 
-    if(route.params.name !='Current Summary'){
           getdata()
-    }
+    
 
   }, []);
    
@@ -77,7 +76,7 @@ export default function TrackScreen({navigation,route}) {
             route.params.name =='Consolidated'?isObjectEmpty(data)?<View></View>:
             <Consolidted data={data} setLoading={setLoading}/>:
             route.params.name =='Current Summary'?
-            <CurrentSummary setLoading={setLoading} imei={route.params.imei}/>:
+            <CurrentSummary setLoading={setLoading} data={data}/>:
             route.params.name =='Halt'?isObjectEmpty(data)?<View></View>:
             <Halt data={data} setLoading={setLoading}/>:
             route.params.name =='Idiling'?isObjectEmpty(data)?<View></View>:

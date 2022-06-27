@@ -18,7 +18,11 @@ export default function Notification({navigation,route}) {
     const [open, setOpen] = useState(false)
     const [vehicle, setVehicle] = useState('')
     const [imei, setImei] = useState('')
+useEffect(() => {
+  setVehicle(route.params.number)
+  setImei(route.params.imei)
 
+}, [])
     const setToday = () => {
         var startdate = new Date()
         startdate.setHours(0,0,0,0);

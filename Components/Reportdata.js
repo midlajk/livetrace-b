@@ -7,6 +7,7 @@ import {Data} from './data'
 import Icon from 'react-native-vector-icons/Ionicons';
 import Iconb from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as api from "../services/auth";
+import {getPathLength,getDistance} from 'geolib';
 
 
 export default function TrackingReport(props) {
@@ -23,6 +24,7 @@ export default function TrackingReport(props) {
       if (items.length == 0) return resolve();
       let funSync = async () => {
           await setdata(items[i]);
+
           i++;
           if (i == items.length) 
           { 
@@ -42,7 +44,13 @@ export default function TrackingReport(props) {
           
 
 } 
-function setdata(props){
+initiallat=props.data[0].latitude
+initiallong=props.data[0].longitude
+
+distancevar=0
+
+async function setdata(props){
+  
       props.Speed==null? '':
           result = fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=`+props.latitude+`,`+props.longitude+`&key=AIzaSyB4Zi4r1J4WhBzLxop9rVY9czHDtI_BOEQ`)
           .then(res => res.json())
@@ -50,14 +58,21 @@ function setdata(props){
             props.address = json.results[0].formatted_address.split(' ').slice(1,20)
               
           })
+          
+        
+            var dis = await getDistance({ latitude: initiallat, longitude: initiallong },{ latitude: props.latitude, longitude: props.longitude });
+            distancevar = distancevar + (dis/1000) 
+            props.cumulative = distancevar
+            initiallat= props.latitude
+            initiallong= props.longitude
+          
+         
+          
           setvehicle(old=>[...old,props])
     }
 useEffect(() => {
   props.setLoading(true)
  getdata()
- setTimeout(() => {
-  getdata()
- }, 3000);
 
 }, [1]);
  
@@ -81,7 +96,7 @@ useEffect(() => {
                       <Text style={styles.text}>Address  </Text>
                       <Text style={styles.text}>{item.address}</Text>
                       <Text style={styles.text}>Cumulative Distance (Kms)</Text>
-                      <Text style={styles.text}>{item.Dist}</Text>
+                      <Text style={styles.text}>{item.cumulative} Kms</Text>
                       <Text style={styles.text}>Speed (km/Hr</Text>
                       <Text style={styles.text}>{item.Speed}</Text>
        
@@ -103,39 +118,39 @@ useEffect(() => {
        }
 
 export  function Consolidted(props) {
-  const [data, setdata] = useState([]);
+  const [avgspeed, setaveragespeed] = useState(0);
   const [startaddress, setstartaddress] = useState('');
   const [endaddress, setendaddress] = useState('');
+  const [distance, setdistance] = useState(0);
+  const [speed, highestspeed] = useState(0);
 
   pushdata={}
   countarray=[]
   async function getdata(){
-  setdata([])
   let items = props.data;
-  setdata(props.data)
+  let sum = props.data.reduce(function(prev, current) {
+    return prev + +current.Speed
+  }, 0);
+  const highestMaxScore = Math.max(...props.data.map(data => data.Speed));
+  highestspeed(highestMaxScore)
+  if(sum>0){
+    setaveragespeed(sum/items.length)
+  }else{
+    setaveragespeed(0)
+  }
+  
+ 
   let i = 0;
   await new Promise(async (resolve, reject) => {
   try {
     await setstart(items[0])
     await setend(items[items.length-1])
-    props.setLoading(false)
-    // if (items.length == 0) return resolve();
-      // let funSync = async () => {
-      //     if (i == items.length) 
-      //     {   
-          
-      //       props.setLoading(false)
-      //       resolve();
-          
-           
-          
+     var dis = await getPathLength(props.data);
+     console.log(dis)
+     setdistance(dis/1000) 
 
-      //     }
-      //       i++
-      //       funSync();
+     props.setLoading(false)
 
-      // }
-      // funSync();
   } catch (e) {
       reject(e);
   }
@@ -196,10 +211,12 @@ useEffect(() => {
 
             <Text style={styles.textc}>Last Tracked Time </Text>
             <Text style={styles.textc}> {props.data[props.data.length-1].Time} </Text>
-            <Text style={styles.textc}>Distance Covered Today</Text>
-           {/*  <Text style={styles.textc}>{distance}</Text> */}
-           
-
+            <Text style={styles.textc}>Distance Covered</Text>
+            <Text style={styles.textc}>{distance.toFixed(3)} Km</Text>
+            <Text style={styles.textc}>Average Speed</Text>
+            <Text style={styles.textc}>{avgspeed.toFixed(2)} Km/H</Text>
+            <Text style={styles.textc}>Maximum Speed</Text>
+            <Text style={styles.textc}>{speed} Km/H</Text>
             
               
               </View>
@@ -301,41 +318,64 @@ export  function ADReport(props) {
                 );
 }
 export  function CurrentSummary(props) {
-  const [time, setTime] = useState('');
-  const [speed, setSpeed] = useState();
-  const [address, setAddress] = useState('');
-  const [list, setList] = useState([]);
-  const [distance, setDistance] = useState('');
+  const [daystarttime, setdaystarttime] = useState('');
+  const [startaddress, setstartaddress] = useState('');
+  const [currentaddress, setcurrentaddress] = useState('');
+  const [lasttracked, setlasttracked] = useState('');
+  const [currentspeed, setcurrentspeed] = useState('');
+  const [distance, setdistance] = useState(0);
 
-  useEffect(() => {
-    props.setLoading(true)
-    getdata()
-   
-  }, []);
-  async function getdata() {
-    let response = await api.singledata(props.imei)
-    if(response.length!=0){
-      setList(response)    
-      setTime(response[0].Time)
-      setSpeed(response[0].Speed)
-      setDistance(response[0].Dist)
-      result = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=`+response[0].Lat+`,`+response[0].Lon+`&key=AIzaSyB4Zi4r1J4WhBzLxop9rVY9czHDtI_BOEQ`)
-      .then(res => res.json())
-      .then((json) => {
-        setAddress(json.results[0].formatted_address.split(',').slice(0,5))
-          
-   })
-    }else{
-      setTime('No Data')
-      setSpeed('No Data')
-      setDistance('No Data')
-      setAddress('No Data')
+  pushdata={}
+  countarray=[]
+  async function getdata(){
+  let items = props.data;
+  let i = 0;
+  await new Promise(async (resolve, reject) => {
+  try {
+    await setstart(items[0])
+    await setend(items[items.length-1])
+    setcurrentspeed(items[items.length-1].Speed)
+    setlasttracked(items[items.length-1].Time)
+    setdaystarttime(items[0].Time)
+     var dis = await getPathLength(props.data);
+     setdistance(dis/1000) 
 
-    }
-    
-    props.setLoading(false)
+     props.setLoading(false)
+
+  } catch (e) {
+      reject(e);
   }
+});
+
+   
+          
+
+} 
+
+
+async function setstart(props){
+      props.Speed==null? '':
+          result = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=`+props.latitude+`,`+props.longitude+`&key=AIzaSyB4Zi4r1J4WhBzLxop9rVY9czHDtI_BOEQ`)
+          .then(res => res.json())
+          .then((json) => {
+            setstartaddress(json.results[0].formatted_address.split(' ').slice(1,20))
+              
+          })
+    }
+    async function setend(props){
+      props.Speed==null? '':
+          result = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=`+props.latitude+`,`+props.longitude+`&key=AIzaSyB4Zi4r1J4WhBzLxop9rVY9czHDtI_BOEQ`)
+          .then(res => res.json())
+          .then((json) => {
+            setcurrentaddress(json.results[0].formatted_address.split(' ').slice(1,20))
+              
+          })
+    }
+useEffect(() => {
+  props.setLoading(true)
+ getdata()
  
+}, [1]);
 
     return (
       <View style={{ flex: 1,marginTop:20}}>
@@ -351,19 +391,19 @@ export  function CurrentSummary(props) {
           <View style={{flex:1,flexDirection:'row',flexWrap:'wrap',justifyContent:'flex-start'}}>
 
     <Text style={styles.textc}>Day Start Time: </Text>
-            <Text style={styles.textc}>{time.toLocaleString()}</Text>
+            <Text style={styles.textc}>{daystarttime}</Text>
             <Text style={styles.textc}>Day Start Address  </Text>
-            <Text style={styles.textc}> {address} </Text>
+            <Text style={styles.textc}> {startaddress} </Text>
 
             <Text style={styles.textc}>Current Address  </Text>
-            <Text style={styles.textc}>{address}</Text>
+            <Text style={styles.textc}>{currentaddress}</Text>
             <Text style={styles.textc}>Current Speed </Text>
-            <Text style={styles.textc}> {speed}  </Text>
+            <Text style={styles.textc}> {currentspeed}  </Text>
 
             <Text style={styles.textc}>Last Tracked Time </Text>
-            <Text style={styles.textc}> {time.toLocaleString()} </Text>
+            <Text style={styles.textc}> {lasttracked} </Text>
             <Text style={styles.textc}>Distance Covered Today</Text>
-            <Text style={styles.textc}>{distance}</Text>
+            <Text style={styles.textc}>{distance.toFixed(2)} Km</Text>
           
 
             
@@ -495,7 +535,7 @@ useEffect(() => {
                   <Text style={styles.text}>{item.endtime}</Text>
                   <Text style={styles.text}>End Address</Text>
                   <Text style={styles.text}>{item.endaddress}</Text>
-                  <Text style={styles.text}>Halt Time</Text>
+                  <Text style={styles.text}>Total Ignition Off Time</Text>
                   <Text style={styles.text}>{item.timediff} mins</Text>
                   
                     
@@ -523,7 +563,6 @@ export  function Idiling(props) {
   try {
       if (items.length == 0) return resolve();
       let funSync = async () => {
-        console.log(i)
           if (i == items.length) 
           {   
             if(countarray.length>0){
@@ -666,27 +705,13 @@ export  function IgnitionON_off(props) {
           if (i == items.length) 
           {   
             if(onarray.length>0){
-             await setstart(items[countarray[0]],'on')
-             await setend(items[countarray[countarray.length-1]],'on')
-             onpushdata.starttime = items[countarray[0]].Time
-             onpushdata.endtime = items[countarray[countarray.length-1]].Time
-            timediff = new Date(onpushdata.endtime)-new Date(onpushdata.starttime)
-            onpushdata.timediff=(timediff/60000).toFixed(2)
-            onpushdata.igni='On'
-
-            setdata(old=>[...old,onpushdata])
+       
+            await ondatasave()
 
              }
              if(offarray.length>0){
-              await setstart(items[countarray[0]],'off')
-              await setend(items[countarray[countarray.length-1]],'off')
-              offpushdata.starttime = items[countarray[0]].Time
-              offpushdata.endtime = items[countarray[countarray.length-1]].Time
-             timediff = new Date(offpushdata.endtime)-new Date(offpushdata.starttime)
-             offpushdata.timediff=(timediff/60000).toFixed(2)
-             offpushdata.igni='Off'
-
-             setdata(old=>[...old,offpushdata])
+          
+            await offdatasave()
            
            }
             props.setLoading(false)
@@ -694,19 +719,10 @@ export  function IgnitionON_off(props) {
           }else if(items[i].Igni>=1){
 
             if(offarray.length>0){
-              await setstart(items[countarray[0]],'off')
-              await setend(items[countarray[countarray.length-1]],'off')
-              offpushdata.starttime = items[countarray[0]].Time
-              offpushdata.endtime = items[countarray[countarray.length-1]].Time
-             timediff = new Date(offpushdata.endtime)-new Date(offpushdata.starttime)
-             offpushdata.timediff=(timediff/60000).toFixed(2)
-             offpushdata.igni='Off'
-
-             setdata(old=>[...old,offpushdata])
-             offpushdata={}
-            offarray=[]
+         
+            await offdatasave()
            }
-          
+           ondata.push(items[i])
             await seton(i)
           i++
           setTimeout( function() {
@@ -718,20 +734,13 @@ export  function IgnitionON_off(props) {
 
 
               if(onarray.length>0){
-               await setstart(items[countarray[0]],'on')
-               await setend(items[countarray[countarray.length-1]],'on')
-               onpushdata.starttime = items[countarray[0]].Time
-              onpushdata.endtime = items[countarray[countarray.length-1]].Time
-              timediff = new Date(onpushdata.endtime)-new Date(onpushdata.starttime)
-              onpushdata.timediff=(timediff/60000).toFixed(2)
-               onpushdata.igni='On'
+              
+              await ondatasave()
 
-              setdata(old=>[...old,onpushdata])
-              onpushdata={}
-              onpushdata=[]
             }
             
             await setoff(i)
+            offdata.push(items[i])
 
             i++
             setTimeout( function() {
@@ -749,9 +758,68 @@ export  function IgnitionON_off(props) {
   }
 });
   
-   
+   async function offdatasave(){
+    await setstart(items[offarray[0]],'off')
+    await setend(items[offarray[offarray.length-1]],'off')
+    offpushdata.starttime = items[offarray[0]].Time
+    offpushdata.endtime = items[offarray[offarray.length-1]].Time
+   timediff = new Date(offpushdata.endtime)-new Date(offpushdata.starttime)
+   offpushdata.timediff=(timediff/60000).toFixed(2)
+   offpushdata.igni='Off'
+   var dis = await getPathLength(offdata);
+   offpushdata.totaldistance=(dis/1000)
+   var newdata = offdata.filter(function (el) {
+     return el.Speed > 50
+   });
+   var seepddis = await getPathLength(newdata);
+   offpushdata.overspeeddistance=(seepddis/1000)
+   let sum = offdata.reduce(function(prev, current) {
+     return prev + +current.Speed
+   }, 0);
+   const highestMaxScore = Math.max(...offdata.map(data => data.Speed));
+   offpushdata.highspeed=highestMaxScore
+   if(sum>0){
+    offpushdata.avgspeed=(sum/offdata.length)
+   }else{
+    offpushdata.avgspeed=0
+   }
+   setdata(old=>[...old,offpushdata])
+   offpushdata={}
+  offarray=[]
+  offdata=[]
+   }
           
+   async function ondatasave(){
+    await setstart(items[onarray[0]],'on')
+    await setend(items[onarray[onarray.length-1]],'on')
+    onpushdata.starttime = items[onarray[0]].Time
+    onpushdata.endtime = items[onarray[onarray.length-1]].Time
+    timediff = new Date(onpushdata.endtime)-new Date(onpushdata.starttime)
+    onpushdata.timediff=(timediff/60000).toFixed(2)
+     onpushdata.igni='On'
 
+   var dis = await getPathLength(ondata);
+   onpushdata.totaldistance=(dis/1000)
+   var newdata = ondata.filter(function (el) {
+     return el.Speed > 50
+   });
+   var seepddis = await getPathLength(newdata);
+   onpushdata.overspeeddistance=(seepddis/1000)
+   let sum = ondata.reduce(function(prev, current) {
+     return prev + +current.Speed
+   }, 0);
+   const highestMaxScore = Math.max(...ondata.map(data => data.Speed));
+   onpushdata.highspeed=highestMaxScore
+   if(sum>0){
+    onpushdata.avgspeed=(sum/ondata.length)
+   }else{
+    onpushdata.avgspeed=0
+   }
+   setdata(old=>[...old,onpushdata])
+   onpushdata={}
+   onarray=[]
+   ondata=[]
+   }
 } 
 onpushdata={}
 onarray=[]
@@ -759,6 +827,8 @@ async function seton(i){
  await onarray.push(i)
 
 }
+ondata=[]
+offdata=[]
 offpushdata={}
 offarray=[]
 async function setoff(i){
@@ -828,19 +898,13 @@ useEffect(() => {
                   <Text style={styles.text}> Total Duration</Text>
                   <Text style={styles.text}>{item.timediff} mins</Text>
                   <Text style={styles.text}>Total Distance</Text>
-                  <Text style={styles.text}></Text>
-                  <Text style={styles.text}>Total Runing Time</Text>
-                  <Text style={styles.text}></Text>
+                  <Text style={styles.text}> {item.totaldistance.toFixed(2)} Km </Text>
                   <Text style={styles.text}>Average Speed</Text>
-                  <Text style={styles.text}></Text>
-                  <Text style={styles.text}>Total Idling Time</Text>
-                  <Text style={styles.text}></Text>
+                  <Text style={styles.text}> {item.avgspeed.toFixed(2)} Km/H </Text>
                   <Text style={styles.text}>Total Overspeed Distance</Text>
-                  <Text style={styles.text}></Text>
-                  <Text style={styles.text}>Idle Percentage</Text>
-                  <Text style={styles.text}></Text>
+                  <Text style={styles.text}>{item.overspeeddistance.toFixed(2)} Km</Text>
                   <Text style={styles.text}>Max Speed</Text>
-                  <Text style={styles.text}></Text>
+                  <Text style={styles.text}>{item.highspeed.toFixed(2)} Km/H</Text>
                     </View>
           
            </View>
@@ -865,24 +929,19 @@ export  function OverSpeed(props) {
   try {
       if (items.length == 0) return resolve();
       let funSync = async () => {
-        console.log(i)
           if (i == items.length) 
           {   
             if(countarray.length>0){
-             await setstart(items[countarray[0]])
-             await setend(items[countarray[countarray.length-1]])
-            pushdata.starttime = items[countarray[0]].Time
-            pushdata.endtime = items[countarray[countarray.length-1]].Time
-            timediff = new Date(pushdata.endtime)-new Date(pushdata.starttime)
-            pushdata.timediff=(timediff/60000).toFixed(2)
-            setdata(old=>[...old,pushdata])
+              await datasave()
 
              }
             props.setLoading(false)
             resolve();
-          }else if(items[i].Speed>60){
+          }else if(items[i].Speed>80){
        
             await setobject(i)
+            speeddata.push(items[i])
+
           i++
           setTimeout( function() {
             funSync();
@@ -893,17 +952,10 @@ export  function OverSpeed(props) {
 
 
               if(countarray.length>0){
-               await setstart(items[countarray[0]])
-               await setend(items[countarray[countarray.length-1]])
-              pushdata.starttime = items[countarray[0]].Time
-              pushdata.endtime = items[countarray[countarray.length-1]].Time
-              timediff = new Date(pushdata.endtime)-new Date(pushdata.starttime)
-               pushdata.timediff=(timediff/60000).toFixed(2)
-              setdata(old=>[...old,pushdata])
-            
+           
+              await datasave()
             }
-            pushdata={}
-            countarray=[]
+            
             i++
             setTimeout( function() {
               funSync();
@@ -919,11 +971,29 @@ export  function OverSpeed(props) {
       reject(e);
   }
 });
+async function datasave(){
+  await setstart(items[countarray[0]])
+  await setend(items[countarray[countarray.length-1]])
+ pushdata.starttime = items[countarray[0]].Time
+ pushdata.endtime = items[countarray[countarray.length-1]].Time
+ timediff = new Date(pushdata.endtime)-new Date(pushdata.starttime)
+  pushdata.timediff=(timediff/60000).toFixed(2)
+  const highestMaxScore = Math.max(...speeddata.map(data => data.Speed));
+ var dis = await getPathLength(speeddata);
+ pushdata.totaldistance=(dis/1000)
+ pushdata.highspeed=highestMaxScore
+
+ setdata(old=>[...old,pushdata])
+ speeddata={}
+ pushdata=[]
+ countarray=[]
+ }
   
    
           
 
 } 
+speeddata=[]
 pushdata={}
 countarray=[]
 async function setobject(i){
@@ -981,12 +1051,12 @@ useEffect(() => {
                   <Text style={styles.text}>{item.timediff} mins</Text>
                   
                    <Text style={styles.text}> Total Overspeed Distance</Text>
-                  <Text style={styles.text}></Text>
+                  <Text style={styles.text}> {item.totaldistance.toFixed(2)} Km</Text>
 
                   <Text style={styles.text}> Maximum Speed</Text>
-                  <Text style={styles.text}></Text>
+                  <Text style={styles.text}>{item.highspeed} Km/H</Text>
                   <Text style={styles.text}> Speed Limit</Text>
-                  <Text style={styles.text}></Text> 
+                  <Text style={styles.text}>80 Km/H</Text> 
                     </View>
           
            </View>
@@ -1011,17 +1081,10 @@ export  function Panic(props) {
   try {
       if (items.length == 0) return resolve();
       let funSync = async () => {
-        console.log(i)
           if (i == items.length) 
           {   
             if(countarray.length>0){
-             await setstart(items[countarray[0]])
-             await setend(items[countarray[countarray.length-1]])
-            pushdata.starttime = items[countarray[0]].Time
-            pushdata.endtime = items[countarray[countarray.length-1]].Time
-            timediff = new Date(pushdata.endtime)-new Date(pushdata.starttime)
-            pushdata.timediff=(timediff/60000).toFixed(2)
-            setdata(old=>[...old,pushdata])
+              await datasave()
 
              }
             props.setLoading(false)
@@ -1029,6 +1092,8 @@ export  function Panic(props) {
           }else if(items[i].SOS>=1){
        
             await setobject(i)
+            panicdata.push(items[i])
+
           i++
           setTimeout( function() {
             funSync();
@@ -1039,13 +1104,7 @@ export  function Panic(props) {
 
 
               if(countarray.length>0){
-               await setstart(items[countarray[0]])
-               await setend(items[countarray[countarray.length-1]])
-              pushdata.starttime = items[countarray[0]].Time
-              pushdata.endtime = items[countarray[countarray.length-1]].Time
-              timediff = new Date(pushdata.endtime)-new Date(pushdata.starttime)
-               pushdata.timediff=(timediff/60000).toFixed(2)
-              setdata(old=>[...old,pushdata])
+               await datasave()
             
             }
             pushdata={}
@@ -1066,10 +1125,25 @@ export  function Panic(props) {
   }
 });
   
-   
+async function datasave(){
+  await setstart(items[countarray[0]])
+  await setend(items[countarray[countarray.length-1]])
+ pushdata.starttime = items[countarray[0]].Time
+ pushdata.endtime = items[countarray[countarray.length-1]].Time
+ timediff = new Date(pushdata.endtime)-new Date(pushdata.starttime)
+  pushdata.timediff=(timediff/60000).toFixed(2)
+ var dis = await getPathLength(panicdata);
+ pushdata.totaldistance=(dis/1000)
+
+ setdata(old=>[...old,pushdata])
+ panicdata=[]
+ pushdata=[]
+ countarray=[]
+ }
           
 
 } 
+panicdata=[]
 pushdata={}
 countarray=[]
 async function setobject(i){
@@ -1115,8 +1189,7 @@ useEffect(() => {
         
                 <View style={{flex:1,flexDirection:'row',flexWrap:'wrap',justifyContent:'space-around'}}>
 
-                {/* <Text style={styles.text}>Username : </Text>
-                  <Text style={styles.text}>{item.Time}</Text> */}
+           
                       <Text style={styles.text}>Start Time : </Text>
                   <Text style={styles.text}>{item.starttime}</Text>
                   <Text style={styles.text}>Start Address  </Text>
@@ -1130,7 +1203,7 @@ useEffect(() => {
                 
                   
                   <Text style={styles.text}> Total Alert Distance</Text>
-                  <Text style={styles.text}>{item.D1}</Text>
+                  <Text style={styles.text}>{item.totaldistance.toFixed(2)}</Text>
                     </View>
           
            </View>
@@ -1155,24 +1228,31 @@ export  function Trip(props) {
   try {
       if (items.length == 0) return resolve();
       let funSync = async () => {
-        console.log(i)
           if (i == items.length) 
           {   
             if(countarray.length>0){
-             await setstart(items[countarray[0]])
-             await setend(items[countarray[countarray.length-1]])
-            pushdata.starttime = items[countarray[0]].Time
-            pushdata.endtime = items[countarray[countarray.length-1]].Time
-            timediff = new Date(pushdata.endtime)-new Date(pushdata.starttime)
-            pushdata.timediff=(timediff/60000).toFixed(2)
-            setdata(old=>[...old,pushdata])
-
+               await datasave()
              }
             props.setLoading(false)
             resolve();
           }else if(items[i].Igni>=1){
-       
+            if(items[i].Speed<3){
+              idledata.push(items[i])
+            }else{
+              if(idledata.length>0){
+                 stime = idledata[0].Time
+              etime = idledata[idledata.length-1].Time
+              timedif = new Date(stime)-new Date(etime)
+              idletime = idletime+(timedif/60000).toFixed(2) 
+              idlecount = idlecount + idledata.length
+              idledata=[]
+              }
+             
+
+            }
             await setobject(i)
+            tripdata.push(items[i])
+
           i++
           setTimeout( function() {
             funSync();
@@ -1183,17 +1263,10 @@ export  function Trip(props) {
 
 
               if(countarray.length>0){
-               await setstart(items[countarray[0]])
-               await setend(items[countarray[countarray.length-1]])
-              pushdata.starttime = items[countarray[0]].Time
-              pushdata.endtime = items[countarray[countarray.length-1]].Time
-              timediff = new Date(pushdata.endtime)-new Date(pushdata.starttime)
-               pushdata.timediff=(timediff/60000).toFixed(2)
-              setdata(old=>[...old,pushdata])
-            
+                await datasave()
+
             }
-            pushdata={}
-            countarray=[]
+           
             i++
             setTimeout( function() {
               funSync();
@@ -1211,11 +1284,52 @@ export  function Trip(props) {
 });
   
    
-          
+async function datasave(){
+  if(idledata.length>0){
+    stime = idledata[0].Time
+    etime = idledata[idledata.length-1].Time
+    timedif = new Date(stime)-new Date(etime)
+    idletime = idletime+(timedif/60000).toFixed(2) 
+    idlecount = idlecount+idledata.length
+
+  }
+  await setstart(items[countarray[0]])
+  await setend(items[countarray[countarray.length-1]])
+ pushdata.starttime = items[countarray[0]].Time
+ pushdata.endtime = items[countarray[countarray.length-1]].Time
+ timediff = new Date(pushdata.endtime)-new Date(pushdata.starttime)
+  pushdata.timediff=(timediff/60000).toFixed(2)
+ var dis = await getPathLength(tripdata);
+ pushdata.totaldistance=(dis/1000)
+ const highestMaxScore = Math.max(...tripdata.map(data => data.Speed));
+ pushdata.highspeed=highestMaxScore
+ pushdata.idletime=idletime
+ pushdata.idlepercentage=(idlecount/tripdata.length)*100
+ let sum = tripdata.reduce(function(prev, current) {
+  return prev + +current.Speed
+}, 0);
+if(sum>0){
+  pushdata.avgspeed=(sum/tripdata.length)
+ }else{
+  pushdata.avgspeed=0
+ }
+ setdata(old=>[...old,pushdata])
+ tripdata=[]
+ pushdata=[]
+ countarray=[]
+ idledata=[]
+ idletime=0
+idlecount=0
+ }    
 
 } 
 pushdata={}
 countarray=[]
+tripdata=[]
+idledata=[]
+idletime=0
+idlecount=0
+
 async function setobject(i){
  await countarray.push(i)
 
@@ -1271,11 +1385,16 @@ useEffect(() => {
                   <Text style={styles.text}>{item.timediff} mins</Text>
  
                   <Text style={styles.text}> Total Distance</Text>
-                 
+                  <Text style={styles.text}>{item.totaldistance.toFixed(2)} Km</Text>
                   <Text style={styles.text}> Average Speed</Text>
-                  <Text style={styles.text}> Total Idling Time</Text>
+                  <Text style={styles.text}>{item.avgspeed.toFixed(2)} Km/H</Text>
+                  <Text style={styles.text}> Total Idling Time</Text>                  
+                  <Text style={styles.text}>{item.idletime} mins</Text>
                   <Text style={styles.text}> Idle(%)</Text>
+                  <Text style={styles.text}>{item.idlepercentage} %</Text>
                   <Text style={styles.text}> Max Speed</Text>
+                  <Text style={styles.text}>{item.highspeed} Km/H</Text>
+
                     </View>
           
            </View>

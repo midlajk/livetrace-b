@@ -8,7 +8,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import DatePicker from 'react-native-date-picker'
 
 const Icons = (props) => {
-    const {time,status,speed,address,vnumber,setPicker,navigation,gethistory, ...attributes} = props;
+    const {time,status,speed,address,vnumber,setPicker,navigation,gethistory,imei, ...attributes} = props;
     const [buttonVisible, setButtonVisible] = useState(true);
     const [butVisible, setButnVisible] = useState(false);
     const [from, setFrom] = useState(new Date());
@@ -192,12 +192,12 @@ const Icons = (props) => {
 
  </View>
 
-    {/* <TouchableOpacity   style={[styles.button]}
+    <TouchableOpacity   style={[styles.button]}
     onPress={() => {  
-      navigation.navigate('Report Screen',{ vehicle:vnumber});
+      navigation.navigate('Report Screen',{ vehicle:vnumber,imei:imei});
   }}>
     <Text style={{color:'#fff'}}> Report</Text>
-   </TouchableOpacity> */}
+   </TouchableOpacity>
 
   
             

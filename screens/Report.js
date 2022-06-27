@@ -4,7 +4,9 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Iconb from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default function ReportScreen({navigation,route}) {
-  const [initial, setInitial] = useState('Click here to select vehicle');
+  const [initial, setInitial] = useState('');
+  const [imei, setimei] = useState('');
+
   useEffect(() => {
     getdata()
   }, []);
@@ -13,15 +15,15 @@ export default function ReportScreen({navigation,route}) {
      
      if(route.name != 'Report'){
         await setInitial(route.params.vehicle)
+        await setimei(route.params.imei)
       }
-
     }
   return (
     <View style={{ flex: 1, justifyContent: 'space-around',flexDirection:'row',padding:20,flexWrap: 'wrap',}}>
       <TouchableOpacity style={{width:'30%',height:100,backgroundColor:'#fff',borderRadius:16,marginBottom:10,justifyContent:'center',alignItems:'center',elevation:3}}
         onPress={() => {
                     
-          navigation.navigate('Report Generation',{number:initial, name: 'AD IN/OUT',icon:'sync-outline',icontype:"Icon" });
+          navigation.navigate('Report Generation',{number:initial,imei:imei, name: 'AD IN/OUT',icon:'sync-outline',icontype:"Icon" });
       }}>
                         <Icon
                                 name={'sync-outline'}
@@ -34,7 +36,7 @@ export default function ReportScreen({navigation,route}) {
       <TouchableOpacity style={styles.button}
         onPress={() => {
                     
-          navigation.navigate('Report Generation',{number:initial, name: 'Consolidated',icon:'file-alert-outline',icontype:"Iconb" });
+          navigation.navigate('Report Generation',{number:initial,imei:imei, name: 'Consolidated',icon:'file-alert-outline',icontype:"Iconb" });
       }}>
       <Iconb
                                 name={'file-alert-outline'}
@@ -47,7 +49,7 @@ export default function ReportScreen({navigation,route}) {
       <TouchableOpacity style={styles.button}
       onPress={() => {
                     
-        navigation.navigate('Report Generation',{number:initial, name: 'Current Summary',icon:'file-chart-outline',icontype:"Iconb" });
+        navigation.navigate('Report Generation',{number:initial,imei:imei, name: 'Current Summary',icon:'file-chart-outline',icontype:"Iconb" });
     }}>
       <Iconb
                                 name={'file-chart-outline'}
@@ -61,7 +63,7 @@ export default function ReportScreen({navigation,route}) {
      <TouchableOpacity style={styles.button}
       onPress={() => {
                     
-        navigation.navigate('Report Generation',{number:initial, name: 'Halt',icon:'bus-stop',icontype:"Iconb" });
+        navigation.navigate('Report Generation',{number:initial,imei:imei, name: 'Halt',icon:'bus-stop',icontype:"Iconb" });
     }}>
       <Iconb
                                 name={'bus-stop'}
@@ -74,7 +76,7 @@ export default function ReportScreen({navigation,route}) {
       <TouchableOpacity style={styles.button}
       onPress={() => {
                     
-        navigation.navigate('Report Generation',{number:initial, name: 'Idiling',icon:'timer-outline',icontype:"Icon" });
+        navigation.navigate('Report Generation',{number:initial,imei:imei, name: 'Idiling',icon:'timer-outline',icontype:"Icon" });
     }}>
       <Icon
                                 name={'timer-outline'}
@@ -87,7 +89,7 @@ export default function ReportScreen({navigation,route}) {
         <TouchableOpacity style={styles.button}
        onPress={() => {
                     
-        navigation.navigate('Report Generation',{number:initial, name: 'Ignition ON/OFF',icon:'key-outline',icontype:"Icon" });
+        navigation.navigate('Report Generation',{number:initial,imei:imei, name: 'Ignition ON/OFF',icon:'key-outline',icontype:"Icon" });
     }}>
       <Icon
                                 name={'key-outline'}
@@ -101,7 +103,7 @@ export default function ReportScreen({navigation,route}) {
     <TouchableOpacity style={styles.button}
       onPress={() => {
                     
-        navigation.navigate('Report Generation',{number:initial, name: 'Over Speed',icon:'speedometer-outline',icontype:"Icon" });
+        navigation.navigate('Report Generation',{number:initial,imei:imei, name: 'Over Speed',icon:'speedometer-outline',icontype:"Icon" });
     }}>
       <Icon
                                 name={'speedometer-outline'}
@@ -114,7 +116,7 @@ export default function ReportScreen({navigation,route}) {
           <TouchableOpacity style={styles.button}
         onPress={() => {
                     
-          navigation.navigate('Report Generation',{number:initial, name: 'Panic',icon:'stop-circle-outline',icontype:"Icon" });
+          navigation.navigate('Report Generation',{number:initial,imei:imei, name: 'Panic',icon:'stop-circle-outline',icontype:"Icon" });
       }}>
         <Icon
                                 name={'stop-circle-outline'}
@@ -127,7 +129,7 @@ export default function ReportScreen({navigation,route}) {
         <TouchableOpacity style={styles.button}
         onPress={() => {
                     
-          navigation.navigate('Report Generation',{number:initial, name: 'Tracking',icon:'location-outline',icontype:"Icon" });
+          navigation.navigate('Report Generation',{number:initial,imei:imei, name: 'Tracking',icon:'location-outline',icontype:"Icon" });
       }}>
         <Icon
                                 name={'location-outline'}
@@ -140,7 +142,7 @@ export default function ReportScreen({navigation,route}) {
          <TouchableOpacity style={styles.button}
          onPress={() => {
                     
-          navigation.navigate('Report Generation',{number:initial, name: 'Trip',icon:'arrow-up-down-bold-outline',icontype:"Iconb" });
+          navigation.navigate('Report Generation',{number:initial,imei:imei, name: 'Trip',icon:'arrow-up-down-bold-outline',icontype:"Iconb" });
       }}>
         <Iconb
                                 name={'arrow-up-down-bold-outline'}
@@ -167,7 +169,7 @@ const styles = StyleSheet.create({
 
       onPress={() => {
                     
-        navigation.navigate('Report Generation',{number:initial, name: 'J1939',icon:'truck',icontype:"Iconb" });
+        navigation.navigate('Report Generation',{number:initial,imei:imei, name: 'J1939',icon:'truck',icontype:"Iconb" });
     }}>
       <Iconb
                                 name={'truck'}
@@ -182,7 +184,7 @@ const styles = StyleSheet.create({
 
       onPress={() => {
                     
-        navigation.navigate('Report Generation',{number:initial, name: 'OBD II',icon:'usb-flash-drive-outline',icontype:"Iconb" });
+        navigation.navigate('Report Generation',{number:initial,imei:imei, name: 'OBD II',icon:'usb-flash-drive-outline',icontype:"Iconb" });
     }}>
       <Iconb
                                 name={'usb-flash-drive-outline'}
@@ -196,7 +198,7 @@ const styles = StyleSheet.create({
       disabled={true}
       onPress={() => {
                     
-        navigation.navigate('Report Generation',{number:initial, name: 'Day wise',icon:'calendar-outline',icontype:"Icon" });
+        navigation.navigate('Report Generation',{number:initial,imei:imei, name: 'Day wise',icon:'calendar-outline',icontype:"Icon" });
     }}>
       <Icon
                                 name={'calendar-outline'}
