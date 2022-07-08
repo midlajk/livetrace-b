@@ -19,7 +19,8 @@ const Icons = (props) => {
       var startdate = new Date()
       startdate.setHours(0,0,0,0);
       var enddate = new Date()
-      enddate.setHours(23,59,59,999);
+      startdate.setDate(startdate.getDate()+1)
+      enddate.setHours(0,0,0,0);
       setFrom(startdate)
       setTo(enddate)
       seclicker('from')
@@ -30,16 +31,14 @@ const Icons = (props) => {
       startdate.setDate(startdate.getDate()-1)
       startdate.setHours(0,0,0,0);
       var enddate = new Date()
-      enddate.setDate(enddate.getDate()-1)
-      enddate.setHours(23,59,59,999);
+      enddate.setHours(0,0,0,0);
       setFrom(startdate)
       setTo(enddate)
       seclicker('from')
     };
-    function settodate(){
-      var startdate = new Date(from)
+    function settodate(startdate){
       startdate.setDate(startdate.getDate()+1)
-      startdate.setHours(23,59,59,999);
+      startdate.setHours(0,0,0,0);
       setTo(startdate)
    }
   return (
@@ -152,7 +151,7 @@ const Icons = (props) => {
                 }else{
                      setOpen(false)
                 setFrom(date)
-                settodate(new Date())
+                settodate(new Date(date))
                 }
              
               }else{

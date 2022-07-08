@@ -1,6 +1,7 @@
 let usere = {};
 let vehicles = [];
 let serverDate = {};
+let maptype = 'standard';
 
 export default {
 
@@ -21,5 +22,11 @@ export default {
   },
   setServerDate(date) {
     serverDate = date
+  },
+  setMaptype(type) {
+    maptype = type
+  },
+  getmaptype() {
+    return maptype;
   },
 };

@@ -42,11 +42,16 @@ const RegisterScreen = (props) => {
   const [deviceFault, setDeviceFault] = useState('Select Fault *');
   const [comment, setComment] = useState('');
   const [isFocus, setIsFocus] = useState(false);
+  const [isvehivle, setisVehicle] = useState(false);
 
   const [loading, setLoading] = useState(false); 
 async function handleSubmitButton (state) {
  if (!username) {
       alert('Please fill User Name');
+      return;
+    }
+    if(!isvehivle){
+      alert('Please Select Valid Vehicle Number');
       return;
     }
     if (!userContact) {
@@ -58,8 +63,8 @@ async function handleSubmitButton (state) {
       alert('Please select a Vehicle Number');
       return;
     }
-   
-    if (deviceFault == 'Select Fault') {
+   console.log(deviceFault)
+    if (deviceFault == 'Select Fault *') {
       alert('Please select Device Fault');
       return;
     }
@@ -73,10 +78,10 @@ async function handleSubmitButton (state) {
     }) 
    
     // alert(response.description);
-    
     Alert.alert(  
       'Alert',  
-      response.description,  
+      response.description + ' with Request number '+ response.RequestNo,
+
       [  
            
           {text: 'OK', onPress: () => {
@@ -84,7 +89,7 @@ async function handleSubmitButton (state) {
             setImei('')
             setusername('')
             setUserContact('')
-            setDeviceFault('Select Fault')
+            setDeviceFault('Select Fault *')
             setComment('')
 
           }},  
@@ -125,7 +130,7 @@ async function handleSubmitButton (state) {
               value={userContact}
             />
           </View>
-          <DropDownv setVehicle={setVehicle} setImei={setImei} vehicle={vehicle} />
+          <DropDownv setVehicle={setVehicle} setImei={setImei} vehicle={vehicle} setisVehicle={setisVehicle}/>
       
           <Dropdown
           style={[{ borderColor:'#000',

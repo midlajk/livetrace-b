@@ -39,12 +39,24 @@ listRef.current = list;
             if(vehic.Reg_No == element.Reg_No){
               found=true
               result = fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=`+element.Lat+`,`+element.Lon+`&key=AIzaSyB4Zi4r1J4WhBzLxop9rVY9czHDtI_BOEQ`)
-              .then(res => res.json())
-              .then((json) => {
-                element.address = json.results[0].formatted_address.split(',').slice(1,3)
-                  
-              })
+                            .then(res => res.json())
+                            .then((json) => {
+                              if(json.results.length>0){
+                                console.log(json)
+                                element.address = json.results[0].formatted_address.split(',').slice(1,6)
+                              }
+                             
+                                
+                            })
+            
+              
               element.Expiry_Date = vehic.Expiry_Date;
+              var d = new Date(element.Time);
+              var v = new Date(element.Time);
+              v.setMinutes(d.getMinutes()+vehic.Gmt_Corr);
+              element.changedtime = v.toLocaleString()
+            
+
               setData(old=>[...old,element])
               
             }
@@ -95,8 +107,8 @@ listRef.current = list;
                     <View style={{flex:1,alignItems:'center'}}>
          
                       <Text style={{fontSize:16,color:'#000'}}>{item.Reg_No}</Text>
-            <Text style={{fontSize:16,color:'#0783cb'}}>Expiry Date : {item.Expiry_Date}</Text>
-            <Text style={{fontSize:16,color:'#0783cb'}}>Subscription Status : {new Date(serverdate) < new Date(item.Expiry_Date)?'Active':'Expired'}</Text>
+            {/* <Text style={{fontSize:16,color:'#0783cb'}}>Expiry Date : {item.Expiry_Date}</Text>
+            <Text style={{fontSize:16,color:'#0783cb'}}>Subscription Status : {new Date(serverdate) < new Date(item.Expiry_Date)?'Active':'Expired'}</Text> */}
 
                       <Text style={styles.text}>IMEI : {item.IMEI || item.imei}</Text>
                       <Text style={{fontSize:16,color:'#000'}}>Ignition Status : {item.Igni==1?'Online':'Offline'}</Text>
@@ -105,7 +117,7 @@ listRef.current = list;
                         </Text>: 
                         <View style={{flex:1,alignItems:'center'}}>
                        <Text style={styles.text}>Speed : {item.Speed}</Text>
-                      <Text style={styles.text}>Last Tracked : {item.Time}</Text>
+                      <Text style={styles.text}>Last Tracked : {item.changedtime}</Text>
             <Text style={styles.text}>Address: {item.address!=null?item.address:'Loading...'}</Text>
                         <Text style={{color:'#0783cb',fontSize:10}}>Click Here to Track Live</Text> 
                         </View>}

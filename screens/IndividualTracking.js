@@ -58,8 +58,10 @@ export default function Tracking({navigation,route}) {
         result = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=`+response[0].Lat+`,`+response[0].Lon+`&key=AIzaSyB4Zi4r1J4WhBzLxop9rVY9czHDtI_BOEQ`)
         .then(res => res.json())
         .then((json) => {
-          setAddress(json.results[0].formatted_address.split(',').slice(1,3))
-            
+          if(json.results.length>0){
+            setAddress(json.results[0].formatted_address.split(',').slice(1,6))
+  
+            }            
      })
       }
         setLoading(false) 

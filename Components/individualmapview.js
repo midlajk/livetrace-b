@@ -6,10 +6,16 @@ import React,{useState,useRef,useEffect,createRef} from 'react';
 import {StyleSheet, View, TouchableHighlight,Text} from 'react-native';
 import Markericon from './markericon';
 import MapView, { PROVIDER_GOOGLE, LatLng, Marker,AnimatedRegion } from 'react-native-maps';
+import  b from "../configuration/Datahandler";
 
 const Mapview = (props) => {
     const {list,navigation, ...attributes} = props;
       const mapRef = useRef();
+      const [maptype, setMaptype] = useState('standard');
+      useEffect(() => {
+        setMaptype(b.getmaptype())
+
+      }, []);
       mapRef.current={latitude:list[0].Lat,longitude:list[0].Lon}
   return (
     <View style={styles.container}>
@@ -18,6 +24,7 @@ const Mapview = (props) => {
       style={styles.map}
       showUserLocation={true}
       followUserLocation={true}
+      mapType={maptype}
       initialRegion={{
         latitude: list[0].Lat,
         longitude: list[0].Lon,

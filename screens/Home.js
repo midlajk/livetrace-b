@@ -8,7 +8,7 @@ import Mapview from '../Components/MapView';
 import b from "../configuration/Datahandler";
 import IndividualMap from '../Components/individualmapview';
 
-export default function HomeScreen({navigation}) {
+export default function HomeScreen(props) {
   const [list, setList] = useState([]);
   const [loading, setLoading] = useState(false);
   const [buttonVisible, setButtonVisible] = useState(true);
@@ -16,6 +16,7 @@ export default function HomeScreen({navigation}) {
   const [vehicle, setvehicle] = useState([]);
   const [userdata, setUserdata] = useState({});
   const [counter, setCounter] = useState(0);
+  const [datas, setData] = useState([]);
 
 var listofdata=[]
 useEffect(() => {
@@ -23,7 +24,7 @@ useEffect(() => {
    setvehicle(b.getVehicle()) 
    setUserdata(b.getUser())  
    getdata()
-}, [])
+}, [props.route])
 
   useEffect(() => {
     setTimeout(() => {
@@ -43,27 +44,35 @@ useEffect(() => {
      
 
     }
-  
+    data=[];
+
     listofdata=list;
           vehicle.forEach(vehicle => {
             found=false
             list.forEach(element => {
               if(vehicle.Reg_No == element.Reg_No){
+                var d = new Date(element.Time);
+                var v = new Date(element.Time);
+                v.setMinutes(d.getMinutes()+vehicle.Gmt_Corr);
+                element.changedtime = v.toLocaleString()
                 found=true
+                data=[...data,element];
+
               }
               });
               if(!found){
                 listofdata=[...listofdata,vehicle ];
+                
               }
             })
             
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-               <Loader loading={loading} navigation={navigation} />
-               {list.length>0&&list.length<2?<IndividualMap list={list} navigation={navigation} />:<Mapview list={list} navigation={navigation} />}
-    <Mapview list={list} navigation={navigation} first={list[0]}/>
-   <MapTopButton getdata={getdata} navigation={navigation} setButtonVisible={setButtonVisible} buttonVisible={buttonVisible}/>
-{buttonVisible?<MapButton screen='mainscreen' navigation={navigation} list={list}  serverdate={serverdate} data={listofdata}/>:<View></View>}
+               <Loader loading={loading} navigation={props.navigation} />
+               {list.length>0&&list.length<2?<IndividualMap list={list} navigation={props.navigation} />:<Mapview list={list} navigation={props.navigation} />}
+    <Mapview list={list} navigation={props.navigation} first={list[0]}/>
+   <MapTopButton getdata={getdata} navigation={props.navigation} setButtonVisible={setButtonVisible} buttonVisible={buttonVisible}/>
+{buttonVisible?<MapButton screen='mainscreen' navigation={props.navigation} list={data}  serverdate={serverdate} data={listofdata}/>:<View></View>}
     
     </View>
   );

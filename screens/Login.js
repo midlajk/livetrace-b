@@ -86,9 +86,14 @@ async function handleSubmitButton (state) {
       else Alert.alert('Error','error');
   } catch (error) {
       setError(error.message);
-  
                       setTimeout(() => {
-                        Alert.alert('Error','Wrong Username / Password!');
+                        if(error.message == 'Network Error'){
+                          Alert.alert('Error','Network Error');
+
+                        }else{
+                          Alert.alert('Error','Authentication Failed-Incorrect Credentials!');
+                        }
+                        
                       }, 100);       
             setLoading(false)
             setPressed(false)

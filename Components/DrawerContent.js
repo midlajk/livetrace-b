@@ -1,5 +1,5 @@
 import React,{useEffect,useState} from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet,Text,Switch,TouchableHighlight } from 'react-native';
 import {
    
     Avatar,
@@ -23,6 +23,18 @@ export function DrawerContent(props) {
         setUser(b.getUser())
    
       }, []);
+      const [isEnabled, setIsEnabled] = useState(false);
+      const toggleSwitch = () => {
+         props.navigation.setParams({otherParam: 'Updated!'})
+          setIsEnabled(previousState => !previousState)
+          if(isEnabled){
+              
+            b.setMaptype('standard')
+          }else{
+            b.setMaptype('hybrid')
+          }
+          
+        };
     return(
         <View style={{flex:1}}>
             
@@ -102,7 +114,22 @@ export function DrawerContent(props) {
                             label="Recharge"
                         />   */}
                         </Drawer.Section>
-                     
+                        <Drawer.Section title="Preferences">
+                        <TouchableHighlight 
+                        onPress={toggleSwitch}
+                        >
+                            <View style={styles.preference}>
+                                <Text>Satelite View</Text>
+                                <View pointerEvents="none">
+                                    <Switch
+                                     trackColor={{ false: "#767577", true: "#f4f3f4" }}
+                                     thumbColor={isEnabled ? "#7DE24E" : "#f4f3f4"}
+                                     ios_backgroundColor="#3e3e3e"
+                                           value={isEnabled}/>
+                                </View>
+                            </View>
+                        </TouchableHighlight>
+                    </Drawer.Section>
                       
                 </View>
             </DrawerContentScrollView>

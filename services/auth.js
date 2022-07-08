@@ -20,8 +20,8 @@ export async function login(){
             DataHandler.setServerDate(res.data.server.dateTime)
             return res;
     }catch (e) {
-
         throw handler(e);
+        
     }
 }
 

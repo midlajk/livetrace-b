@@ -6,11 +6,14 @@ import React,{useState,useRef,useEffect,createRef} from 'react';
 import {StyleSheet, View, TouchableHighlight,Text} from 'react-native';
 import Markericon from './markericon';
 import MapView, { PROVIDER_GOOGLE, LatLng, Marker } from 'react-native-maps';
+import  b from "../configuration/Datahandler";
 
 const Mapview = (props) => {
     const {list,navigation, ...attributes} = props;
+    const [maptype, setMaptype] = useState('standard');
       const mapRef = createRef();
       useEffect(() => {
+        setMaptype(b.getmaptype())
         if (mapRef.current) {
           // list of _id's must same that has been provided to the identifier props of the Marker
           mapRef.current.fitToSuppliedMarkers(list.map(({ Reg_No }) => Reg_No),{ edgePadding: 
@@ -30,6 +33,7 @@ const Mapview = (props) => {
         ref={mapRef} 
       provider={PROVIDER_GOOGLE} // remove if not using Google Maps
       style={styles.map}
+      mapType={maptype}
       showUserLocation={true}
       followUserLocation={true}
       initialRegion={{

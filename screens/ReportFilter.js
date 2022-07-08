@@ -18,10 +18,12 @@ export default function Notification({navigation,route}) {
     const [open, setOpen] = useState(false)
     const [vehicle, setVehicle] = useState('')
     const [imei, setImei] = useState('')
+    const [isvehivle, setisVehicle] = useState(false);
+
 useEffect(() => {
   setVehicle(route.params.number)
   setImei(route.params.imei)
-
+  setisVehicle(true)
 }, [])
     const setToday = () => {
         var startdate = new Date()
@@ -74,9 +76,13 @@ useEffect(() => {
       if (!vehicle) {
         alert('Please select vehicle');
         return;
-      }else{ 
-          navigation.navigate('Reports View',{name:route.params.name,vehicle:vehicle,from:from.toISOString(),to:to.toISOString(),imei:imei})
       }
+      if(!isvehivle){
+        alert('Please Select Valid Vehicle Number');
+        return;
+      }
+          navigation.navigate('Reports View',{name:route.params.name,vehicle:vehicle,from:from.toISOString(),to:to.toISOString(),imei:imei})
+      
     
      }
   return (
@@ -111,7 +117,7 @@ useEffect(() => {
         
    <View style={{flex:7}}>
        <Text style={{color:'#000',fontWeight:'bold',marginLeft:20}}>Select Vehicle Number</Text>
- <DropDown setVehicle={setVehicle} setImei={setImei} vehicle={vehicle} />
+ <DropDown setVehicle={setVehicle} setImei={setImei} vehicle={vehicle} setisVehicle={setisVehicle} />
    </View>
    
 </View>

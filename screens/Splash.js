@@ -28,7 +28,6 @@ export default function Splash({ navigation }) {
             let response = await api.login();
             dataparse = JSON.parse(response.config.data)
             logindata = dataparse.request
-            console.log(logindata)
             if (logindata.userMailid !== undefined){
             return navigation.replace('App Screens');
             }

@@ -44,8 +44,10 @@ export default function TrackScreen({navigation,route}) {
             result = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=`+props.Lat+`,`+props.Lon+`&key=AIzaSyB4Zi4r1J4WhBzLxop9rVY9czHDtI_BOEQ`)
             .then(res => res.json())
             .then((json) => {
-              props.address = json.results[0].formatted_address.split(' ').slice(1,20)
-                
+              if(json.results.length>0){
+                props.address = json.results[0].formatted_address.split(' ').slice(1,20)
+              }
+            
             })
             setvehicle(old=>[...old,props])
       }
@@ -101,7 +103,7 @@ export default function TrackScreen({navigation,route}) {
                         </Text>: 
                         <View style={{flex:1,alignItems:'center'}}>
                        <Text style={styles.text}>Speed : {item.Speed}</Text>
-                      <Text style={styles.text}>Last Tracked : {item.Time}</Text>
+                      <Text style={styles.text}>Last Tracked : {item.changedtime}</Text>
             <Text style={styles.text}>Address: {item.address!=null?item.address:'Loading...'}</Text>
                         <Text style={{color:'#0783cb',fontSize:10}}>Click Here to Track Live</Text> 
                         </View>}

@@ -26,12 +26,14 @@ const App = (props) => {
             : [];
             setFilterVehicle([...filterData]);
         setVehiclename(value);
-           
+        props.setVehicle(value)
+           props.setisVehicle(false)
       };
       const onVehicleSelected = (value,im) => {
         setVehiclename(value);
         props.setVehicle(value)
         props.setImei(im)
+        props.setisVehicle(true)
 
         setFilterVehicle([]);
       };
