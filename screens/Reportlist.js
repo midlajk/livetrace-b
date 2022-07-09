@@ -31,7 +31,7 @@ export default function TrackScreen({navigation,route}) {
     setLoading(true) 
           getdata()
     
-
+        
   }, []);
    
     async function getdata() {  
