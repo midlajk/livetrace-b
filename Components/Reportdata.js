@@ -55,8 +55,9 @@ async function setdata(props){
           result = fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=`+props.latitude+`,`+props.longitude+`&key=AIzaSyB4Zi4r1J4WhBzLxop9rVY9czHDtI_BOEQ`)
           .then(res => res.json())
           .then((json) => {
+            if(json.results.length>0){
             props.address = json.results[0].formatted_address.split(' ').slice(1,20)
-              
+            }
           })
           
         
@@ -167,8 +168,9 @@ async function setstart(props){
           result = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=`+props.latitude+`,`+props.longitude+`&key=AIzaSyB4Zi4r1J4WhBzLxop9rVY9czHDtI_BOEQ`)
           .then(res => res.json())
           .then((json) => {
+            if(json.results.length>0){
             setstartaddress(json.results[0].formatted_address.split(' ').slice(1,20))
-              
+            }
           })
     }
     async function setend(props){
@@ -176,8 +178,9 @@ async function setstart(props){
           result = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=`+props.latitude+`,`+props.longitude+`&key=AIzaSyB4Zi4r1J4WhBzLxop9rVY9czHDtI_BOEQ`)
           .then(res => res.json())
           .then((json) => {
+            if(json.results.length>0){
             setendaddress(json.results[0].formatted_address.split(' ').slice(1,20))
-              
+            }
           })
     }
 useEffect(() => {
@@ -266,8 +269,9 @@ export  function ADReport(props) {
             result = fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=`+props.latitude+`,`+props.longitude+`&key=AIzaSyB4Zi4r1J4WhBzLxop9rVY9czHDtI_BOEQ`)
             .then(res => res.json())
             .then((json) => {
+              if(json.results.length>0){
               props.address = json.results[0].formatted_address.split(' ').slice(1,20)
-                
+              }
             })
             setvehicle(old=>[...old,props])
       }
@@ -358,8 +362,9 @@ async function setstart(props){
           result = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=`+props.latitude+`,`+props.longitude+`&key=AIzaSyB4Zi4r1J4WhBzLxop9rVY9czHDtI_BOEQ`)
           .then(res => res.json())
           .then((json) => {
+            if(json.results.length>0){
             setstartaddress(json.results[0].formatted_address.split(' ').slice(1,20))
-              
+            }  
           })
     }
     async function setend(props){
@@ -367,8 +372,9 @@ async function setstart(props){
           result = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=`+props.latitude+`,`+props.longitude+`&key=AIzaSyB4Zi4r1J4WhBzLxop9rVY9czHDtI_BOEQ`)
           .then(res => res.json())
           .then((json) => {
+            if(json.results.length>0){
             setcurrentaddress(json.results[0].formatted_address.split(' ').slice(1,20))
-              
+            }
           })
     }
 useEffect(() => {
@@ -494,8 +500,9 @@ async function setstart(props){
           result = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=`+props.latitude+`,`+props.longitude+`&key=AIzaSyB4Zi4r1J4WhBzLxop9rVY9czHDtI_BOEQ`)
           .then(res => res.json())
           .then((json) => {
+            if(json.results.length>0){
             pushdata.startaddress = json.results[0].formatted_address.split(' ').slice(1,20)
-              
+            } 
           })
     }
     async function setend(props){
@@ -503,8 +510,9 @@ async function setstart(props){
           result = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=`+props.latitude+`,`+props.longitude+`&key=AIzaSyB4Zi4r1J4WhBzLxop9rVY9czHDtI_BOEQ`)
           .then(res => res.json())
           .then((json) => {
+            if(json.results.length>0){
             pushdata.endaddress = json.results[0].formatted_address.split(' ').slice(1,20)
-              
+            }
           })
     }
 useEffect(() => {
@@ -634,8 +642,9 @@ async function setstart(props){
           result = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=`+props.latitude+`,`+props.longitude+`&key=AIzaSyB4Zi4r1J4WhBzLxop9rVY9czHDtI_BOEQ`)
           .then(res => res.json())
           .then((json) => {
+            if(json.results.length>0){
             pushdata.startaddress = json.results[0].formatted_address.split(' ').slice(1,20)
-              
+            } 
           })
     }
     async function setend(props){
@@ -643,8 +652,9 @@ async function setstart(props){
           result = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=`+props.latitude+`,`+props.longitude+`&key=AIzaSyB4Zi4r1J4WhBzLxop9rVY9czHDtI_BOEQ`)
           .then(res => res.json())
           .then((json) => {
+            if(json.results.length>0){
             pushdata.endaddress = json.results[0].formatted_address.split(' ').slice(1,20)
-              
+            }
           })
     }
 useEffect(() => {
@@ -842,6 +852,7 @@ async function setstart(props,igni){
           result = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=`+props.latitude+`,`+props.longitude+`&key=AIzaSyB4Zi4r1J4WhBzLxop9rVY9czHDtI_BOEQ`)
           .then(res => res.json())
           .then((json) => {
+            if(json.results.length>0){
             if(igni=='off'){
               offpushdata.startaddress = json.results[0].formatted_address.split(' ').slice(1,20)
 
@@ -849,7 +860,7 @@ async function setstart(props,igni){
               onpushdata.startaddress = json.results[0].formatted_address.split(' ').slice(1,20)
 
             }
-              
+          }
           })
     }
     async function setend(props,igni){
@@ -857,6 +868,7 @@ async function setstart(props,igni){
           result = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=`+props.latitude+`,`+props.longitude+`&key=AIzaSyB4Zi4r1J4WhBzLxop9rVY9czHDtI_BOEQ`)
           .then(res => res.json())
           .then((json) => {
+            if(json.results.length>0){
             if(igni=='off'){
               offpushdata.endaddress = json.results[0].formatted_address.split(' ').slice(1,20)
 
@@ -864,7 +876,7 @@ async function setstart(props,igni){
               onpushdata.endaddress = json.results[0].formatted_address.split(' ').slice(1,20)
 
             }
-              
+          }   
           })
     }
 useEffect(() => {
@@ -1007,8 +1019,9 @@ async function setstart(props){
           result = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=`+props.latitude+`,`+props.longitude+`&key=AIzaSyB4Zi4r1J4WhBzLxop9rVY9czHDtI_BOEQ`)
           .then(res => res.json())
           .then((json) => {
+            if(json.results.length>0){
             pushdata.startaddress = json.results[0].formatted_address.split(' ').slice(1,20)
-              
+            }
           })
     }
     async function setend(props){
@@ -1016,8 +1029,9 @@ async function setstart(props){
           result = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=`+props.latitude+`,`+props.longitude+`&key=AIzaSyB4Zi4r1J4WhBzLxop9rVY9czHDtI_BOEQ`)
           .then(res => res.json())
           .then((json) => {
+            if(json.results.length>0){
             pushdata.endaddress = json.results[0].formatted_address.split(' ').slice(1,20)
-              
+            }
           })
     }
 useEffect(() => {
@@ -1157,8 +1171,9 @@ async function setstart(props){
           result = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=`+props.latitude+`,`+props.longitude+`&key=AIzaSyB4Zi4r1J4WhBzLxop9rVY9czHDtI_BOEQ`)
           .then(res => res.json())
           .then((json) => {
+            if(json.results.length>0){
             pushdata.startaddress = json.results[0].formatted_address.split(' ').slice(1,20)
-              
+            }
           })
     }
     async function setend(props){
@@ -1166,8 +1181,9 @@ async function setstart(props){
           result = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=`+props.latitude+`,`+props.longitude+`&key=AIzaSyB4Zi4r1J4WhBzLxop9rVY9czHDtI_BOEQ`)
           .then(res => res.json())
           .then((json) => {
+            if(json.results.length>0){
             pushdata.endaddress = json.results[0].formatted_address.split(' ').slice(1,20)
-              
+            }
           })
     }
 useEffect(() => {
@@ -1341,8 +1357,9 @@ async function setstart(props){
           result = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=`+props.latitude+`,`+props.longitude+`&key=AIzaSyB4Zi4r1J4WhBzLxop9rVY9czHDtI_BOEQ`)
           .then(res => res.json())
           .then((json) => {
+            if(json.results.length>0){
             pushdata.startaddress = json.results[0].formatted_address.split(' ').slice(1,20)
-              
+            }   
           })
     }
     async function setend(props){
@@ -1350,8 +1367,9 @@ async function setstart(props){
           result = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=`+props.latitude+`,`+props.longitude+`&key=AIzaSyB4Zi4r1J4WhBzLxop9rVY9czHDtI_BOEQ`)
           .then(res => res.json())
           .then((json) => {
+            if(json.results.length>0){
             pushdata.endaddress = json.results[0].formatted_address.split(' ').slice(1,20)
-              
+            }
           })
     }
 useEffect(() => {

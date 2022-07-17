@@ -71,7 +71,12 @@ export async function singledata(imei){
 }
 
 export async function history(from,to,vehicle){
-
+        var fromtime = new Date(from)
+        fromtime.setHours(fromtime.getHours() + 5);
+        fromtime.setMinutes(fromtime.getMinutes() + 30);
+        var totime = new Date(to)
+        totime.setHours(totime.getHours() + 5);
+        totime.setMinutes(totime.getMinutes() + 30);
     let email = await AsyncStorage.getItem('email')
     let password = await AsyncStorage.getItem('password')
     try{
@@ -86,14 +91,13 @@ export async function history(from,to,vehicle){
             "userMailid": email,
             "password": password,
             "regNumber": vehicle,
-            "fromDate": from.split('T')[0],
-            "fromTime": from.split('T')[1].slice(0,5),
-            "toDate": to.split('T')[0],
-            "toTime": to.split('T')[1].slice(0,5),
-            "rowLimit": "1000"
+            "fromDate": fromtime.toISOString(),
+            "fromTime": "12:00AM",
+            "toDate": totime.toISOString(),
+            "toTime": "11:59PM",
+            "rowLimit": "5000"
             }
         });
-            
          return res.data.response
         
     }catch (e) {

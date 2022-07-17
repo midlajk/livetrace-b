@@ -51,7 +51,7 @@ export default function TrackScreen({navigation,route}) {
   }
 
   return (
-    <View style={{flex:1,}}>
+    <View style={{flex:1}}>
                            <Loader loading={loading} navigation={navigation} />
 
          <View style={styles.header}>
