@@ -44,6 +44,32 @@ useEffect(() => {
      
 
     }
+
+    // var elmts = vehicle.filter(f => !list.find( arr1Obj => arr1Obj.Reg_No === f.Reg_No));
+    // alldata = elmts
+    // const newArr = list.map(obj => {
+    //   var veh = vehicle.find( arr1Obj => arr1Obj.Reg_No === obj.Reg_No)
+    //   if(veh.length!=0){
+    //     var lastupdate = new Date(obj.Time);
+    //     var lastupdatestring = new Date(obj.Time);
+
+    //    lastupdate.setMinutes(lastupdate.getMinutes()+330+veh.Gmt_Corr||0);
+    //    lastupdatestring.setMinutes(lastupdatestring.getMinutes()+veh.Gmt_Corr||0);
+    //     servdate = new Date(serverdate)
+    //                 diff = servdate - lastupdate
+    //                 offint = veh.Off_Int == null ? 90 : veh.Off_Int
+    //                 if(diff<offint*60000){
+    //                             trackingVehicle=[...trackingVehicle,{...obj, changedtime: lastupdate} ];
+    //                 }else{
+    //                   nonTrackingVehicle=[...nonTrackingVehicle,{...obj, changedtime: lastupdate}]
+    //                 }
+    //   alldata = [...alldata,{...obj, changedtime: lastupdatestring.toLocaleString()}]              
+    //   return {...obj, changedtime: lastupdate}
+
+    //   }
+
+    //   return obj;
+    // });
     data=[];
 
     listofdata=list;
@@ -51,10 +77,11 @@ useEffect(() => {
             found=false
             list.forEach(element => {
               if(vehicle.Reg_No == element.Reg_No){
-                var d = new Date(element.Time);
-                var v = new Date(element.Time);
-                v.setMinutes(d.getMinutes()+vehicle.Gmt_Corr);
-                element.changedtime = v.toLocaleString()
+                var lastupdate = new Date(element.Time);
+                var lastupdatestring = new Date(element.Time);
+                lastupdate.setMinutes(lastupdate.getMinutes()+330+vehicle.Gmt_Corr||0);
+                lastupdatestring.setMinutes(lastupdatestring.getMinutes()+vehicle.Gmt_Corr||0);
+                element.changedtime = lastupdatestring.toLocaleString()
                 found=true
                 data=[...data,element];
 

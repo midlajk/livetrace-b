@@ -30,9 +30,7 @@ const App = (props) => {
         if(vehicle.Reg_No == element.Reg_No){
           servdate = new Date(props.serverdate)
           lastupdate = new Date(element.Time)
-          lastupdate.setHours(lastupdate.getHours()+5)
-          lastupdate.setMinutes(lastupdate.getMinutes()+30)
-
+          lastupdate.setMinutes(lastupdate.getMinutes()+330+vehicle.Gmt_Corr||0);
           diff = servdate - lastupdate
           offint = vehicle.Off_Int == null ? 90 : vehicle.Off_Int
           dead = vehicle.Dead_Int == null ? 180 : vehicle.Dead_Int

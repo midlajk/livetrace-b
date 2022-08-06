@@ -47,9 +47,11 @@ export default function NonTracking({navigation}) {
       list.forEach(element => {
         if(vehicle.Reg_No == element.Reg_No){
           servdate = new Date(serverdate)
-          lastupdate = new Date(element.Time)
-          lastupdate.setHours(lastupdate.getHours()+5)
-          lastupdate.setMinutes(lastupdate.getMinutes()+30)
+          var lastupdate = new Date(element.Time);
+          var lastupdatestring = new Date(element.Time);
+          lastupdate.setMinutes(lastupdate.getMinutes()+330+vehicle.Gmt_Corr||0);
+          lastupdatestring.setMinutes(lastupdatestring.getMinutes()+vehicle.Gmt_Corr||0);
+          element.changedtime = lastupdatestring.toLocaleString()
           diff = servdate - lastupdate
           offint = vehicle.Off_Int == null ? 90 : vehicle.Off_Int
           if(diff>offint*60000){

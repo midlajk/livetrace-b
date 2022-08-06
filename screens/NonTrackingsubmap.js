@@ -51,9 +51,11 @@ export default function Tracking({navigation,route}) {
         if(vehicle.Reg_No == element.Reg_No){
             found=true
           servdate = new Date(serverdate)
-          lastupdate = new Date(element.Time)
-          lastupdate.setHours(lastupdate.getHours()+5)
-          lastupdate.setMinutes(lastupdate.getMinutes()+30)
+          var lastupdate = new Date(element.Time);
+          var lastupdatestring = new Date(element.Time);
+          lastupdate.setMinutes(lastupdate.getMinutes()+330+vehicle.Gmt_Corr||0);
+          lastupdatestring.setMinutes(lastupdatestring.getMinutes()+vehicle.Gmt_Corr||0);
+          element.changedtime = lastupdatestring.toLocaleString()
           diff = servdate - lastupdate
           offint = vehicle.Off_Int == null ? 90 : vehicle.Off_Int
           dead = vehicle.Dead_Int == null ? 180 : vehicle.Dead_Int
