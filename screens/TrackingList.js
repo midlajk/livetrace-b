@@ -88,7 +88,7 @@ export default function TrackScreen({navigation,route}) {
                 <View style={styles.shadow}>
                <TouchableOpacity style={styles.button}
                 onPress={() => {  
-                  navigation.navigate('Individual Map',{ vehicle:item.Reg_No,imei:item.imei||item.IMEI});
+                  navigation.navigate('Individual Map',{ vehicle:item.Reg_No,imei:item.imei||item.IMEI,correction:item.correction});
               }}
               >
         

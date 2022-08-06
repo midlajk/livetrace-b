@@ -55,6 +55,8 @@ export default function Tracking({navigation,route}) {
           lastupdate.setMinutes(lastupdate.getMinutes()+330+vehicle.Gmt_Corr||0);
           lastupdatestring.setMinutes(lastupdatestring.getMinutes()+vehicle.Gmt_Corr||0);
           element.changedtime = lastupdatestring.toLocaleString()
+          element.correction = vehicle.Gmt_Corr||0
+
           diff = servdate - lastupdate
           offint = vehicle.Off_Int == null ? 90 : vehicle.Off_Int
           if(diff<offint*60000){

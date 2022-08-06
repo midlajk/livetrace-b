@@ -50,18 +50,16 @@ export default function Tracking({navigation,route}) {
       let response = await api.singledata(route.params.imei)
       if(response.length!=0){
         setList(response)
-        selasttracked(response[0].Time)
         setSpeed(response[0].Speed)
         setStatus(response[0].Igni>0?'Online':'Offline')
         setVNumber(response[0].Reg_No)
         setimei(route.params.imei)
-        if(vehicle.length>0){ 
-            const vehicleconfig = vehicle.find( x =>  x.Reg_No.toLowerCase()==response[0].Reg_No.toLowerCase() )
-             var d = new Date(response[0].Time); 
+         
+            var d = new Date(response[0].Time); 
              var v = new Date(response[0].Time); 
-             v.setMinutes(d.getMinutes()+ vehicleconfig.Gmt_Corr); 
+             v.setMinutes(d.getMinutes()+ route.params.correction||0); 
              selasttracked(v.toLocaleString()) 
-        }
+      
         result = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=`+response[0].Lat+`,`+response[0].Lon+`&key=AIzaSyB4Zi4r1J4WhBzLxop9rVY9czHDtI_BOEQ`)
         .then(res => res.json())
         .then((json) => {

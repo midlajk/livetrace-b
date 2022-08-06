@@ -58,7 +58,7 @@ const Mapview = (props) => {
       description="Tap to track live"
       onCalloutPress={() => {
                     
-        navigation.navigate('Individual Map',{ vehicle:marker.Reg_No,imei:marker.imei});
+        navigation.navigate('Individual Map',{ vehicle:marker.Reg_No,imei:marker.imei,correction:marker.correction});
     }}>
          
         <Markericon vehicle={marker.V_Type} ignition={marker.Igni} speed={marker.Speed}  />

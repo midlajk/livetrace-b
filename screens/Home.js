@@ -82,6 +82,7 @@ useEffect(() => {
                 lastupdate.setMinutes(lastupdate.getMinutes()+330+vehicle.Gmt_Corr||0);
                 lastupdatestring.setMinutes(lastupdatestring.getMinutes()+vehicle.Gmt_Corr||0);
                 element.changedtime = lastupdatestring.toLocaleString()
+                element.correction = vehicle.Gmt_Corr||0
                 found=true
                 data=[...data,element];
 
