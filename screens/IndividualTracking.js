@@ -57,7 +57,7 @@ export default function Tracking({navigation,route}) {
          
             var d = new Date(response[0].Time); 
              var v = new Date(response[0].Time); 
-             v.setMinutes(d.getMinutes()+ route.params.correction||0); 
+             v.setMinutes(d.getMinutes()+ 330 +route.params.correction||0); 
              selasttracked(v.toLocaleString()) 
       
         result = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=`+response[0].Lat+`,`+response[0].Lon+`&key=AIzaSyB4Zi4r1J4WhBzLxop9rVY9czHDtI_BOEQ`)
