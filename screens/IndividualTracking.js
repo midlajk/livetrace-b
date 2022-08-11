@@ -54,10 +54,9 @@ export default function Tracking({navigation,route}) {
         setStatus(response[0].Igni>0?'Online':'Offline')
         setVNumber(response[0].Reg_No)
         setimei(route.params.imei)
-         
             var d = new Date(response[0].Time); 
              var v = new Date(response[0].Time); 
-             v.setMinutes(d.getMinutes()+ 330 +route.params.correction||0); 
+             v.setMinutes(d.getMinutes() +route.params.correction||0); 
              selasttracked(v.toLocaleString()) 
       
         result = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=`+response[0].Lat+`,`+response[0].Lon+`&key=AIzaSyB4Zi4r1J4WhBzLxop9rVY9czHDtI_BOEQ`)
@@ -81,7 +80,7 @@ export default function Tracking({navigation,route}) {
                      {list.length>0?<Mapview list={list} navigation={navigation} />:<View></View>}
                      <MapTopButton getdata={getdata} navigation={navigation} setButtonVisible={setButtonVisible} buttonVisible={buttonVisible} />
 
-                     {buttonVisible?<BotomButton setPicker={setPicker} time={lasttracked} speed={speed} status={status} navigation={navigation} address={address} vnumber={vnumber} imei={imei} />:<View></View>}
+                     {buttonVisible?<BotomButton correction={route.params.correction} setPicker={setPicker} time={lasttracked} speed={speed} status={status} navigation={navigation} address={address} vnumber={vnumber} imei={imei} />:<View></View>}
     
      
     </View>

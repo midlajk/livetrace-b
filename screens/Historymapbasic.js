@@ -12,7 +12,7 @@ export default function Tracking({navigation,route}) {
   const [value, setValue] = useState(0);
   const [buttonVisible, setButtonVisible] = useState(true);
   const [pause, setPause] = useState(0);
-  const [list, setList] = useState({});
+  const [list, setList] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -22,7 +22,7 @@ export default function Tracking({navigation,route}) {
    
     async function getdata() {
       setLoading(true) 
-      let response = await api.history(route.params.from,route.params.to,route.params.vehicle); 
+      let response = await api.history(route.params.from,route.params.to,route.params.vehicle);
       setList(response)
       setLoading(false) 
    
@@ -42,7 +42,7 @@ export default function Tracking({navigation,route}) {
                               {isObjectEmpty(list)?<View></View>:<Mapview i={value} data={list.HistoryData} navigation={navigation} />}
                      <MapTopButton getdata={getdata} navigation={navigation} setButtonVisible={setButtonVisible} buttonVisible={buttonVisible}/>
 
-                     {isObjectEmpty(list)?<View></View>:buttonVisible?<BotomButton data={list.HistoryData}  navigation={navigation} setValue={setValue}  value={value} setPause={setPause} pause={pause}/>:<View style={{alignItems:'center',justifyContent:'center'}}><Text>No data</Text></View>}
+                     {isObjectEmpty(list)?<View></View>:buttonVisible?<BotomButton correction={route.params.correction} data={list.HistoryData}  navigation={navigation} setValue={setValue}  value={value} setPause={setPause} pause={pause}/>:<View style={{alignItems:'center',justifyContent:'center'}}><Text>No data</Text></View>}
     
      
     </View>

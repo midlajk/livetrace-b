@@ -174,7 +174,7 @@ const Icons = (props) => {
   </View>
 
               
-  <TouchableOpacity style={{width:100,padding:5,backgroundColor:'#f7951d',alignItems:'center',borderRadius:10}}  onPress={()=>{navigation.navigate('History Map',{name:'Travel History Of '+vnumber,from:from.toISOString(),to:to.toISOString(),vehicle:vnumber})
+  <TouchableOpacity style={{width:100,padding:5,backgroundColor:'#f7951d',alignItems:'center',borderRadius:10}}  onPress={()=>{navigation.navigate('History Map',{name:'Travel History Of '+vnumber,from:from.toISOString(),to:to.toISOString(),vehicle:vnumber,correction:props.correction})
   }}> 
           <Text style={{color:'#fff'}}>
                      Start

@@ -25,9 +25,10 @@ export default function TrackScreen({navigation,route}) {
 
   var listofdata = [];
   var notfound = [];
-  const [list, setList] = useState({});
-
+  const [list, setList] = useState([]);
+  var elmts
   useEffect(() => {
+    elmts = b.getVehicle().find( arr1Obj => arr1Obj.Reg_No === route.params.vehicle)
     setLoading(true) 
           getdata()
     
@@ -35,8 +36,13 @@ export default function TrackScreen({navigation,route}) {
   }, []);
    
     async function getdata() {  
-      let response = await api.history(route.params.from,route.params.to,route.params.vehicle);      
-      setList(response.HistoryData)
+      let response = await api.history(route.params.from,route.params.to,route.params.vehicle); 
+      const newArr = response.HistoryData.map(obj => {
+        var lastupdatestring = new Date(obj.Time);
+       lastupdatestring.setMinutes(lastupdatestring.getMinutes()+elmts.Gmt_Corr||0);
+       return {...obj, changedtime: lastupdate.toLocaleString()}
+      })     
+      setList(newArr)
       setLoading(false) 
    
 

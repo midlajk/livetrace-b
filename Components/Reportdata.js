@@ -93,7 +93,7 @@ useEffect(() => {
                     <View style={{flex:1,flexDirection:'row',flexWrap:'wrap',justifyContent:'space-around'}}>
 
                     <Text style={styles.text}>Date And Time : </Text>
-                      <Text style={styles.text}>{item.Time}</Text>
+                      <Text style={styles.text}>{item.changedtime}</Text>
                       <Text style={styles.text}>Address  </Text>
                       <Text style={styles.text}>{item.address}</Text>
                       <Text style={styles.text}>Cumulative Distance (Kms)</Text>
@@ -203,17 +203,17 @@ useEffect(() => {
           <View style={{flex:1,flexDirection:'row',flexWrap:'wrap',justifyContent:'flex-start'}}>
 
     <Text style={styles.textc}>Day Start Time: </Text>
-            <Text style={styles.textc}>{props.data[0].Time}</Text>
+            <Text style={styles.textc}>{props.data[0].changedtime}</Text>
             <Text style={styles.textc}>Day Start Address  </Text>
             <Text style={styles.textc}>{startaddress}  </Text>
             <Text style={styles.textc}>End Time: </Text>
-            <Text style={styles.textc}>{props.data[props.data.length-1].Time}</Text>
+            <Text style={styles.textc}>{props.data[props.data.length-1].changedtime}</Text>
             <Text style={styles.textc}>End Address  </Text>
             <Text style={styles.textc}>{endaddress}  </Text>
 
 
             <Text style={styles.textc}>Last Tracked Time </Text>
-            <Text style={styles.textc}> {props.data[props.data.length-1].Time} </Text>
+            <Text style={styles.textc}> {props.data[props.data.length-1].changedtime} </Text>
             <Text style={styles.textc}>Distance Covered</Text>
             <Text style={styles.textc}>{distance.toFixed(3)} Km</Text>
             <Text style={styles.textc}>Average Speed</Text>
@@ -299,7 +299,7 @@ export  function ADReport(props) {
                           <View style={{flex:1,flexDirection:'row',flexWrap:'wrap',justifyContent:'space-around'}}>
       
                           <Text style={styles.text}>Date And Time : </Text>
-                            <Text style={styles.text}>{item.Time}</Text>
+                            <Text style={styles.text}>{item.changedtime}</Text>
                             <Text style={styles.text}>Address  </Text>
                             <Text style={styles.text}>{item.address}</Text>
                             <Text style={styles.text}>Analogue-1</Text>
@@ -339,8 +339,8 @@ export  function CurrentSummary(props) {
     await setstart(items[0])
     await setend(items[items.length-1])
     setcurrentspeed(items[items.length-1].Speed)
-    setlasttracked(items[items.length-1].Time)
-    setdaystarttime(items[0].Time)
+    setlasttracked(items[items.length-1].changedtime)
+    setdaystarttime(items[0].changedtime)
      var dis = await getPathLength(props.data);
      setdistance(dis/1000) 
 
@@ -441,8 +441,8 @@ export  function Halt(props) {
             if(countarray.length>0){
              await setstart(items[countarray[0]])
              await setend(items[countarray[countarray.length-1]])
-            pushdata.starttime = items[countarray[0]].Time
-            pushdata.endtime = items[countarray[countarray.length-1]].Time
+            pushdata.starttime = items[countarray[0]].changedtime
+            pushdata.endtime = items[countarray[countarray.length-1]].changedtime
             timediff = new Date(pushdata.endtime)-new Date(pushdata.starttime)
             pushdata.timediff=(timediff/60000).toFixed(2)
             setdata(old=>[...old,pushdata])
@@ -460,8 +460,8 @@ export  function Halt(props) {
               if(countarray.length>0){
                await setstart(items[countarray[0]])
                await setend(items[countarray[countarray.length-1]])
-              pushdata.starttime = items[countarray[0]].Time
-              pushdata.endtime = items[countarray[countarray.length-1]].Time
+              pushdata.starttime = items[countarray[0]].changedtime
+              pushdata.endtime = items[countarray[countarray.length-1]].changedtime
               timediff = new Date(pushdata.endtime)-new Date(pushdata.starttime)
                pushdata.timediff=(timediff/60000).toFixed(2)
               setdata(old=>[...old,pushdata])
@@ -520,7 +520,7 @@ useEffect(() => {
  getdata()
  
 }, [1]);
- 
+  
     return (
       <View style={{ flex: 1, justifyContent: 'center',marginTop:20}}>
       <FlatList
@@ -576,8 +576,8 @@ export  function Idiling(props) {
             if(countarray.length>0){
              await setstart(items[countarray[0]])
              await setend(items[countarray[countarray.length-1]])
-            pushdata.starttime = items[countarray[0]].Time
-            pushdata.endtime = items[countarray[countarray.length-1]].Time
+            pushdata.starttime = items[countarray[0]].changedtime
+            pushdata.endtime = items[countarray[countarray.length-1]].changedtime
             timediff = new Date(pushdata.endtime)-new Date(pushdata.starttime)
             pushdata.timediff=(timediff/60000).toFixed(2)
             setdata(old=>[...old,pushdata])
@@ -600,8 +600,8 @@ export  function Idiling(props) {
               if(countarray.length>0){
                await setstart(items[countarray[0]])
                await setend(items[countarray[countarray.length-1]])
-              pushdata.starttime = items[countarray[0]].Time
-              pushdata.endtime = items[countarray[countarray.length-1]].Time
+              pushdata.starttime = items[countarray[0]].changedtime
+              pushdata.endtime = items[countarray[countarray.length-1]].changedtime
               timediff = new Date(pushdata.endtime)-new Date(pushdata.starttime)
                pushdata.timediff=(timediff/60000).toFixed(2)
               setdata(old=>[...old,pushdata])
@@ -771,8 +771,8 @@ export  function IgnitionON_off(props) {
    async function offdatasave(){
     await setstart(items[offarray[0]],'off')
     await setend(items[offarray[offarray.length-1]],'off')
-    offpushdata.starttime = items[offarray[0]].Time
-    offpushdata.endtime = items[offarray[offarray.length-1]].Time
+    offpushdata.starttime = items[offarray[0]].changedtime
+    offpushdata.endtime = items[offarray[offarray.length-1]].changedtime
    timediff = new Date(offpushdata.endtime)-new Date(offpushdata.starttime)
    offpushdata.timediff=(timediff/60000).toFixed(2)
    offpushdata.igni='Off'
@@ -802,8 +802,8 @@ export  function IgnitionON_off(props) {
    async function ondatasave(){
     await setstart(items[onarray[0]],'on')
     await setend(items[onarray[onarray.length-1]],'on')
-    onpushdata.starttime = items[onarray[0]].Time
-    onpushdata.endtime = items[onarray[onarray.length-1]].Time
+    onpushdata.starttime = items[onarray[0]].changedtime
+    onpushdata.endtime = items[onarray[onarray.length-1]].changedtime
     timediff = new Date(onpushdata.endtime)-new Date(onpushdata.starttime)
     onpushdata.timediff=(timediff/60000).toFixed(2)
      onpushdata.igni='On'
@@ -986,8 +986,8 @@ export  function OverSpeed(props) {
 async function datasave(){
   await setstart(items[countarray[0]])
   await setend(items[countarray[countarray.length-1]])
- pushdata.starttime = items[countarray[0]].Time
- pushdata.endtime = items[countarray[countarray.length-1]].Time
+ pushdata.starttime = items[countarray[0]].changedtime
+ pushdata.endtime = items[countarray[countarray.length-1]].changedtime
  timediff = new Date(pushdata.endtime)-new Date(pushdata.starttime)
   pushdata.timediff=(timediff/60000).toFixed(2)
   const highestMaxScore = Math.max(...speeddata.map(data => data.Speed));
@@ -1142,8 +1142,8 @@ export  function Panic(props) {
 async function datasave(){
   await setstart(items[countarray[0]])
   await setend(items[countarray[countarray.length-1]])
- pushdata.starttime = items[countarray[0]].Time
- pushdata.endtime = items[countarray[countarray.length-1]].Time
+ pushdata.starttime = items[countarray[0]].changedtime
+ pushdata.endtime = items[countarray[countarray.length-1]].changedtime
  timediff = new Date(pushdata.endtime)-new Date(pushdata.starttime)
   pushdata.timediff=(timediff/60000).toFixed(2)
  var dis = await getPathLength(panicdata);
@@ -1256,8 +1256,8 @@ export  function Trip(props) {
               idledata.push(items[i])
             }else{
               if(idledata.length>0){
-                 stime = idledata[0].Time
-              etime = idledata[idledata.length-1].Time
+                 stime = idledata[0].changedtime
+              etime = idledata[idledata.length-1].changedtime
               timedif = new Date(stime)-new Date(etime)
               idletime = idletime+(timedif/60000).toFixed(2) 
               idlecount = idlecount + idledata.length
@@ -1302,8 +1302,8 @@ export  function Trip(props) {
    
 async function datasave(){
   if(idledata.length>0){
-    stime = idledata[0].Time
-    etime = idledata[idledata.length-1].Time
+    stime = idledata[0].changedtime
+    etime = idledata[idledata.length-1].changedtime
     timedif = new Date(stime)-new Date(etime)
     idletime = idletime+(timedif/60000).toFixed(2) 
     idlecount = idlecount+idledata.length
@@ -1311,8 +1311,8 @@ async function datasave(){
   }
   await setstart(items[countarray[0]])
   await setend(items[countarray[countarray.length-1]])
- pushdata.starttime = items[countarray[0]].Time
- pushdata.endtime = items[countarray[countarray.length-1]].Time
+ pushdata.starttime = items[countarray[0]].changedtime
+ pushdata.endtime = items[countarray[countarray.length-1]].changedtime
  timediff = new Date(pushdata.endtime)-new Date(pushdata.starttime)
   pushdata.timediff=(timediff/60000).toFixed(2)
  var dis = await getPathLength(tripdata);

@@ -12,6 +12,7 @@ const Icons = (props) => {
     const [buttonVisible, setButtonVisible] = useState(true);
     const [pausebutton, setPausebutton] = useState(false);
     const [address, setAddress] = useState('');
+    const [lasttracked, selasttracked] = useState();
 
     const pauseRef = useRef();
     const valueRef = useRef();
@@ -60,6 +61,10 @@ useEffect(() => {
           }
             
      })
+     var d = new Date(data[value].Time); 
+     var v = new Date(data[value].Time); 
+     v.setMinutes(d.getMinutes() +props.correction||0); 
+     selasttracked(v.toLocaleString()) 
      
     }
   
@@ -87,7 +92,7 @@ useEffect(() => {
  {buttonVisible?<View style={{width:'90%',backgroundColor:'#000',borderBottomLeftRadius:10,borderBottomRightRadius:10,padding:10}}>
                 
               <Text style={{color:'#fff',width:'100%'}}>
-                Tracked Time : {data[value].Time?data[value].Time:''}
+                Tracked Time : {lasttracked}
               </Text > 
   
               <Text style={{color:'#fff',}}>
