@@ -16,8 +16,21 @@ export async function login(){
             "password": password
             }} );
             DataHandler.setUser(res.data.status); 
-            DataHandler.setVehicle(res.data.response.ConfigData)// Save User
             DataHandler.setServerDate(res.data.server.dateTime)
+            const newArr = res.data.response.ConfigData.map(obj => {
+                var lastupdate = new Date(obj.Expiry_Date);
+                var server = new Date(res.data.server.dateTime);
+                diff = lastupdate - server
+                if(diff/86400000 >=7 ){
+                    return {...obj, status: 'Active'}
+                }else if(diff/86400000 >=-28 ){
+                    return {...obj, status: 'Expired'}
+                }else{
+                    return {...obj, status: 'Suspended'}
+                }
+            })
+            DataHandler.setVehicle(newArr)// Save User
+
             return res;
     }catch (e) {
         throw handler(e);
@@ -25,8 +38,25 @@ export async function login(){
     }
 }
 
-export async function fetchdata(){
+// export async function fetchdata(){
   
+//     let email = await AsyncStorage.getItem('email')
+//     let password = await AsyncStorage.getItem('password')
+//     try{
+
+  
+//         let res = await axios.post(c.DATA, {"request": {
+//             "userMailid": email,
+//             "password": password
+//             }} );
+            
+//          return res
+        
+//     }catch (e) {
+//         throw handler(e);
+//     }
+// }
+export async function fetchdatab(){
     let email = await AsyncStorage.getItem('email')
     let password = await AsyncStorage.getItem('password')
     try{
@@ -36,8 +66,20 @@ export async function fetchdata(){
             "userMailid": email,
             "password": password
             }} );
-            
-         return res
+
+  let newArr = []
+    res.data.response.LiveData.forEach((obj) => {
+      var veh = DataHandler.getVehicle().find( arr1Obj => arr1Obj.Reg_No === obj.Reg_No)
+      if(veh.status=='Active'){
+        var lastupdate = new Date(obj.Time);
+        var lastupdatestring = new Date(obj.Time);
+       lastupdate.setMinutes(lastupdate.getMinutes()+330+veh.Gmt_Corr||0);
+       lastupdatestring.setMinutes(lastupdatestring.getMinutes()+veh.Gmt_Corr||0);
+       newArr.push({...obj, corrected330: lastupdate.toISOString(),noncorrected330: lastupdatestring.toISOString(),correction:veh.Gmt_Corr||0,status:veh.status,Off_Int:veh.Off_Int,Dead_Int:veh.Dead_Int} )          
+
+      }
+    });            
+         return {data:newArr,serverdate:res.data.server.dateTime}
         
     }catch (e) {
         throw handler(e);

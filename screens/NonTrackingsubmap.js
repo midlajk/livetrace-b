@@ -13,7 +13,6 @@ export default function Tracking({navigation,route}) {
   const [loading, setLoading] = useState(false);
   const [buttonVisible, setButtonVisible] = useState(true);
   const [serverdate, setServerdate] = useState('');
-  const [vehicle, setvehicle] = useState([]);
   const [userdata, setUserdata] = useState({});
   const [counter, setCounter] = useState(0);
   var offline=[];
@@ -22,7 +21,6 @@ export default function Tracking({navigation,route}) {
   useEffect(() => {
     setLoading(true) 
     getdata()
-    setvehicle(b.getVehicle()) 
     setUserdata(b.getUser())  
   }, []);
 
@@ -35,9 +33,9 @@ export default function Tracking({navigation,route}) {
   }, [counter]);
 
     async function getdata() {
-        let response = await api.fetchdata(); 
-          setServerdate(response.data.server.dateTime)
-         setList(response.data.response.LiveData)
+      let response = await api.fetchdatab(); 
+         setList(response.data)
+         setServerdate(response.serverdate)
         setLoading(false) 
 
     }
@@ -45,21 +43,14 @@ export default function Tracking({navigation,route}) {
     var offline = [];
     var nodata = [];
 
-    vehicle.forEach(vehicle => {
-        found=false
+
       list.forEach(element => {
-        if(vehicle.Reg_No == element.Reg_No){
             found=true
-          servdate = new Date(serverdate)
-          var lastupdate = new Date(element.Time);
-          var lastupdatestring = new Date(element.Time);
-          lastupdate.setMinutes(lastupdate.getMinutes()+330+vehicle.Gmt_Corr||0);
-          lastupdatestring.setMinutes(lastupdatestring.getMinutes()+vehicle.Gmt_Corr||0);
-          element.changedtime = lastupdatestring.toLocaleString()
-          element.correction = vehicle.Gmt_Corr||0
+          var servdate = new Date(serverdate)
+          var lastupdate = new Date(element.corrected330);
           diff = servdate - lastupdate
-          offint = vehicle.Off_Int == null ? 90 : vehicle.Off_Int
-          dead = vehicle.Dead_Int == null ? 180 : vehicle.Dead_Int
+          offint = list.Off_Int == null ? 90 : list.Off_Int
+          dead = list.Dead_Int == null ? 180 : list.Dead_Int
           if(diff>offint*60000){
 
             if(diff>dead*60000){
@@ -71,14 +62,8 @@ export default function Tracking({navigation,route}) {
 
           }
           
-        }
-        
       });
-      if(!found){
-        nodata=[...nodata,vehicle ];
-
-      }
-    });
+    
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                      <Loader loading={loading} navigation={navigation} />
@@ -92,7 +77,7 @@ export default function Tracking({navigation,route}) {
 
 
    <MapTopButton getdata={getdata} navigation={navigation} setButtonVisible={setButtonVisible} buttonVisible={buttonVisible}/>
-   {buttonVisible?<MapButton screen='NonTracking Vehicle Sub' navigation={navigation} list={list}  serverdate={serverdate} sub={route.params.name} data={route.params.name=='Offline Vehicle'?offline:route.params.name=='Dead Vehicle'?deadvehicle:nodata}/>:<View></View>}
+   {buttonVisible?<MapButton screen='NonTracking Vehicle Sub' navigation={navigation} list={list}  serverdate={serverdate} sub={route.params.name} />:<View></View>}
 
     </View>
   );

@@ -11,13 +11,11 @@ import SubcatgNAv from './subcategorylistnav';
 const App = (props) => {
   const [tracking, setTracking] = useState(true);
   const [nonTracking, setNonTracking] = useState(true);
-  const [vehicle, setvehicle] = useState([]);
 
     var nonTrackingVehicle = [];
     var trackingVehicle = [];
       
   useEffect(() => {
-    setvehicle(b.getVehicle())
     }, []);
     offlinecount=0
     deadcount=0
@@ -25,17 +23,13 @@ const App = (props) => {
     Idle=0
     Halt=0
     Nogps=0
-    vehicle.forEach(vehicle => {
       props.list.forEach(element => {
-        if(vehicle.Reg_No == element.Reg_No){
           servdate = new Date(props.serverdate)
-          lastupdate = new Date(element.Time)
-          lastupdate.setMinutes(lastupdate.getMinutes()+330+vehicle.Gmt_Corr||0);
+          lastupdate = new Date(element.corrected330)
           diff = servdate - lastupdate
-          offint = vehicle.Off_Int == null ? 90 : vehicle.Off_Int
-          dead = vehicle.Dead_Int == null ? 180 : vehicle.Dead_Int
+          offint = element.Off_Int == null ? 90 : element.Off_Int
+          dead = element.Dead_Int == null ? 180 : element.Dead_Int
           if(diff>offint*60000){
-
             nonTrackingVehicle=[...nonTrackingVehicle,element ];
             offlinecount++
             if(diff>dead*60000){
@@ -49,13 +43,14 @@ const App = (props) => {
           }
           element.Igni>0&&element.Speed>2?Running++:
           element.Igni>0&&element.Speed<2?Idle++:
-          element.Igni<1&&element.Speed<2?Halt++:Nogps++
-        }
+          element.Igni<1&&element.Speed<2?Halt++:element.Lat==0&&element.Lon==0?Nogps++:element.Lat==null&&element.Lon==null?Nogps++:''
+        
         
       });
-    });
-  
+    
 
+  
+const vehicle = b.getVehicle().filter(f => !props.list.find( arr1Obj => arr1Obj.Reg_No === f.Reg_No)&&f.status =='Active') 
     
   
   return (
@@ -71,7 +66,7 @@ const App = (props) => {
                     style={[styles.button,{justifyContent:'center',width:'90%'}]}
                     onPress={() => {
                     
-                      props.navigation.navigate('Vehicle Seperate List',{name:'List of All Vehicle',data:props.data});
+                      props.navigation.navigate('Vehicle Seperate List',{name:'List of All Vehicle'});
                   }}
                   > 
                  <Icon
@@ -116,7 +111,7 @@ const App = (props) => {
             
               />
                   <Text style={{color:'#fff'}}> Non-Tracking Vehicle</Text>
-                  <Text style={{color:'#fff'}}> {nonTrackingVehicle.length + (vehicle.length -props.list.length)}</Text>
+                  <Text style={{color:'#fff'}}> {nonTrackingVehicle.length + vehicle.length}</Text>
                   </TouchableOpacity>
                   </View>
 
@@ -127,7 +122,7 @@ const App = (props) => {
                   :props.screen=='Tracking Vehicle sub'||props.screen=='NonTracking Vehicle Sub' ?
                   <View  style={{width:'100%',alignItems:'center'}}>
                   <View style={{flexDirection:'row',justifyContent:'space-around'}}>
-                  <SubcatgNAv navigation={props.navigation} screen={props.screen} sub={props.sub} data={props.data}/>
+                  <SubcatgNAv navigation={props.navigation} screen={props.screen} sub={props.sub}/>
                     <View style={{width:'20%'}}> 
                       <TouchableOpacity
                     style={[styles.button,{justifyContent:'center',width:'100%'}]}
@@ -180,7 +175,7 @@ const App = (props) => {
             
               />
                   <Text style={{color:'#fff'}}> Non-Tracking Vehicle</Text>
-                  <Text style={{color:'#fff'}}> {nonTrackingVehicle.length + (vehicle.length -props.list.length)}</Text>
+                  <Text style={{color:'#fff'}}> {nonTrackingVehicle.length + vehicle.length}</Text>
                   </TouchableOpacity>
                   </View> 
                   </View>
@@ -191,7 +186,7 @@ const App = (props) => {
                    style={[styles.button,{justifyContent:'center',width:'95%'}]}
                    onPress={() => {
                    
-                     props.navigation.navigate('Vehicle Seperate List',{name:'List of all ' + props.screen,data:props.data});
+                     props.navigation.navigate('Vehicle Seperate List',{name:'List of all ' + props.screen});
                  }}
                  > 
                 <Icon
@@ -301,7 +296,7 @@ tracking ?
           
             />
                 <Text style={{color:'#fff'}}> Non-Tracking Vehicle</Text>
-                <Text style={{color:'#fff'}}> {nonTrackingVehicle.length + (vehicle.length -props.list.length)}</Text>
+                <Text style={{color:'#fff'}}> {nonTrackingVehicle.length + vehicle.length}</Text>
                 </TouchableOpacity>
    
          </View>
@@ -322,7 +317,7 @@ tracking ?
                          
                            />
                <Text style={{color:'#fff'}}> Non-Tracking Vehicle</Text>
-               <Text style={{color:'#fff'}}> {nonTrackingVehicle.length + (vehicle.length -props.list.length)}</Text>
+               <Text style={{color:'#fff'}}> {nonTrackingVehicle.length + vehicle.length}</Text>
                <Icon
                                name={'chevron-down'}
                                size={20}
@@ -334,7 +329,7 @@ tracking ?
 
                 {/* Vehicle icons and Names of icon */}
                                 
-                <Nontrackingicon offlinecount={offlinecount}  deadcount={deadcount} nodata={(vehicle.length -props.list.length)} navigation={props.navigation}/>
+                <Nontrackingicon offlinecount={offlinecount}  deadcount={deadcount} nodata={vehicle.length} navigation={props.navigation}/>
                 {/* Vehicle icons and Names of icon */}
 
 
@@ -370,7 +365,7 @@ tracking ?
                        
                          />
              <Text style={{color:'#fff'}}> Non-Tracking Vehicle</Text>
-             <Text style={{color:'#fff'}}> {nonTrackingVehicle.length + (vehicle.length -props.list.length)}</Text>
+             <Text style={{color:'#fff'}}> {nonTrackingVehicle.length + vehicle.length}</Text>
              <Icon
                              name={'chevron-down'}
                              size={20}

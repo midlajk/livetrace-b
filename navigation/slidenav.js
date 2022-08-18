@@ -58,7 +58,7 @@ marginLeft:10,
         <Drawer.Screen name="Tracking Vehicle" component={Tracking} />
         <Drawer.Screen name="Non-Tracking Vehicle" component={NonTracking} />
         <Drawer.Screen name="Report" component={ReportScreen} />
-        <Drawer.Screen name="Vehicle List" component={TrackingList} />
+        <Drawer.Screen name="Vehicles" component={TrackingList} />
         <Drawer.Screen name="Report Problem" component={ReportProblem} />
         <Drawer.Screen name="Tracking list sub" component={Trackinglistsub}  options={({ route }) => ({ title:"Tracking Vehicle" })}/>
         <Drawer.Screen name="NonTracking list sub" component={NonTrackingsubmap}  options={({ route }) => ({ title:"Non Tracking Vehicle" })}/>

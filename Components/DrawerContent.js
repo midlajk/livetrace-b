@@ -72,13 +72,13 @@ export function DrawerContent(props) {
                         <DrawerItem 
                             icon={({color, size}) => (
                                 <MaterialIcon 
-                                name="my-location" 
+                                name="directions-car" 
                                 color={color}
                                 size={size}
                                 />
                             )}
-                            label="Vehicle List"
-                            onPress={() => {props.navigation.navigate('Vehicle List')}}
+                            label="Vehicles"
+                            onPress={() => {props.navigation.navigate('Vehicles')}}
                         />
                         <DrawerItem 
                             icon={({color, size}) => (

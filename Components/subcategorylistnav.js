@@ -9,7 +9,7 @@ export default function Navs(props) {
      style={[styles.button,{justifyContent:'center',width:'95%'}]}
      onPress={() => {
      
-       props.navigation.navigate('Vehicle Seperate List',{name:'List of all ' + props.sub,data:props.data});
+       props.navigation.navigate('Vehicle Seperate List',{name:'List of all ' + props.sub});
    }}
    > 
 {props.sub=='Running Vehicle'?

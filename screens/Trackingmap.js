@@ -13,7 +13,6 @@ export default function Tracking({navigation}) {
   const [loading, setLoading] = useState(false);
   const [buttonVisible, setButtonVisible] = useState(true);
   const [serverdate, setServerdate] = useState('');
-  const [vehicle, setvehicle] = useState([]);
   const [userdata, setUserdata] = useState({});
   const [counter, setCounter] = useState(0);
   var trackingVehicle = [];
@@ -21,7 +20,6 @@ export default function Tracking({navigation}) {
   useEffect(() => {
     setLoading(true) 
     getdata()
-    setvehicle(b.getVehicle())
     setUserdata(b.getUser())  
 
   }, []);
@@ -34,32 +32,22 @@ export default function Tracking({navigation}) {
     }, userdata.int_Refresh*1000);
   }, [counter]);
     async function getdata() {
-        let response = await api.fetchdata(); 
-          setServerdate(response.data.server.dateTime)
-         setList(response.data.response.LiveData)
+      let response = await api.fetchdatab(); 
+         setList(response.data)
+         setServerdate(response.serverdate)
         setLoading(false) 
 
     }
-    vehicle.forEach(vehicle => {
       list.forEach(element => {
-        if(vehicle.Reg_No == element.Reg_No){
           servdate = new Date(serverdate)
-          var lastupdate = new Date(element.Time);
-          var lastupdatestring = new Date(element.Time);
-          lastupdate.setMinutes(lastupdate.getMinutes()+330+vehicle.Gmt_Corr||0);
-          lastupdatestring.setMinutes(lastupdatestring.getMinutes()+vehicle.Gmt_Corr||0);
-          element.changedtime = lastupdatestring.toLocaleString()
-          element.correction = vehicle.Gmt_Corr||0
-
+          var lastupdate = new Date(element.corrected330);
           diff = servdate - lastupdate
-          offint = vehicle.Off_Int == null ? 90 : vehicle.Off_Int
+          offint = list.Off_Int == null ? 90 : list.Off_Int
           if(diff<offint*60000){
             trackingVehicle=[...trackingVehicle,element ];
           }
-        }
         
       });
-    });
   
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -68,7 +56,7 @@ export default function Tracking({navigation}) {
 
    <MapTopButton getdata={getdata} navigation={navigation} setButtonVisible={setButtonVisible} buttonVisible={buttonVisible}/>
 
-{buttonVisible?<MapButton screen='Tracking Vehicle' navigation={navigation} list={trackingVehicle}  serverdate={serverdate} data={trackingVehicle}/>:<View></View>}
+{buttonVisible?<MapButton screen='Tracking Vehicle' navigation={navigation} list={trackingVehicle}  serverdate={serverdate} />:<View></View>}
 
     </View>
   );

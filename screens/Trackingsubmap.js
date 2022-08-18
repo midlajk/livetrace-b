@@ -19,7 +19,6 @@ export default function Tracking({navigation,route}) {
   var running=[]
   var idle=[]
   var halt=[]
-  var nogps=[]
   useEffect(() => {
     setLoading(true) 
     getdata()
@@ -35,9 +34,9 @@ export default function Tracking({navigation,route}) {
     }, userdata.int_Refresh*1000);
   }, [counter]);
     async function getdata() {
-        let response = await api.fetchdata(); 
-          setServerdate(response.data.server.dateTime)
-         setList(response.data.response.LiveData)
+      let response = await api.fetchdatab(); 
+      setList(response.data)
+      setServerdate(response.serverdate)
         setLoading(false) 
        
     }
@@ -46,19 +45,11 @@ export default function Tracking({navigation,route}) {
     var idle=[]
     var halt=[]
     var nogps=[]
-     vehicle.forEach(vehicle => {
       list.forEach(element => {
-        if(vehicle.Reg_No == element.Reg_No){
           servdate = new Date(serverdate)
-          var lastupdate = new Date(element.Time);
-          var lastupdatestring = new Date(element.Time);
-          lastupdate.setMinutes(lastupdate.getMinutes()+330+vehicle.Gmt_Corr||0);
-          lastupdatestring.setMinutes(lastupdatestring.getMinutes()+vehicle.Gmt_Corr||0);
-          element.changedtime = lastupdatestring.toLocaleString()
-          element.correction = vehicle.Gmt_Corr||0
-
+          var lastupdate = new Date(element.corrected330);  
           diff = servdate - lastupdate
-          offint = vehicle.Off_Int == null ? 90 : vehicle.Off_Int
+          offint = list.Off_Int == null ? 90 : list.Off_Int
           if(diff<offint*60000){
             if(route.params.name=='Running Vehicle' && element.Igni>0&&element.Speed>2 ){
                 running = [...running,element]
@@ -69,13 +60,12 @@ export default function Tracking({navigation,route}) {
             }  
             else if(route.params.name=='Halt Vehicle' &&  element.Igni<1&&element.Speed<2){
                 halt = [...halt,element]
-            }  else{
-                nogps={...nogps,nogps}
+            }  else if(route.params.name=='No Gps' &&  !element.Lat&&!element.Lon || element.Lat==0&&element.Lon==0){
+                nogps=[...nogps,element]
             }
  }
-        }
         
-      });
+        
     });
  
     
@@ -91,8 +81,6 @@ export default function Tracking({navigation,route}) {
                      route.params.name=='Halt Vehicle'? halt.length>0&&halt.length<2?
                      <IndividualMap list={halt} navigation={navigation}/>:
                      <Mapview list={halt} navigation={navigation}/>:
-                     nogps.length>0&&nogps.length<2?
-                     <IndividualMap list={running} navigation={navigation}/>:
                      <Mapview list={nogps} navigation={navigation}/> }
                     
                      
@@ -101,7 +89,7 @@ export default function Tracking({navigation,route}) {
 
    <MapTopButton getdata={getdata} navigation={navigation} setButtonVisible={setButtonVisible} buttonVisible={buttonVisible}/>
 
-{buttonVisible?<MapButton screen='Tracking Vehicle sub' navigation={navigation} list={list}  serverdate={serverdate} sub={route.params.name} data={route.params.name=='Running Vehicle'?running:route.params.name=='Idle Vehicle'?idle:route.params.name=='Halt Vehicle'?halt:nogps}/>:<View></View>}
+{buttonVisible?<MapButton screen='Tracking Vehicle sub' navigation={navigation} list={list}  serverdate={serverdate} sub={route.params.name} />:<View></View>}
 
     </View>
   );

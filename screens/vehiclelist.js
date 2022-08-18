@@ -7,74 +7,18 @@ import b from "../configuration/Datahandler";
 
 
 export default function TrackScreen({navigation,route}) {
-   const [list, setList] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searchText, setSearchText] = useState('');
    const [vehicle, setvehicle] = useState([]);
-  const [serverdate, setServerdate] = useState('');
-  const [datas, setData] = useState([]);
-  const vehicleRef = useRef();
-  vehicleRef.current = vehicle;
-  const listRef = useRef();
-listRef.current = list;
-   var listofdata = [];
-  // var notfound = [];
+
 
   useEffect(() => {
+    setLoading(true)
     setvehicle(b.getVehicle())
-    setLoading(true)  
-    getdata()
-  
+    setLoading(false)
   }, []);
    
-  async function getdata() {
-         setData([])
-        let response = await api.fetchdata(); 
-        setList(response.data.response.LiveData)
-        setServerdate(response.data.server.dateTime)
-      
-        vehicleRef.current.forEach(vehic => {
-          found=false
-          listRef.current.forEach(element => {
-            if(vehic.Reg_No == element.Reg_No){
-              found=true
-              result = fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=`+element.Lat+`,`+element.Lon+`&key=AIzaSyB4Zi4r1J4WhBzLxop9rVY9czHDtI_BOEQ`)
-                            .then(res => res.json())
-                            .then((json) => {
-                              if(json.results.length>0){
-                                console.log(json)
-                                element.address = json.results[0].formatted_address.split(',').slice(1,6)
-                              }
-                             
-                                
-                            })
-            
-              
-              element.Expiry_Date = vehic.Expiry_Date;
-              var d = new Date(element.Time);
-              var v = new Date(element.Time);
-              v.setMinutes(d.getMinutes()+vehic.Gmt_Corr);
-              element.changedtime = v.toLocaleString()
-            
-
-              setData(old=>[...old,element])
-              
-            }
-            });
-            if(!found){
-                setData(old=>[...old,vehic])
-            }
-          })
-          setLoading(false) 
-
-      
-    } 
-
-        
-
-
-  //Data can be coming from props or any other source as well
-  const data = datas
+  const data = vehicle
   const filteredData = searchText ? data.filter(x =>
     x.Reg_No.toLowerCase().includes(searchText.toLowerCase())
     ): data
@@ -98,8 +42,10 @@ listRef.current = list;
 
                 <View style={styles.shadow}>
                <TouchableOpacity style={styles.button}
-                onPress={() => {  
-                  navigation.navigate('Individual Map',{ vehicle:item.Reg_No,imei:item.imei||item.IMEI});
+                onPress={() => { 
+                  if(item.status =='Active'){
+                    navigation.navigate('Individual Map',{ vehicle:item.Reg_No,imei:item.IMEI});
+                  } 
               }}
               >
         
@@ -107,20 +53,16 @@ listRef.current = list;
                     <View style={{flex:1,alignItems:'center'}}>
          
                       <Text style={{fontSize:16,color:'#000'}}>{item.Reg_No}</Text>
-            {/* <Text style={{fontSize:16,color:'#0783cb'}}>Expiry Date : {item.Expiry_Date}</Text>
-            <Text style={{fontSize:16,color:'#0783cb'}}>Subscription Status : {new Date(serverdate) < new Date(item.Expiry_Date)?'Active':'Expired'}</Text> */}
+            <Text style={{fontSize:16,color:'#ae5899'}}>Subscription Status : {item.status}</Text>
 
-                      <Text style={styles.text}>IMEI : {item.IMEI || item.imei}</Text>
-                      <Text style={{fontSize:16,color:'#000'}}>Ignition Status : {item.Igni==1?'Online':'Offline'}</Text>
-                      {item.Speed==null?<Text style={styles.text}>
-                        No Data
-                        </Text>: 
+                      <Text style={styles.text}>IMEI : {item.IMEI }</Text>
+            <Text style={{fontSize:16,color:'#000'}}>Vehicle type : {item.V_Type}</Text>
+                      
                         <View style={{flex:1,alignItems:'center'}}>
-                       <Text style={styles.text}>Speed : {item.Speed}</Text>
-                      <Text style={styles.text}>Last Tracked : {item.changedtime}</Text>
-            <Text style={styles.text}>Address: {item.address!=null?item.address:'Loading...'}</Text>
-                        <Text style={{color:'#0783cb',fontSize:10}}>Click Here to Track Live</Text> 
-                        </View>}
+                       <Text style={styles.text}>Vehicle name : {item.Nick} </Text>
+
+                        <Text style={{color:'#0783cb',fontSize:12}}>{item.status=="Active"?"Click Here to Track Live":"Please do the payment"}</Text> 
+                        </View>
                       
                       
                         
