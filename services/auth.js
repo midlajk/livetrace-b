@@ -104,8 +104,16 @@ export async function singledata(imei){
             "imei_single": imei	
             }
         });
-            
-         return res.data.response.LiveData
+            const newarray = res.data.response.LiveData.map(data=>{
+                var veh = DataHandler.getVehicle().find( arr1Obj => arr1Obj.Reg_No === data.Reg_No)
+                  var lastupdatestring = new Date(data.Time);
+                  lastupdatestring.setMinutes(lastupdatestring.getMinutes()+330+veh.Gmt_Corr||0);
+                  var timeb = lastupdatestring.toISOString()
+                  return {...data,time:timeb.split('T')[0]+' '+timeb.split('T')[1].split('.')[0]}
+
+
+            })
+         return newarray
         
     }catch (e) {
         throw handler(e);
