@@ -14,12 +14,14 @@ export default function TrackScreen({navigation,route}) {
    const [counter, setCounter] = useState(0);
    const [serverdate, setServerdate] = useState(new Date());
    const [addressbuffer, setaddressbuffer] = useState({});
+   const [livedata, setlivedata] = useState([]);
 
 async function getdata(){
   setvehiclve([])
   let response = await api.fetchdatab();
   setServerdate(new Date(response.serverdate))
   let items = response.data;
+  setlivedata(items)
   let i = 0;
   await new Promise(async (resolve, reject) => {
   try {
@@ -119,7 +121,7 @@ useEffect(() => {
     setCounter(old=>old+1)
   },b.getUser().int_Refresh*1000);
 }, [counter]);
-  const data = route.params.name == 'List of all No Data'?b.getVehicle().filter(f => !vehivcle.find( arr1Obj => arr1Obj.Reg_No === f.Reg_No)&&f.status =='Active'):route.params.name == 'List of All Vehicle'?[...vehivcle,...b.getVehicle().filter(f => !vehivcle.find( arr1Obj => arr1Obj.Reg_No === f.Reg_No)&&f.status =='Active')]:vehivcle
+  const data = route.params.name == 'List of all No data'?b.getVehicle().filter(f => !livedata.find( arr1Obj => arr1Obj.Reg_No === f.Reg_No)&&f.status =='Active'):route.params.name == 'List of All Vehicle'||route.params.name == 'List of all Non-Tracking Vehicle'?[...vehivcle,...b.getVehicle().filter(f => !livedata.find( arr1Obj => arr1Obj.Reg_No === f.Reg_No)&&f.status =='Active')]:vehivcle
   const filteredData = searchText ? data.filter(x =>
     x.Reg_No.toLowerCase().includes(searchText.toLowerCase())
     ): data
