@@ -63,7 +63,6 @@ async function handleSubmitButton (state) {
       alert('Please select a Vehicle Number');
       return;
     }
-   console.log(deviceFault)
     if (deviceFault == 'Select Fault *') {
       alert('Please select Device Fault');
       return;

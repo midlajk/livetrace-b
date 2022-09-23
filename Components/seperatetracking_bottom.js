@@ -10,7 +10,6 @@ import DatePicker from 'react-native-date-picker'
 const Icons = (props) => {
     const {time,status,address,navigation,number, ...attributes} = props;
     const [buttonVisible, setButtonVisible] = useState(true);
-console.log(time)
   return (
     <View style={styles.viewstyle}>
                   <View style={{width:'100%',alignItems:'center'}}>

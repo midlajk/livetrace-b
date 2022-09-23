@@ -6,7 +6,6 @@ import DataHandler from "../configuration/Datahandler";
 
 
 export async function login(){
-    console.log(DataHandler.getuseriid())
     let email = await AsyncStorage.getItem('email')
     let password = await AsyncStorage.getItem('password')
 
