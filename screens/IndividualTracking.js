@@ -13,27 +13,20 @@ import Mapview from '../Components/individualmapview';
 import BotomButton from '../Components/seperatetracking_bottom';
 
 export default function Tracking({navigation,route}) {
+
+
   const [list, setList] = useState([]);
-  const [history, sethistory] = useState({});
-  const [time, setTime] = useState('');
-  const [speed, setSpeed] = useState();
   const [status, setStatus] = useState('');
   const [address, setAddress] = useState('');
   const [loading, setLoading] = useState(false);
   const [buttonVisible, setButtonVisible] = useState(true);
   const [vnumber, setVNumber] = useState('');
-  const [picker, setPicker] = useState(false);
-  const [fromdate, setFromdate] = useState(new Date());
-  const [toDate, setToDate] = useState(new Date());
   const [counter, setCounter] = useState(0);
-  const [vehicle, setvehicle] = useState([]);
   const [userdata, setUserdata] = useState({});
-  const [imei, setimei] = useState('');
   const [lasttracked, selasttracked] = useState('');
 
   useEffect(() => {
     setLoading(true) 
-    setvehicle(b.getVehicle())
     setUserdata(b.getUser())  
     getdata()
    
@@ -47,15 +40,13 @@ export default function Tracking({navigation,route}) {
    }, [counter])
 
     async function getdata() {
-      let response = await api.singledata(route.params.imei)
+      let res = await api.fetchdatab()
+      response = res.data
       if(response.length!=0){
         setList(response)
-        setSpeed(response[0].Speed)
         setStatus(response[0].Igni>0?'Online':'Offline')
         setVNumber(response[0].Reg_No)
-        setimei(route.params.imei)
-        selasttracked(response[0].time) 
-      
+        selasttracked(response[0].corrected330) 
         result = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=`+response[0].Lat+`,`+response[0].Lon+`&key=AIzaSyB4Zi4r1J4WhBzLxop9rVY9czHDtI_BOEQ`)
         .then(res => res.json())
         .then((json) => {
@@ -67,6 +58,7 @@ export default function Tracking({navigation,route}) {
      setLoading(false) 
       }
 
+
     }
    
   return (
@@ -77,7 +69,7 @@ export default function Tracking({navigation,route}) {
                      {list.length>0?<Mapview list={list} navigation={navigation} />:<View></View>}
                      <MapTopButton getdata={getdata} navigation={navigation} setButtonVisible={setButtonVisible} buttonVisible={buttonVisible} />
 
-                     {buttonVisible&&list.length>0?<BotomButton correction={route.params.correction} setPicker={setPicker} time={lasttracked} speed={speed} status={status} navigation={navigation} address={address} vnumber={vnumber} imei={imei} />:<View></View>}
+                     {buttonVisible&&list.length>0?<BotomButton time={lasttracked} status={status} navigation={navigation} address={address} number={vnumber}  />:<View></View>}
     
      
     </View>

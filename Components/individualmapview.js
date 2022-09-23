@@ -38,16 +38,12 @@ const Mapview = (props) => {
        latitude: list[0].Lat,
        longitude: list[0].Lon,
       }}
-       onpress
+      onpress
       rotation={parseFloat(list[0].Course)}
       title={list[0].Reg_No+" , "+list[0].V_Type}
       description="Tap to track live"
       ref={mapRef.current}
-
-      onCalloutPress={() => {
-                    
-        navigation.navigate('Individual Map',{ vehicle:list[0].Reg_No,imei:list[0].imei});
-    }}>
+      >
          
         <Markericon vehicle={list[0].V_Type} ignition={list[0].Igni} speed={list[0].Speed}  />
                

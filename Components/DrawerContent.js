@@ -69,29 +69,8 @@ export function DrawerContent(props) {
                             label="Home"
                             onPress={() => {props.navigation.navigate('All Vehicle')}}
                         />
-                        <DrawerItem 
-                            icon={({color, size}) => (
-                                <MaterialIcon 
-                                name="directions-car" 
-                                color={color}
-                                size={size}
-                                />
-                            )}
-                            label="Vehicles"
-                            onPress={() => {props.navigation.navigate('Vehicles')}}
-                        />
-                        <DrawerItem 
-                            icon={({color, size}) => (
-                                <Icon 
-                                name="alarm-panel" 
-                                color={color}
-                                size={size}
-                                />
-                            )}
-                            label="Report"
-                            onPress={() => {props.navigation.navigate('Report')}}
-                        />
-                    
+                     
+                      
                                <DrawerItem 
                             icon={({color, size}) => (
                                 <MaterialIcon 
@@ -103,18 +82,9 @@ export function DrawerContent(props) {
                             label="Report a problem"
                             onPress={() => {props.navigation.navigate('Report Problem')}}
                         /> 
-                        {/*    <DrawerItem 
-                            icon={({color, size}) => (
-                                <MaterialIcon 
-                                name="payment" 
-                                color={color}
-                                size={size}
-                                />
-                            )}
-                            label="Recharge"
-                        />   */}
+                        
                         </Drawer.Section>
-                        <Drawer.Section title="Preferences">
+                        {/* <Drawer.Section title="Preferences">
                         <TouchableHighlight 
                         onPress={toggleSwitch}
                         >
@@ -129,7 +99,7 @@ export function DrawerContent(props) {
                                 </View>
                             </View>
                         </TouchableHighlight>
-                    </Drawer.Section>
+                    </Drawer.Section> */}
                       
                 </View>
             </DrawerContentScrollView>

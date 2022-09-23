@@ -2,6 +2,7 @@ let usere = {};
 let vehicles = [];
 let serverDate = {};
 let maptype = 'standard';
+let useriid = '';
 
 export default {
 
@@ -28,5 +29,11 @@ export default {
   },
   getmaptype() {
     return maptype;
+  },
+  setuseriid(id) {
+    useriid = id
+  },
+  getuseriid() {
+    return useriid;
   },
 };

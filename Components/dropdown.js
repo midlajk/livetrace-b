@@ -8,7 +8,7 @@ const App = (props) => {
     const [vehicle, setvehicle] = useState({});
 
     useEffect(() => {
-        setvehicle(b.getVehicle().filter(f => f.status=='Active'))
+        setvehicle(b.getVehicle())
    
       }, []);
   const [filteredVehicle, setFilterVehicle] = useState([]);

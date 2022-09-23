@@ -9,12 +9,16 @@ ActivityIndicator
 import * as api from "../services/auth";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from '../Components/Loader';
+import  Deviceinfo from 'react-native-device-info';
+import b from "../configuration/Datahandler";
 
 export default function Splash({ navigation }) {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-
+        Deviceinfo.getUniqueId().then((id) => {
+            b.setuseriid(id)
+        });
         setTimeout(async () => {
      
             getdata()
